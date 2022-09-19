@@ -40,7 +40,7 @@ namespace Bd_Curs
                 return;
             }
 
-            ////-------------Создание кнопок таблиц------------\\
+            //-------------Создание кнопок таблиц------------\\
             splitContainer5.Panel2.Controls.Clear();
             int tempHeight = splitContainer5.Panel2.Height;
             if (ButtonsMin * db.TableNames.Count > splitContainer5.Panel2.Width) tempHeight -= 20;
@@ -136,7 +136,7 @@ namespace Bd_Curs
                 SelectedTable.Columns.Add(item, item);
             }
 
-            for (int i = ChoosedPage * ElementsInPage - ElementsInPage; i < db.Table.Count && ChoosedPage * ElementsInPage >= i; i++)//Отображение первой страницы
+            for (int i = ChoosedPage * ElementsInPage - ElementsInPage; i < db.Table.Count && ChoosedPage * ElementsInPage - 1 >= i; i++)//Отображение первой страницы
             {
                 SelectedTable.Rows.Add(db.Table[i]);
             }

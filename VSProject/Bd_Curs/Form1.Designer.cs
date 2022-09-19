@@ -193,7 +193,7 @@
             this.DbName.Name = "DbName";
             this.DbName.Size = new System.Drawing.Size(183, 20);
             this.DbName.TabIndex = 3;
-            this.DbName.Text = "TestConnection";
+            this.DbName.Text = "Test";
             // 
             // label2
             // 
@@ -358,7 +358,7 @@
             // 
             this.PreviousPage.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.PreviousPage.Enabled = false;
-            this.PreviousPage.Location = new System.Drawing.Point(686, 6);
+            this.PreviousPage.Location = new System.Drawing.Point(680, 6);
             this.PreviousPage.Name = "PreviousPage";
             this.PreviousPage.Size = new System.Drawing.Size(25, 23);
             this.PreviousPage.TabIndex = 1;
@@ -371,7 +371,7 @@
             // 
             this.CountEl.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.CountEl.AutoSize = true;
-            this.CountEl.Location = new System.Drawing.Point(625, 71);
+            this.CountEl.Location = new System.Drawing.Point(562, 71);
             this.CountEl.Name = "CountEl";
             this.CountEl.Size = new System.Drawing.Size(129, 13);
             this.CountEl.TabIndex = 6;
@@ -381,7 +381,7 @@
             // 
             this.NextPage.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.NextPage.Enabled = false;
-            this.NextPage.Location = new System.Drawing.Point(776, 6);
+            this.NextPage.Location = new System.Drawing.Point(770, 6);
             this.NextPage.Name = "NextPage";
             this.NextPage.Size = new System.Drawing.Size(25, 23);
             this.NextPage.TabIndex = 0;
@@ -393,7 +393,7 @@
             // textBox1
             // 
             this.textBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.textBox1.Location = new System.Drawing.Point(686, 35);
+            this.textBox1.Location = new System.Drawing.Point(680, 35);
             this.textBox1.Name = "textBox1";
             this.textBox1.Size = new System.Drawing.Size(115, 20);
             this.textBox1.TabIndex = 5;
@@ -405,7 +405,7 @@
             // 
             this.PagesCounter.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.PagesCounter.AutoSize = true;
-            this.PagesCounter.Location = new System.Drawing.Point(730, 12);
+            this.PagesCounter.Location = new System.Drawing.Point(724, 12);
             this.PagesCounter.Name = "PagesCounter";
             this.PagesCounter.Size = new System.Drawing.Size(24, 13);
             this.PagesCounter.TabIndex = 2;
@@ -415,7 +415,7 @@
             // 
             this.label6.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(568, 38);
+            this.label6.Location = new System.Drawing.Point(562, 38);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(112, 13);
             this.label6.TabIndex = 4;
@@ -425,7 +425,7 @@
             // 
             this.Elements.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.Elements.AutoSize = true;
-            this.Elements.Location = new System.Drawing.Point(612, 11);
+            this.Elements.Location = new System.Drawing.Point(606, 11);
             this.Elements.Name = "Elements";
             this.Elements.Size = new System.Drawing.Size(24, 13);
             this.Elements.TabIndex = 3;
@@ -437,7 +437,7 @@
             this.tabPage2.Location = new System.Drawing.Point(4, 22);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(798, 122);
+            this.tabPage2.Size = new System.Drawing.Size(802, 122);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "SQL_Query";
             this.tabPage2.UseVisualStyleBackColor = true;
@@ -448,9 +448,10 @@
             this.textBox2.Location = new System.Drawing.Point(3, 3);
             this.textBox2.Multiline = true;
             this.textBox2.Name = "textBox2";
-            this.textBox2.Size = new System.Drawing.Size(792, 116);
+            this.textBox2.Size = new System.Drawing.Size(796, 116);
             this.textBox2.TabIndex = 0;
             this.textBox2.TabStop = false;
+            this.textBox2.Text = "SELECT ItemID FROM Items WHERE ItemID>=1000 AND ItemID<=2000 ORDER BY ItemID";
             this.textBox2.KeyUp += new System.Windows.Forms.KeyEventHandler(this.textBox2_KeyUp);
             // 
             // Form1

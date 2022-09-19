@@ -69,7 +69,8 @@ namespace Bd_Curs
             Table.Clear();//Очистка от предыдущей выборки
             ColumNames.Clear();
 
-            command = new SqlCommand($"SELECT * FROM [{table}]",connection);//Создание новой SQL команды
+            //Создание новой SQL команды для получения имён столбцов
+            command = new SqlCommand($"SELECT * FROM [{table}]",connection);
 
             SqlDataReader reader = await command.ExecuteReaderAsync();//Создание "читателя" строк из БД по запросу SELECT
 
@@ -77,6 +78,12 @@ namespace Bd_Curs
 
             for (int i = 0; i < CountFields; i++)//Получение имён столбцов
                 ColumNames.Add(reader.GetName(i));
+
+            reader.Close();
+
+            //Создание новой SQL команды с сортировкой
+            command = new SqlCommand($"SELECT * FROM [{table}] ORDER BY [{ColumNames[0]}]", connection);
+            reader = await command.ExecuteReaderAsync();//Создание "читателя" строк из БД по запросу SELECT
 
             int temp = 0;
             while (await reader.ReadAsync())//Чтение данных пока они не закончатся (может занять много времени надо сделать ограничение)
