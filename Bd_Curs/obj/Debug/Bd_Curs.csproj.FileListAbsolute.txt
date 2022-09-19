@@ -1,0 +1,11 @@
+C:\Users\risma\source\repos\Bd_Curs\Bd_Curs\bin\Debug\Bd_Curs.exe.config
+C:\Users\risma\source\repos\Bd_Curs\Bd_Curs\bin\Debug\Bd_Curs.exe
+C:\Users\risma\source\repos\Bd_Curs\Bd_Curs\bin\Debug\Bd_Curs.pdb
+C:\Users\risma\source\repos\Bd_Curs\Bd_Curs\obj\Debug\Bd_Curs.csproj.AssemblyReference.cache
+C:\Users\risma\source\repos\Bd_Curs\Bd_Curs\obj\Debug\Bd_Curs.csproj.SuggestedBindingRedirects.cache
+C:\Users\risma\source\repos\Bd_Curs\Bd_Curs\obj\Debug\Bd_Curs.Form1.resources
+C:\Users\risma\source\repos\Bd_Curs\Bd_Curs\obj\Debug\Bd_Curs.Properties.Resources.resources
+C:\Users\risma\source\repos\Bd_Curs\Bd_Curs\obj\Debug\Bd_Curs.csproj.GenerateResource.cache
+C:\Users\risma\source\repos\Bd_Curs\Bd_Curs\obj\Debug\Bd_Curs.csproj.CoreCompileInputs.cache
+C:\Users\risma\source\repos\Bd_Curs\Bd_Curs\obj\Debug\Bd_Curs.exe
+C:\Users\risma\source\repos\Bd_Curs\Bd_Curs\obj\Debug\Bd_Curs.pdb
