@@ -2,6 +2,7 @@
 using System.Data.SqlClient;
 using System.Threading.Tasks;
 using System.Collections.Generic;
+using System.Data;
 
 namespace Bd_Curs
 {
@@ -11,8 +12,15 @@ namespace Bd_Curs
         private SqlCommand command;//SQL команда
         public List<string> TableNames;//Имена таблиц
 
+        public DataTable TableData = new DataTable();
+
         public delegate void MessageShow(string message);
         public event MessageShow Show;
+
+        public delegate void Updater();
+        public event Updater UpdateData;
+
+        public Queue<Updater> queue = new Queue<Updater>();
 
         public bool Connected { get; set; }//Подключена ли БД
         public Database(string server,string database) =>
@@ -55,9 +63,9 @@ namespace Bd_Curs
                 temp.Close();//Закрыть устройство чтения
                 return;
             }
-            await CloseConnection();//Закрытие подключения
+            CloseConnection();//Закрытие подключения
         }
-        async public Task CloseConnection()//Закрытие подключения
+        public void CloseConnection()//Закрытие подключения
         {
             try
             {
@@ -66,60 +74,20 @@ namespace Bd_Curs
             }
             catch (SqlException){}
         }
-
-        public List<string> ColumNames = new List<string>();
-        public List<string[]> Table = new List<string[]>();
-        async public Task GetSelectedTableAsync(string table)//Получение выбранной таблицы из БД
+        public void GetSelectedTable(string table)
         {
-            try
-            {
-                Table.Clear();//Очистка от предыдущей выборки
-                ColumNames.Clear();
+            command = new SqlCommand($"SELECT * FROM {table}", connection);
+            SqlDataAdapter adapter = new SqlDataAdapter(command);
 
-                //Создание новой SQL команды для получения имён столбцов
-                command = new SqlCommand($"SELECT * FROM [{table}]", connection);
-
-                SqlDataReader reader = await command.ExecuteReaderAsync();//Создание "читателя" строк из БД по запросу SELECT
-                int CountFields = reader.FieldCount;//Обновление количества полей
-
-                for (int i = 0; i < CountFields; i++)//Получение имён столбцов
-                    ColumNames.Add(reader.GetName(i));
-
-                reader.Close();
-
-
-                //Создание новой SQL команды с сортировкой
-                command = new SqlCommand($"SELECT * FROM [{table}] ORDER BY [{ColumNames[0]}]", connection);
-                reader = await command.ExecuteReaderAsync();//Создание "читателя" строк из БД по запросу SELECT
-
-
-                //int temp = 0;
-                //int Limit = 15000;
-                while (await reader.ReadAsync())//Чтение данных пока они не закончатся (может занять много времени надо сделать ограничение)
-                {
-                    //if (temp > Limit) break;
-                    //temp++;
-                    Table.Add(new string[CountFields]);//Создание новой строки
-
-                    for (int i = 0; i < CountFields; i++)//Получение новой строки
-                    {
-                        Table[Table.Count - 1][i] = reader[i].ToString();//Заполение строк по ячейкам
-                    }
-                }
-                reader.Close();//Остановка "читателя"
-            }
-            catch (SqlException)
-            {
-                Show.Invoke("Возникло исключение SQL проверьте правильность введённого запроса");
-            }
+            TableData = new DataTable();
+            adapter.Fill(TableData);
+            queue.Enqueue(UpdateData);
         }
-        async public Task SetQueryAsync(string Query)//Выполнение запроса
+       
+        public void SetQueryAsync(string Query)//Выполнение запроса
         {
             try
-            {
-                Table.Clear();//Очистка от предыдущей выборки
-                ColumNames.Clear();
-
+            { 
                 command = new SqlCommand(Query, connection);//Создание новой SQL команды
 
                 string TableName = string.Empty;//Имя таблицы для которой применяется запрос
@@ -154,29 +122,16 @@ namespace Bd_Curs
                 }
                 if (IsSelect)//Если запрос на выборку
                 {
-                    SqlDataReader reader = await command.ExecuteReaderAsync();//Создание "Читателя"
-                    int CountFields = reader.FieldCount;//Обновление количества полей
-
-                    for (int i = 0; i < CountFields; i++)//Получение имён столбцов
-                        ColumNames.Add(reader.GetName(i));
-
-                    int temp = 0;
-                    while (await reader.ReadAsync())//Чтение данных пока они не закончатся (может занять много времени надо сделать ограничение)
-                    {
-                        temp++;
-                        Table.Add(new string[CountFields]);//Создание новой строки
-
-                        for (int i = 0; i < CountFields; i++)//Получение новой строки
-                        {
-                            Table[Table.Count - 1][i] = reader[i].ToString();//Заполение строк по ячейкам
-                        }
-                    }
-                    reader.Close();//Остановка "читателя"
+                    command = new SqlCommand(Query, connection);
+                    SqlDataAdapter adapter = new SqlDataAdapter(command);
+                    TableData = new DataTable();
+                    adapter.Fill(TableData);
+                    queue.Enqueue(UpdateData);
                 }
                 else
                 {
-                    await command.ExecuteNonQueryAsync();//Выполнение запроса не на выборку
-                    await GetSelectedTableAsync(TableName);//Отображение таблицы к которой применялся запрос
+                    command.ExecuteNonQuery();//Выполнение запроса не на выборку
+                    GetSelectedTable(TableName);//Отображение таблицы к которой применялся запрос
                 }
             }
             catch (SqlException)
