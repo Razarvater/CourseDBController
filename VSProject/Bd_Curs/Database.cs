@@ -10,12 +10,17 @@ namespace Bd_Curs
         private SqlConnection connection;//подклбючение к БД
         private SqlCommand command;//SQL команда
         public List<string> TableNames;//Имена таблиц
+
+        public delegate void MessageShow(string message);
+        public event MessageShow Show;
+
         public bool Connected { get; set; }//Подключена ли БД
         public Database(string server,string database) =>
             connection = new SqlConnection($"Server={server};Database={database};Trusted_Connection=True;");//Создание объекта SQl connection
 
         async public Task startConnectionAsync(string name, string password)//Подключится к базе данных 
         {
+           
             if (Connected) return ;//Не подключаться повторно если БД уже подключена
             try
             {
@@ -66,87 +71,34 @@ namespace Bd_Curs
         public List<string[]> Table = new List<string[]>();
         async public Task GetSelectedTableAsync(string table)//Получение выбранной таблицы из БД
         {
-            Table.Clear();//Очистка от предыдущей выборки
-            ColumNames.Clear();
-
-            //Создание новой SQL команды для получения имён столбцов
-            command = new SqlCommand($"SELECT * FROM [{table}]",connection);
-
-            SqlDataReader reader = await command.ExecuteReaderAsync();//Создание "читателя" строк из БД по запросу SELECT
-
-            int CountFields = reader.FieldCount;//Обновление количества полей
-
-            for (int i = 0; i < CountFields; i++)//Получение имён столбцов
-                ColumNames.Add(reader.GetName(i));
-
-            reader.Close();
-
-            //Создание новой SQL команды с сортировкой
-            command = new SqlCommand($"SELECT * FROM [{table}] ORDER BY [{ColumNames[0]}]", connection);
-            reader = await command.ExecuteReaderAsync();//Создание "читателя" строк из БД по запросу SELECT
-
-            int temp = 0;
-            while (await reader.ReadAsync())//Чтение данных пока они не закончатся (может занять много времени надо сделать ограничение)
+            try
             {
-                temp++;
-                Table.Add(new string[CountFields]);//Создание новой строки
+                Table.Clear();//Очистка от предыдущей выборки
+                ColumNames.Clear();
 
-                for (int i = 0; i < CountFields; i++)//Получение новой строки
-                {
-                    Table[Table.Count - 1][i] = reader[i].ToString();//Заполение строк по ячейкам
-                }
-            }
-            reader.Close();//Остановка "читателя"
-        }
-        async public Task SetQueryAsync(string Query)//Выполнение запроса
-        {
-            Table.Clear();//Очистка от предыдущей выборки
-            ColumNames.Clear();
+                //Создание новой SQL команды для получения имён столбцов
+                command = new SqlCommand($"SELECT * FROM [{table}]", connection);
 
-            command = new SqlCommand(Query, connection);//Создание новой SQL команды
-
-            string TableName = string.Empty;//Имя таблицы для которой применяется запрос
-
-            bool IsTableName = false;//Является ли следующее слово в запросе именем таблицы
-            bool IsSelect = false;
-            string tempstr = string.Empty;
-
-            foreach (var item in Query)//Определение таблицы к которой применялся запрос
-            {
-                if (item == ' ')//Если слово закончилось
-                {
-                    if (IsTableName)//Если это было имя таблицы
-                    {
-                        TableName = tempstr;//Присвоить
-                        break;//Прекратить перебор
-                    }
-                    tempstr = tempstr.ToUpper();//Приведение SQL команды к "Заглавному" состоянию
-                    if (tempstr == "UPDATE" || tempstr == "FROM" || tempstr == "INTO" || tempstr == "CREATE")
-                        IsTableName = true;//После этих операторов следует имя таблицы
-
-                    if (tempstr == "DROP")//Запрет на DROP баз данных и таблиц(сделать тоже самое схемами)
-                        return;
-
-                    if (tempstr == "SELECT")//Если запрос на выборку
-                        IsSelect = true;
-
-                    tempstr = String.Empty;//Очистка предыдущего слова
-                }
-                else
-                    tempstr += item;
-            }
-            if (IsSelect)//Если запрос на выборку
-            {
-                SqlDataReader reader = await command.ExecuteReaderAsync();//Создание "Читателя"
+                SqlDataReader reader = await command.ExecuteReaderAsync();//Создание "читателя" строк из БД по запросу SELECT
                 int CountFields = reader.FieldCount;//Обновление количества полей
 
                 for (int i = 0; i < CountFields; i++)//Получение имён столбцов
                     ColumNames.Add(reader.GetName(i));
 
-                int temp = 0;
+                reader.Close();
+
+
+                //Создание новой SQL команды с сортировкой
+                command = new SqlCommand($"SELECT * FROM [{table}] ORDER BY [{ColumNames[0]}]", connection);
+                reader = await command.ExecuteReaderAsync();//Создание "читателя" строк из БД по запросу SELECT
+
+
+                //int temp = 0;
+                //int Limit = 15000;
                 while (await reader.ReadAsync())//Чтение данных пока они не закончатся (может занять много времени надо сделать ограничение)
                 {
-                    temp++;
+                    //if (temp > Limit) break;
+                    //temp++;
                     Table.Add(new string[CountFields]);//Создание новой строки
 
                     for (int i = 0; i < CountFields; i++)//Получение новой строки
@@ -156,11 +108,81 @@ namespace Bd_Curs
                 }
                 reader.Close();//Остановка "читателя"
             }
-            else
+            catch (SqlException)
             {
-                await command.ExecuteNonQueryAsync();//Выполнение запроса не на выборку
-                await GetSelectedTableAsync(TableName);//Отображение таблицы к которой применялся запрос
-            } 
+                Show.Invoke("Возникло исключение SQL проверьте правильность введённого запроса");
+            }
+        }
+        async public Task SetQueryAsync(string Query)//Выполнение запроса
+        {
+            try
+            {
+                Table.Clear();//Очистка от предыдущей выборки
+                ColumNames.Clear();
+
+                command = new SqlCommand(Query, connection);//Создание новой SQL команды
+
+                string TableName = string.Empty;//Имя таблицы для которой применяется запрос
+
+                bool IsTableName = false;//Является ли следующее слово в запросе именем таблицы
+                bool IsSelect = false;
+                string tempstr = string.Empty;
+
+                foreach (var item in Query)//Определение таблицы к которой применялся запрос
+                {
+                    if (item == ' ')//Если слово закончилось
+                    {
+                        if (IsTableName)//Если это было имя таблицы
+                        {
+                            TableName = tempstr;//Присвоить
+                            break;//Прекратить перебор
+                        }
+                        tempstr = tempstr.ToUpper();//Приведение SQL команды к "Заглавному" состоянию
+                        if (tempstr == "UPDATE" || tempstr == "FROM" || tempstr == "INTO" || tempstr == "CREATE")
+                            IsTableName = true;//После этих операторов следует имя таблицы
+
+                        if (tempstr == "DROP")//Запрет на DROP баз данных и таблиц(сделать тоже самое схемами)
+                            return;
+
+                        if (tempstr == "SELECT")//Если запрос на выборку
+                            IsSelect = true;
+
+                        tempstr = String.Empty;//Очистка предыдущего слова
+                    }
+                    else
+                        tempstr += item;
+                }
+                if (IsSelect)//Если запрос на выборку
+                {
+                    SqlDataReader reader = await command.ExecuteReaderAsync();//Создание "Читателя"
+                    int CountFields = reader.FieldCount;//Обновление количества полей
+
+                    for (int i = 0; i < CountFields; i++)//Получение имён столбцов
+                        ColumNames.Add(reader.GetName(i));
+
+                    int temp = 0;
+                    while (await reader.ReadAsync())//Чтение данных пока они не закончатся (может занять много времени надо сделать ограничение)
+                    {
+                        temp++;
+                        Table.Add(new string[CountFields]);//Создание новой строки
+
+                        for (int i = 0; i < CountFields; i++)//Получение новой строки
+                        {
+                            Table[Table.Count - 1][i] = reader[i].ToString();//Заполение строк по ячейкам
+                        }
+                    }
+                    reader.Close();//Остановка "читателя"
+                }
+                else
+                {
+                    await command.ExecuteNonQueryAsync();//Выполнение запроса не на выборку
+                    await GetSelectedTableAsync(TableName);//Отображение таблицы к которой применялся запрос
+                }
+            }
+            catch (SqlException)
+            {
+                Show.Invoke("Возникло исключение SQL проверьте правильность введённого запроса");
+            }
         }
     }     
 }

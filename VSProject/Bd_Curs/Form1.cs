@@ -1,5 +1,8 @@
 ﻿using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.Drawing;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -14,7 +17,13 @@ namespace Bd_Curs
         private int ElementsInPage = 100;
         private int PageCountInSelectedTable;
         private string SelectedTableName;
-        public Form1() => InitializeComponent();
+        public Form1() 
+        {
+            InitializeComponent();
+            WhereSelectBoxes.Add(ConditionSelect);//Добавления текстбокс с условием в коллекцию
+            tabControl1.Enabled = false;
+        }
+        public void Message(string mess) => MessageBox.Show(mess);
 
         private async void ConnectButton_Click(object sender, EventArgs e)//Подключение к БД
         {
@@ -28,6 +37,7 @@ namespace Bd_Curs
                 await db.CloseConnection();//Закрыть старое подключение
                 db = new Database(ServerName.Text, DbName.Text);//Создать новое подключение к БД
             }
+            db.Show += Message;
             await db.startConnectionAsync(NameBox.Text, PassBox.Text);//Подключение к базе данных
             db_Connected = db.Connected;//Подключена ли БД
             if (db_Connected)//Изменение сообщения о подключении
@@ -61,6 +71,7 @@ namespace Bd_Curs
 
             NextPage.Enabled = true;//Включение кнопок переключения страниц
             PreviousPage.Enabled = true;
+            tabControl1.Enabled = true;
         }
 
         private async void ChooseNewTable(object sender, EventArgs e)//Выбор другой таблицы
@@ -103,6 +114,7 @@ namespace Bd_Curs
             button1.Enabled = false;//Выключение кнопки дисконнекта
             NextPage.Enabled = false;//Выключение кнопок переключения страниц
             PreviousPage.Enabled = false;
+            tabControl1.Enabled = false;
         }
 
         private void NextPage_Click(object sender, EventArgs e)//Переход на следующую страницу
@@ -175,6 +187,71 @@ namespace Bd_Curs
                 UpdateCounters();//Обновить счётчики страниц
                 UpdateSelectedPage();//Обновить страницу
             }
+        }
+
+
+
+        //------------SELECT-FORM------------\\
+        private bool ISDistinct = false;
+        private List<TextBox> WhereSelectBoxes = new List<TextBox>();
+        private string SelectQuery;
+        private byte LimitWhere = 6;
+        private void DISTINCT_CheckedChanged(object sender, EventArgs e) => ISDistinct = !ISDistinct;
+
+        private async void button3_Click(object sender, EventArgs e)//Выполнить запрос из формы
+        {
+            SelectQuery = "SELECT ";//Выборка
+            if (ISDistinct) SelectQuery += "DISTINCT ";//Если требуется уборка повторений
+
+            if (ColumnsSELECT.Text == string.Empty) SelectQuery += "*";//Все столбцы или только выбранные
+            else SelectQuery += ColumnsSELECT.Text;
+
+            SelectQuery += $" FROM {TableNameSELECT.Text} ";//Из таблицы
+
+            if (WhereSelectBoxes[0].Text != string.Empty)//Добавление условий при их наличии
+            {
+                SelectQuery += $"WHERE {WhereSelectBoxes[0].Text} ";//Добавление первого условия
+                foreach (var item in WhereSelectBoxes)//Добавление всех остальных условий
+                {
+                    if(item.Text != string.Empty)//Если оно не пустое
+                        SelectQuery += $"AND {item.Text} ";//Добавить условие
+                }
+            }
+            await db.SetQueryAsync(SelectQuery);//Выполнить запрос
+
+            UpdateCounters();//Обновить счётчики страниц
+            UpdateSelectedPage();//Обновить страницу
+
+            RemoveNewConditions();
+        }
+        private void RemoveNewConditions()//Удалить добавленные пользовательские условия
+        {
+            WhereSelectBoxes.Clear();//удаление боксов с условиями из списка
+            WhereSelectBoxes.Add(ConditionSelect);//Добавление первого бокса в список
+
+            string tempName;
+            foreach (var item in tabPage3.Controls)//Удаление всех текстбоксов с цифрой в конце(генерируемых)
+            {
+                if ((item as TextBox) is TextBox)
+                {
+                    tempName = item.GetType().GetProperty("Name").GetValue(item).ToString();//Получение имени
+                    if (char.IsDigit(tempName[tempName.Length - 1]))//Проверка последнего символа
+                        tabPage3.Controls.Remove((Control)item);//Удаление
+                }
+            }
+        }
+
+        private void AddNewConditionButton_Click(object sender, EventArgs e)//Добавить новое условие
+        {
+            if (WhereSelectBoxes.Count >= LimitWhere) return;//Не добавлять новое условие если достигнут лимит
+
+            TextBox temp = new TextBox();//Создание нового бокса с условием
+            //Его местоположение и новое имя
+            temp.Location = new Point(WhereSelectBoxes[WhereSelectBoxes.Count - 1].Location.X + WhereSelectBoxes[WhereSelectBoxes.Count - 1].Size.Width + 10, 56);
+            temp.Name = $"ConditionSelect{WhereSelectBoxes.Count}";
+            WhereSelectBoxes.Add(temp);//Добавление в коллекцию 
+
+            tabPage3.Controls.Add(WhereSelectBoxes[WhereSelectBoxes.Count - 1]);//Добавление на страницу
         }
     }
 }

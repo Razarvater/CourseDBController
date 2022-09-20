@@ -57,6 +57,16 @@
             this.Elements = new System.Windows.Forms.Label();
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.textBox2 = new System.Windows.Forms.TextBox();
+            this.tabPage3 = new System.Windows.Forms.TabPage();
+            this.checkBox2 = new System.Windows.Forms.CheckBox();
+            this.button3 = new System.Windows.Forms.Button();
+            this.AddNewConditionButton = new System.Windows.Forms.Button();
+            this.ConditionLabel = new System.Windows.Forms.Label();
+            this.ConditionSelect = new System.Windows.Forms.TextBox();
+            this.ColumnsLabel = new System.Windows.Forms.Label();
+            this.ColumnsSELECT = new System.Windows.Forms.TextBox();
+            this.TableLabel = new System.Windows.Forms.Label();
+            this.TableNameSELECT = new System.Windows.Forms.TextBox();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -80,6 +90,7 @@
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.tabPage2.SuspendLayout();
+            this.tabPage3.SuspendLayout();
             this.SuspendLayout();
             // 
             // splitContainer1
@@ -259,8 +270,9 @@
             // 
             this.splitContainer3.Panel2.AutoScroll = true;
             this.splitContainer3.Panel2.Controls.Add(this.tabControl1);
+            this.splitContainer3.Panel2MinSize = 180;
             this.splitContainer3.Size = new System.Drawing.Size(814, 655);
-            this.splitContainer3.SplitterDistance = 502;
+            this.splitContainer3.SplitterDistance = 474;
             this.splitContainer3.SplitterWidth = 1;
             this.splitContainer3.TabIndex = 0;
             this.splitContainer3.TabStop = false;
@@ -281,7 +293,7 @@
             // splitContainer4.Panel2
             // 
             this.splitContainer4.Panel2.Controls.Add(this.SelectedTable);
-            this.splitContainer4.Size = new System.Drawing.Size(810, 498);
+            this.splitContainer4.Size = new System.Drawing.Size(810, 470);
             this.splitContainer4.SplitterDistance = 93;
             this.splitContainer4.SplitterWidth = 1;
             this.splitContainer4.TabIndex = 1;
@@ -323,18 +335,19 @@
             this.SelectedTable.Location = new System.Drawing.Point(0, 0);
             this.SelectedTable.Name = "SelectedTable";
             this.SelectedTable.ReadOnly = true;
-            this.SelectedTable.Size = new System.Drawing.Size(810, 404);
+            this.SelectedTable.Size = new System.Drawing.Size(810, 376);
             this.SelectedTable.TabIndex = 0;
             // 
             // tabControl1
             // 
             this.tabControl1.Controls.Add(this.tabPage1);
             this.tabControl1.Controls.Add(this.tabPage2);
+            this.tabControl1.Controls.Add(this.tabPage3);
             this.tabControl1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tabControl1.Location = new System.Drawing.Point(0, 0);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(810, 148);
+            this.tabControl1.Size = new System.Drawing.Size(810, 176);
             this.tabControl1.TabIndex = 7;
             // 
             // tabPage1
@@ -349,7 +362,7 @@
             this.tabPage1.Location = new System.Drawing.Point(4, 22);
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(802, 122);
+            this.tabPage1.Size = new System.Drawing.Size(802, 150);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "ControlSelectedTable";
             this.tabPage1.UseVisualStyleBackColor = true;
@@ -358,7 +371,7 @@
             // 
             this.PreviousPage.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.PreviousPage.Enabled = false;
-            this.PreviousPage.Location = new System.Drawing.Point(680, 6);
+            this.PreviousPage.Location = new System.Drawing.Point(685, 6);
             this.PreviousPage.Name = "PreviousPage";
             this.PreviousPage.Size = new System.Drawing.Size(25, 23);
             this.PreviousPage.TabIndex = 1;
@@ -371,7 +384,7 @@
             // 
             this.CountEl.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.CountEl.AutoSize = true;
-            this.CountEl.Location = new System.Drawing.Point(562, 71);
+            this.CountEl.Location = new System.Drawing.Point(567, 71);
             this.CountEl.Name = "CountEl";
             this.CountEl.Size = new System.Drawing.Size(129, 13);
             this.CountEl.TabIndex = 6;
@@ -381,7 +394,7 @@
             // 
             this.NextPage.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.NextPage.Enabled = false;
-            this.NextPage.Location = new System.Drawing.Point(770, 6);
+            this.NextPage.Location = new System.Drawing.Point(775, 6);
             this.NextPage.Name = "NextPage";
             this.NextPage.Size = new System.Drawing.Size(25, 23);
             this.NextPage.TabIndex = 0;
@@ -393,7 +406,7 @@
             // textBox1
             // 
             this.textBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.textBox1.Location = new System.Drawing.Point(680, 35);
+            this.textBox1.Location = new System.Drawing.Point(685, 35);
             this.textBox1.Name = "textBox1";
             this.textBox1.Size = new System.Drawing.Size(115, 20);
             this.textBox1.TabIndex = 5;
@@ -405,7 +418,7 @@
             // 
             this.PagesCounter.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.PagesCounter.AutoSize = true;
-            this.PagesCounter.Location = new System.Drawing.Point(724, 12);
+            this.PagesCounter.Location = new System.Drawing.Point(729, 12);
             this.PagesCounter.Name = "PagesCounter";
             this.PagesCounter.Size = new System.Drawing.Size(24, 13);
             this.PagesCounter.TabIndex = 2;
@@ -415,7 +428,7 @@
             // 
             this.label6.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(562, 38);
+            this.label6.Location = new System.Drawing.Point(567, 38);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(112, 13);
             this.label6.TabIndex = 4;
@@ -425,7 +438,7 @@
             // 
             this.Elements.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.Elements.AutoSize = true;
-            this.Elements.Location = new System.Drawing.Point(606, 11);
+            this.Elements.Location = new System.Drawing.Point(611, 11);
             this.Elements.Name = "Elements";
             this.Elements.Size = new System.Drawing.Size(24, 13);
             this.Elements.TabIndex = 3;
@@ -437,7 +450,7 @@
             this.tabPage2.Location = new System.Drawing.Point(4, 22);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(802, 122);
+            this.tabPage2.Size = new System.Drawing.Size(802, 150);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "SQL_Query";
             this.tabPage2.UseVisualStyleBackColor = true;
@@ -448,11 +461,111 @@
             this.textBox2.Location = new System.Drawing.Point(3, 3);
             this.textBox2.Multiline = true;
             this.textBox2.Name = "textBox2";
-            this.textBox2.Size = new System.Drawing.Size(796, 116);
+            this.textBox2.Size = new System.Drawing.Size(796, 144);
             this.textBox2.TabIndex = 0;
             this.textBox2.TabStop = false;
             this.textBox2.Text = "SELECT ItemID FROM Items WHERE ItemID>=1000 AND ItemID<=2000 ORDER BY ItemID";
             this.textBox2.KeyUp += new System.Windows.Forms.KeyEventHandler(this.textBox2_KeyUp);
+            // 
+            // tabPage3
+            // 
+            this.tabPage3.Controls.Add(this.checkBox2);
+            this.tabPage3.Controls.Add(this.button3);
+            this.tabPage3.Controls.Add(this.AddNewConditionButton);
+            this.tabPage3.Controls.Add(this.ConditionLabel);
+            this.tabPage3.Controls.Add(this.ConditionSelect);
+            this.tabPage3.Controls.Add(this.ColumnsLabel);
+            this.tabPage3.Controls.Add(this.ColumnsSELECT);
+            this.tabPage3.Controls.Add(this.TableLabel);
+            this.tabPage3.Controls.Add(this.TableNameSELECT);
+            this.tabPage3.Location = new System.Drawing.Point(4, 22);
+            this.tabPage3.Name = "tabPage3";
+            this.tabPage3.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage3.Size = new System.Drawing.Size(802, 150);
+            this.tabPage3.TabIndex = 2;
+            this.tabPage3.Text = "Sample form";
+            this.tabPage3.UseVisualStyleBackColor = true;
+            // 
+            // checkBox2
+            // 
+            this.checkBox2.AutoSize = true;
+            this.checkBox2.Location = new System.Drawing.Point(89, 117);
+            this.checkBox2.Name = "checkBox2";
+            this.checkBox2.Size = new System.Drawing.Size(69, 17);
+            this.checkBox2.TabIndex = 11;
+            this.checkBox2.Text = "repetions";
+            this.checkBox2.UseVisualStyleBackColor = true;
+            this.checkBox2.CheckedChanged += new System.EventHandler(this.DISTINCT_CheckedChanged);
+            // 
+            // button3
+            // 
+            this.button3.Location = new System.Drawing.Point(6, 110);
+            this.button3.Name = "button3";
+            this.button3.Size = new System.Drawing.Size(77, 29);
+            this.button3.TabIndex = 7;
+            this.button3.Text = "Start Query";
+            this.button3.UseVisualStyleBackColor = true;
+            this.button3.Click += new System.EventHandler(this.button3_Click);
+            // 
+            // AddNewConditionButton
+            // 
+            this.AddNewConditionButton.Location = new System.Drawing.Point(6, 82);
+            this.AddNewConditionButton.Name = "AddNewConditionButton";
+            this.AddNewConditionButton.Size = new System.Drawing.Size(84, 20);
+            this.AddNewConditionButton.TabIndex = 6;
+            this.AddNewConditionButton.Text = "NewCondition";
+            this.AddNewConditionButton.UseVisualStyleBackColor = true;
+            this.AddNewConditionButton.Click += new System.EventHandler(this.AddNewConditionButton_Click);
+            // 
+            // ConditionLabel
+            // 
+            this.ConditionLabel.AutoSize = true;
+            this.ConditionLabel.Location = new System.Drawing.Point(10, 60);
+            this.ConditionLabel.Name = "ConditionLabel";
+            this.ConditionLabel.Size = new System.Drawing.Size(51, 13);
+            this.ConditionLabel.TabIndex = 5;
+            this.ConditionLabel.Text = "Condition";
+            // 
+            // ConditionSelect
+            // 
+            this.ConditionSelect.Location = new System.Drawing.Point(67, 56);
+            this.ConditionSelect.Name = "ConditionSelect";
+            this.ConditionSelect.Size = new System.Drawing.Size(100, 20);
+            this.ConditionSelect.TabIndex = 4;
+            // 
+            // ColumnsLabel
+            // 
+            this.ColumnsLabel.AutoSize = true;
+            this.ColumnsLabel.Location = new System.Drawing.Point(14, 35);
+            this.ColumnsLabel.Name = "ColumnsLabel";
+            this.ColumnsLabel.Size = new System.Drawing.Size(47, 13);
+            this.ColumnsLabel.TabIndex = 3;
+            this.ColumnsLabel.Text = "Columns";
+            // 
+            // ColumnsSELECT
+            // 
+            this.ColumnsSELECT.Location = new System.Drawing.Point(67, 32);
+            this.ColumnsSELECT.Name = "ColumnsSELECT";
+            this.ColumnsSELECT.Size = new System.Drawing.Size(732, 20);
+            this.ColumnsSELECT.TabIndex = 2;
+            this.ColumnsSELECT.Text = "If you want to select all columns, leave this field blank, if you want to select " +
+    "specific columns, specify them in the form: [column1],[column2],[column3]...";
+            // 
+            // TableLabel
+            // 
+            this.TableLabel.AutoSize = true;
+            this.TableLabel.Location = new System.Drawing.Point(21, 12);
+            this.TableLabel.Name = "TableLabel";
+            this.TableLabel.Size = new System.Drawing.Size(34, 13);
+            this.TableLabel.TabIndex = 1;
+            this.TableLabel.Text = "Table";
+            // 
+            // TableNameSELECT
+            // 
+            this.TableNameSELECT.Location = new System.Drawing.Point(67, 9);
+            this.TableNameSELECT.Name = "TableNameSELECT";
+            this.TableNameSELECT.Size = new System.Drawing.Size(100, 20);
+            this.TableNameSELECT.TabIndex = 0;
             // 
             // Form1
             // 
@@ -492,6 +605,8 @@
             this.tabPage1.PerformLayout();
             this.tabPage2.ResumeLayout(false);
             this.tabPage2.PerformLayout();
+            this.tabPage3.ResumeLayout(false);
+            this.tabPage3.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -527,6 +642,16 @@
         private System.Windows.Forms.TabPage tabPage1;
         private System.Windows.Forms.TabPage tabPage2;
         private System.Windows.Forms.TextBox textBox2;
+        private System.Windows.Forms.TabPage tabPage3;
+        private System.Windows.Forms.Label ColumnsLabel;
+        private System.Windows.Forms.TextBox ColumnsSELECT;
+        private System.Windows.Forms.Label TableLabel;
+        private System.Windows.Forms.TextBox TableNameSELECT;
+        private System.Windows.Forms.Label ConditionLabel;
+        private System.Windows.Forms.TextBox ConditionSelect;
+        private System.Windows.Forms.Button button3;
+        private System.Windows.Forms.Button AddNewConditionButton;
+        private System.Windows.Forms.CheckBox checkBox2;
     }
 }
 
