@@ -134,6 +134,7 @@
             // 
             // splitContainer2.Panel1
             // 
+            this.splitContainer2.Panel1.Controls.Add(this.CounterOfConnection);
             this.splitContainer2.Panel1.Controls.Add(this.button1);
             this.splitContainer2.Panel1.Controls.Add(this.label4);
             this.splitContainer2.Panel1.Controls.Add(this.label3);
@@ -289,7 +290,6 @@
             // 
             // splitContainer4.Panel2
             // 
-            this.splitContainer4.Panel2.Controls.Add(this.CounterOfConnection);
             this.splitContainer4.Panel2.Controls.Add(this.SelectedTable);
             this.splitContainer4.Size = new System.Drawing.Size(810, 469);
             this.splitContainer4.SplitterDistance = 93;
@@ -298,6 +298,7 @@
             // 
             // splitContainer5
             // 
+            this.splitContainer5.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.splitContainer5.Dock = System.Windows.Forms.DockStyle.Fill;
             this.splitContainer5.FixedPanel = System.Windows.Forms.FixedPanel.Panel1;
             this.splitContainer5.IsSplitterFixed = true;
@@ -327,8 +328,8 @@
             // CounterOfConnection
             // 
             this.CounterOfConnection.AutoSize = true;
-            this.CounterOfConnection.BackColor = System.Drawing.SystemColors.AppWorkspace;
-            this.CounterOfConnection.Location = new System.Drawing.Point(1, 2);
+            this.CounterOfConnection.BackColor = System.Drawing.SystemColors.Control;
+            this.CounterOfConnection.Location = new System.Drawing.Point(10, 0);
             this.CounterOfConnection.Name = "CounterOfConnection";
             this.CounterOfConnection.Size = new System.Drawing.Size(0, 13);
             this.CounterOfConnection.TabIndex = 1;
@@ -531,7 +532,6 @@
             this.splitContainer3.ResumeLayout(false);
             this.splitContainer4.Panel1.ResumeLayout(false);
             this.splitContainer4.Panel2.ResumeLayout(false);
-            this.splitContainer4.Panel2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer4)).EndInit();
             this.splitContainer4.ResumeLayout(false);
             this.splitContainer5.Panel1.ResumeLayout(false);

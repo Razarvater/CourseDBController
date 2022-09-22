@@ -20,7 +20,7 @@ namespace Bd_Curs
         public delegate void Updater();
         public event Updater UpdateData;
 
-        public Queue<Updater> queue = new Queue<Updater>();
+        public bool IsQueryCompleted = false;
 
         public bool Connected { get; set; }//Подключена ли БД
         public Database(string server,string database) =>
@@ -36,7 +36,11 @@ namespace Bd_Curs
                                              //(на случай если сервер отсутсвует или доступ затруднён и не возникало задержек в работе программы)
                 Connected = true;//Подключено
             }
-            catch (SqlException) { return; }
+            catch (SqlException e) 
+            {
+                Show.Invoke($"An SQL exception occurred, Unable to connect to database:[{e.Message}]");
+                return; 
+            }
 
             command = new SqlCommand("SELECT TABLE_NAME FROM information_schema.TABLES WHERE TABLE_TYPE != 'VIEW'\r\n", connection);
             SqlDataReader temp = await command.ExecuteReaderAsync();
@@ -54,16 +58,23 @@ namespace Bd_Curs
         }
         async public Task AuthAsync(string name, string password)//Авторизация в базе данных
         {
-            command = new SqlCommand($"SELECT * FROM Users WHERE name = '{name}' AND pass = '{password}'",connection);
-
-            SqlDataReader temp = await command.ExecuteReaderAsync();//Асинхронный запрос к таблице Users
-                                                                    //(на случай если пользователей очень много или возникнет ошибка подключения)
-            if (temp.HasRows)//Если пользователя с таким именем и паролем нет то закрыть подключение
+            try
             {
-                temp.Close();//Закрыть устройство чтения
-                return;
+                command = new SqlCommand($"SELECT * FROM Users WHERE name = '{name}' AND pass = '{password}'", connection);
+
+                SqlDataReader temp = await command.ExecuteReaderAsync();//Асинхронный запрос к таблице Users
+                                                                        //(на случай если пользователей очень много или возникнет ошибка подключения)
+                if (temp.HasRows)//Если пользователя с таким именем и паролем нет то закрыть подключение
+                {
+                    temp.Close();//Закрыть устройство чтения
+                    return;
+                }
+                CloseConnection();//Закрытие подключения
             }
-            CloseConnection();//Закрытие подключения
+            catch (SqlException e)
+            {
+                Show.Invoke($"An SQL exception occurred, Unable to connect to Table Users:[{e.Message}]");
+            }
         }
         public void CloseConnection()//Закрытие подключения
         {
@@ -72,16 +83,27 @@ namespace Bd_Curs
                 connection.Close();//Закрытие подключения
                 Connected = false;//Не подключено
             }
-            catch (SqlException){}
+            catch (SqlException e )
+            {
+                Show.Invoke($"An SQL exception occurred, Unable to disconnect from database:[{e.Message}]");
+            }
         }
         public void GetSelectedTable(string table)
         {
-            command = new SqlCommand($"SELECT * FROM {table}", connection);
-            SqlDataAdapter adapter = new SqlDataAdapter(command);
+            try
+            {
+                command = new SqlCommand($"SELECT * FROM {table}", connection);//Создание команды
+                SqlDataAdapter adapter = new SqlDataAdapter(command);//Создание адаптера
 
-            TableData = new DataTable();
-            adapter.Fill(TableData);
-            queue.Enqueue(UpdateData);
+                TableData = new DataTable();//Очистка предыдущей выбранной таблицы
+                adapter.Fill(TableData);//Новое заполение
+                IsQueryCompleted = true;//Запрос завершён
+            }
+            catch (SqlException e)
+            {
+                Show.Invoke($"An SQL exception occurred, please check the correctness of the entered query: [{e.Message}]");
+                IsQueryCompleted = true;//Запрос завершён
+            }
         }
        
         public void SetQueryAsync(string Query)//Выполнение запроса
@@ -122,21 +144,23 @@ namespace Bd_Curs
                 }
                 if (IsSelect)//Если запрос на выборку
                 {
-                    command = new SqlCommand(Query, connection);
-                    SqlDataAdapter adapter = new SqlDataAdapter(command);
-                    TableData = new DataTable();
-                    adapter.Fill(TableData);
-                    queue.Enqueue(UpdateData);
+                    command = new SqlCommand(Query, connection);//Создание SQL команды
+                    SqlDataAdapter adapter = new SqlDataAdapter(command);//Создание адаптера
+                    TableData = new DataTable();//Очистка предыдущей выбранной таблицы
+                    adapter.Fill(TableData);//Заполнение новыми данными
+                    IsQueryCompleted = true;//Запрос завершён
                 }
                 else
                 {
+
                     command.ExecuteNonQuery();//Выполнение запроса не на выборку
                     GetSelectedTable(TableName);//Отображение таблицы к которой применялся запрос
                 }
             }
-            catch (SqlException)
+            catch (SqlException e)
             {
-                Show.Invoke("Возникло исключение SQL проверьте правильность введённого запроса");
+                Show.Invoke($"An SQL exception occurred, please check the correctness of the entered query: [{e.Message}]");
+                IsQueryCompleted = true;//Запрос завершён
             }
         }
     }     

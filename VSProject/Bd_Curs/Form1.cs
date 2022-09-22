@@ -13,6 +13,8 @@ namespace Bd_Curs
     {
         private Database db;//Переменная базы данных
         private bool db_Connected = false;//Подключена ли БД
+        private bool Query_IsWorking = false;
+        private bool IsError = false;
         private int ButtonsMin = 100;//Кнопки таблиц
         private string SelectedTableName;
         private Stopwatch sw = new Stopwatch();
@@ -23,9 +25,13 @@ namespace Bd_Curs
             WhereSelectBoxes.Add(ConditionSelect);//Добавления текстбокс с условием в коллекцию
             tabControl1.Enabled = false;
         }
-        public void Message(string mess) => MessageBox.Show(mess);
-        private void timer1_Tick(object sender, EventArgs e) => IsQueue();
-        private void UpdateTimer_Tick(object sender, EventArgs e) => UpdateTable();
+        public void Message(string mess) 
+        {
+            IsError = true;
+            MessageBox.Show(mess);//сообщение от класса Database
+        }
+        private void timer1_Tick(object sender, EventArgs e) => IsQueue();//Таймер проверки запроса
+        private void UpdateTimer_Tick(object sender, EventArgs e) => UpdateTable();//Таймер на обновление таблицы
 
 
         private async void ConnectButton_Click(object sender, EventArgs e)//Подключение к БД
@@ -58,60 +64,73 @@ namespace Bd_Curs
             }
 
             //-------------Создание кнопок таблиц------------\\
-            splitContainer5.Panel2.Controls.Clear();
-            int tempHeight = splitContainer5.Panel2.Height;
-            if (ButtonsMin * db.TableNames.Count > splitContainer5.Panel2.Width) tempHeight -= 20;
-            for (int i = 0; i < db.TableNames.Count; i++)
+            splitContainer5.Panel2.Controls.Clear();//Очистка предыдущих кнопок
+            int tempHeight = splitContainer5.Panel2.Height;//Установка высоты для кнопок
+            //уменьшить высоту кнопок если они не помещаются в контейнер
+            if (ButtonsMin * db.TableNames.Count > splitContainer5.Panel2.Width) tempHeight -= 23;
+            for (int i = 0; i < db.TableNames.Count; i++)//Создание кнопок для всех таблиц
             {
                 Button temp = new Button();
 
-                temp.Text = db.TableNames[i].ToString();
-                temp.Location = new Point(ButtonsMin * i, 0);
-                temp.Size = new Size(ButtonsMin, tempHeight);
-                temp.Click += new EventHandler(ChooseNewTable);
+                temp.Text = db.TableNames[i].ToString();//Установка текста кнопки
+                temp.Location = new Point(ButtonsMin * i, 0);//Установка следующей позиции кнопки
+                temp.Size = new Size(ButtonsMin, tempHeight);//Установка размера кнопки
+                temp.Click += new EventHandler(ChooseNewTable);//Установка события на смену отображаемой таблицы
 
-                splitContainer5.Panel2.Controls.Add(temp);
+                splitContainer5.Panel2.Controls.Add(temp);//Отображение кнопки
             }
-            SetSelectedtable();
+            SetSelectedtable();//Отобразить первую таблицу
             button1.Enabled = true;//Включение кнопки для дисконекта от БД
 
-            tabControl1.Enabled = true;
+            tabControl1.Enabled = true;//Включение контроллера таблиц
         }
-        private void SetSelectedtable(string name = "c")
+        private void SetSelectedtable(string name = "DeFaUlT_TaBlE")
         {
-            if (name == "c") name = db.TableNames[0];
+            if (name == "DeFaUlT_TaBlE") name = db.TableNames[0];//Если имя таблицы не задано то выбрать первое из доступных
 
-            SelectedTable.DataSource = null;
-            QueueTimer.Start();
-            RunCounter();
-            Thread UpdateThread = new Thread(() => db.GetSelectedTable($"{name}"));
-            UpdateThread.Start();
-
+            SelectedTable.DataSource = null;//очистка выделенной таблицы
+            Thread UpdateThread = new Thread(() => db.GetSelectedTable($"{name}"));//Создание потока с запросом
+            UpdateThread.Start();//Стар потока
+            QueueTimer.Start();//Старт таймера проверки запроса
+            RunCounter();//Старт счётчиков
         }
         private void IsQueue()
         {
-            if (db.queue.Count != 0)
+            if (db.IsQueryCompleted)//Если запрос выполнен
             {
-                db.queue.Clear();
-                UpdateTimer.Start();
-
-                QueueTimer.Stop();
+                db.IsQueryCompleted = false;
+                UpdateTimer.Start();//Запустить таймер обновления
+                QueueTimer.Stop();//Остановить таймер проверки
             }
         }
         private void UpdateTable()
         {
-            UpdateTimer.Stop();
-            SelectedTable.DataSource = db.TableData;
+            if (IsError)//Если запрос с ошибкой
+            {
+                IsError = false;
+                UpdateTimer.Stop();//Остановить таймер
+                StopCounter();//Остановка счётчика запроса
+                Query_IsWorking = false;//запрос не выполняется
+                return;
+            }
+            UpdateTimer.Stop();//Остановить таймер
+            SelectedTable.DataSource = db.TableData;//Установить новый источник данных
 
+            //Выбор форматирования таблицы
             if (SelectedTable.Columns.Count <= 10) SelectedTable.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             else SelectedTable.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.ColumnHeader;
-
+      
+            //Сортировка таблицы по первому столбцу
             SelectedTable.Sort(SelectedTable.Columns[0], ListSortDirection.Ascending);
-            StopCounter();
+            StopCounter();//Остановка счётчика запроса
+            Query_IsWorking = false;//запрос не выполняется
         }
 
         private void ChooseNewTable(object sender, EventArgs e)//Выбор другой таблицы
         {
+            if (IsQueryWorked()) return;//Если запрос уже активен и выполняется, ничего не делать
+
+            Query_IsWorking = true;
             SelectedTableName = sender.GetType().GetProperty("Text").GetValue(sender).ToString();//Задание выбранной таблицы
             SetSelectedtable(SelectedTableName);//Печать таблицы указанной в названий кнопки
         }
@@ -129,8 +148,8 @@ namespace Bd_Curs
 
             button1.Enabled = false;//Выключение кнопки дисконнекта
 
-            tabControl1.Enabled = false;
-            CounterOfConnection.BackColor = SystemColors.AppWorkspace;
+            tabControl1.Enabled = false;//Отключение контроллера форм
+            CounterOfConnection.BackColor = SystemColors.AppWorkspace;//Изменение цвета отображения времени последнего запроса
             CounterOfConnection.Text = string.Empty;
 
         }
@@ -138,24 +157,26 @@ namespace Bd_Curs
         {
             if (e.KeyCode == Keys.Enter)
             {
-                SelectedTable.DataSource = null;
-                Thread UpdateThread = new Thread(() => db.SetQueryAsync(textBox2.Text));
-                UpdateThread.Start();
-                QueueTimer.Start();
-                RunCounter();
+                if (IsQueryWorked()) return;//Если запрос уже активен и выполняется, ничего не делать
+                Query_IsWorking = true;//Запрос выполняется
+                SelectedTable.DataSource = null;//Очистка выводящейся таблицы
+                Thread UpdateThread = new Thread(() => db.SetQueryAsync(textBox2.Text));//Создание нового потока с запросом
+                UpdateThread.Start();//Старт потока
+                QueueTimer.Start();//Старкт таймера проверяющего закончился ли выполнятся поток
+                RunCounter();//Таймер отвечающий за отображение счётчика времени выполнения запроса
             }
 
         }
-
         //------------SELECT-FORM------------\\
         private bool ISDistinct = false;
         private List<TextBox> WhereSelectBoxes = new List<TextBox>();
         private string SelectQuery;
         private byte LimitWhere = 6;
-        private void DISTINCT_CheckedChanged(object sender, EventArgs e) => ISDistinct = !ISDistinct;
-
+        private void DISTINCT_CheckedChanged(object sender, EventArgs e) => ISDistinct = !ISDistinct;//Галочка на убирание повторений в запросе
         private void button3_Click(object sender, EventArgs e)//Выполнить запрос из формы
         {
+            if (IsQueryWorked()) return;//Если запрос уже активен и выполняется, ничего не делать
+            Query_IsWorking = true;//Запрос выполняется
             SelectQuery = "SELECT ";//Выборка
             if (ISDistinct) SelectQuery += "DISTINCT ";//Если требуется уборка повторений
 
@@ -174,11 +195,11 @@ namespace Bd_Curs
                 }
             }
 
-                Thread UpdateThread = new Thread(() => db.SetQueryAsync(SelectQuery));
-                UpdateThread.Start();
-            QueueTimer.Start();
-
-            RemoveNewConditions();
+            Thread UpdateThread = new Thread(() => db.SetQueryAsync(SelectQuery));//Создание потока с запросом
+            UpdateThread.Start();//Старт потока
+            QueueTimer.Start();//Старт таймера на проверку завершения потока
+            RunCounter();//Старт Счётчиков
+            RemoveNewConditions();//Удалить пользовательские условия
         }
         private void RemoveNewConditions()//Удалить добавленные пользовательские условия
         {
@@ -196,7 +217,6 @@ namespace Bd_Curs
                 }
             }
         }
-
         private void AddNewConditionButton_Click(object sender, EventArgs e)//Добавить новое условие
         {
             if (WhereSelectBoxes.Count >= LimitWhere) return;//Не добавлять новое условие если достигнут лимит
@@ -210,22 +230,28 @@ namespace Bd_Curs
 
             tabPage3.Controls.Add(WhereSelectBoxes[WhereSelectBoxes.Count - 1]);//Добавление на страницу
         }
-
-        private void UpdateTimeTimer_Tick(object sender, EventArgs e)
-        {
-            CounterOfConnection.Text = $"{(decimal)sw.ElapsedMilliseconds/(decimal)1000}";
-        }
+        private void UpdateTimeTimer_Tick(object sender, EventArgs e)=>
+            CounterOfConnection.Text = $"Time of query: {(decimal)sw.ElapsedMilliseconds/(decimal)1000}";//Обновление счётчика
         private void RunCounter()
         {
-            sw.Restart();
-            UpdateTimeTimer.Start();
-            CounterOfConnection.BackColor = SystemColors.AppWorkspace;
+            sw.Restart();//Рестарт счётчика времени
+            UpdateTimeTimer.Start();//Старт таймера для отображения времени
         }
         private void StopCounter()
         {
-            sw.Stop();
-            UpdateTimeTimer.Stop();
-            CounterOfConnection.BackColor = Color.White;
+            sw.Stop();//Остановка счётчика времени
+            UpdateTimeTimer.Stop();//Остановка таймера для отображения времени
+        }
+        private bool IsQueryWorked()
+        {
+            //Сообщение если пользователь нажал на кнопку, но предыдущий запрос ещё не выполнился
+            if (Query_IsWorking)
+            {
+                MessageBox.Show("Query already in progress please wait");//Сообщение если пользователь нажал на кнопку, но предыдущий запрос ещё не выполнился
+                return true;
+            }
+            else
+                return false;
         }
     }
 }
