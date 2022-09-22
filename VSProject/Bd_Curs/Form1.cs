@@ -92,7 +92,7 @@ namespace Bd_Curs
         {
             if (db.queue.Count != 0)
             {
-                db.queue.Dequeue();
+                db.queue.Clear();
                 UpdateTimer.Start();
 
                 QueueTimer.Stop();
@@ -102,6 +102,10 @@ namespace Bd_Curs
         {
             UpdateTimer.Stop();
             SelectedTable.DataSource = db.TableData;
+
+            if (SelectedTable.Columns.Count <= 10) SelectedTable.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            else SelectedTable.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.ColumnHeader;
+
             SelectedTable.Sort(SelectedTable.Columns[0], ListSortDirection.Ascending);
             StopCounter();
         }
@@ -126,6 +130,8 @@ namespace Bd_Curs
             button1.Enabled = false;//Выключение кнопки дисконнекта
 
             tabControl1.Enabled = false;
+            CounterOfConnection.BackColor = SystemColors.AppWorkspace;
+            CounterOfConnection.Text = string.Empty;
 
         }
         private void textBox2_KeyUp(object sender, KeyEventArgs e)
@@ -135,7 +141,7 @@ namespace Bd_Curs
                 SelectedTable.DataSource = null;
                 Thread UpdateThread = new Thread(() => db.SetQueryAsync(textBox2.Text));
                 UpdateThread.Start();
-                UpdateTimer.Start();
+                QueueTimer.Start();
                 RunCounter();
             }
 
@@ -148,7 +154,7 @@ namespace Bd_Curs
         private byte LimitWhere = 6;
         private void DISTINCT_CheckedChanged(object sender, EventArgs e) => ISDistinct = !ISDistinct;
 
-        private async void button3_Click(object sender, EventArgs e)//Выполнить запрос из формы
+        private void button3_Click(object sender, EventArgs e)//Выполнить запрос из формы
         {
             SelectQuery = "SELECT ";//Выборка
             if (ISDistinct) SelectQuery += "DISTINCT ";//Если требуется уборка повторений
@@ -167,13 +173,10 @@ namespace Bd_Curs
                         SelectQuery += $"AND {item.Text} ";//Добавить условие
                 }
             }
-            await Task.Run(() =>
-            {
+
                 Thread UpdateThread = new Thread(() => db.SetQueryAsync(SelectQuery));
                 UpdateThread.Start();
-            });
-
-            UpdateTable();
+            QueueTimer.Start();
 
             RemoveNewConditions();
         }

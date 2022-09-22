@@ -46,6 +46,7 @@
             this.splitContainer4 = new System.Windows.Forms.SplitContainer();
             this.splitContainer5 = new System.Windows.Forms.SplitContainer();
             this.label5 = new System.Windows.Forms.Label();
+            this.CounterOfConnection = new System.Windows.Forms.Label();
             this.SelectedTable = new System.Windows.Forms.DataGridView();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
@@ -63,7 +64,6 @@
             this.TableLabel = new System.Windows.Forms.Label();
             this.QueueTimer = new System.Windows.Forms.Timer(this.components);
             this.UpdateTimer = new System.Windows.Forms.Timer(this.components);
-            this.CounterOfConnection = new System.Windows.Forms.Label();
             this.UpdateTimeTimer = new System.Windows.Forms.Timer(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
@@ -324,6 +324,15 @@
             this.label5.TabIndex = 0;
             this.label5.Text = "Tables:";
             // 
+            // CounterOfConnection
+            // 
+            this.CounterOfConnection.AutoSize = true;
+            this.CounterOfConnection.BackColor = System.Drawing.SystemColors.AppWorkspace;
+            this.CounterOfConnection.Location = new System.Drawing.Point(1, 2);
+            this.CounterOfConnection.Name = "CounterOfConnection";
+            this.CounterOfConnection.Size = new System.Drawing.Size(0, 13);
+            this.CounterOfConnection.TabIndex = 1;
+            // 
             // SelectedTable
             // 
             this.SelectedTable.AllowUserToAddRows = false;
@@ -483,22 +492,13 @@
             // 
             // QueueTimer
             // 
-            this.QueueTimer.Interval = 2000;
+            this.QueueTimer.Interval = 10;
             this.QueueTimer.Tick += new System.EventHandler(this.timer1_Tick);
             // 
             // UpdateTimer
             // 
             this.UpdateTimer.Interval = 1;
             this.UpdateTimer.Tick += new System.EventHandler(this.UpdateTimer_Tick);
-            // 
-            // CounterOfConnection
-            // 
-            this.CounterOfConnection.AutoSize = true;
-            this.CounterOfConnection.BackColor = System.Drawing.SystemColors.AppWorkspace;
-            this.CounterOfConnection.Location = new System.Drawing.Point(1, 2);
-            this.CounterOfConnection.Name = "CounterOfConnection";
-            this.CounterOfConnection.Size = new System.Drawing.Size(0, 13);
-            this.CounterOfConnection.TabIndex = 1;
             // 
             // UpdateTimeTimer
             // 
