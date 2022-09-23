@@ -1,11 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
 using System.Threading;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Diagnostics;
+using System.CodeDom;
 
 namespace Bd_Curs
 {
@@ -32,8 +31,6 @@ namespace Bd_Curs
         }
         private void timer1_Tick(object sender, EventArgs e) => IsQueue();//Таймер проверки запроса
         private void UpdateTimer_Tick(object sender, EventArgs e) => UpdateTable();//Таймер на обновление таблицы
-
-
         private async void ConnectButton_Click(object sender, EventArgs e)//Подключение к БД
         {
 
@@ -48,7 +45,6 @@ namespace Bd_Curs
             }
 
             db.Show += Message;
-            db.UpdateData += UpdateTable;
 
             await db.startConnectionAsync(NameBox.Text, PassBox.Text);//Подключение к базе данных
             db_Connected = db.Connected;//Подключена ли БД
@@ -62,12 +58,11 @@ namespace Bd_Curs
                 ConnectionStatus.Text = "Wasn't Connected";
                 return;
             }
-
             //-------------Создание кнопок таблиц------------\\
             splitContainer5.Panel2.Controls.Clear();//Очистка предыдущих кнопок
-            int tempHeight = splitContainer5.Panel2.Height;//Установка высоты для кнопок
+            int tempHeight = splitContainer5.Panel2.Height - 4;//Установка высоты для кнопок
             //уменьшить высоту кнопок если они не помещаются в контейнер
-            if (ButtonsMin * db.TableNames.Count > splitContainer5.Panel2.Width) tempHeight -= 23;
+            if (ButtonsMin * db.TableNames.Count > splitContainer5.Panel2.Width) tempHeight -= 16;
             for (int i = 0; i < db.TableNames.Count; i++)//Создание кнопок для всех таблиц
             {
                 Button temp = new Button();
@@ -105,27 +100,22 @@ namespace Bd_Curs
         }
         private void UpdateTable()
         {
-            if (IsError)//Если запрос с ошибкой
-            {
-                IsError = false;
-                UpdateTimer.Stop();//Остановить таймер
-                StopCounter();//Остановка счётчика запроса
-                Query_IsWorking = false;//запрос не выполняется
-                return;
-            }
             UpdateTimer.Stop();//Остановить таймер
-            SelectedTable.DataSource = db.TableData;//Установить новый источник данных
+            if (!IsError)
+            {
+                SelectedTable.DataSource = db.TableData;//Установить новый источник данных
 
-            //Выбор форматирования таблицы
-            if (SelectedTable.Columns.Count <= 10) SelectedTable.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
-            else SelectedTable.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.ColumnHeader;
-      
-            //Сортировка таблицы по первому столбцу
-            SelectedTable.Sort(SelectedTable.Columns[0], ListSortDirection.Ascending);
+                //Выбор форматирования таблицы
+                if (SelectedTable.Columns.Count <= 10) SelectedTable.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+                else SelectedTable.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.ColumnHeader;
+
+                //Сортировка таблицы по первому столбцу
+                SelectedTable.Sort(SelectedTable.Columns[0], ListSortDirection.Ascending);
+            }
+            IsError = false;
             StopCounter();//Остановка счётчика запроса
             Query_IsWorking = false;//запрос не выполняется
         }
-
         private void ChooseNewTable(object sender, EventArgs e)//Выбор другой таблицы
         {
             if (IsQueryWorked()) return;//Если запрос уже активен и выполняется, ничего не делать
@@ -165,70 +155,6 @@ namespace Bd_Curs
                 QueueTimer.Start();//Старкт таймера проверяющего закончился ли выполнятся поток
                 RunCounter();//Таймер отвечающий за отображение счётчика времени выполнения запроса
             }
-
-        }
-        //------------SELECT-FORM------------\\
-        private bool ISDistinct = false;
-        private List<TextBox> WhereSelectBoxes = new List<TextBox>();
-        private string SelectQuery;
-        private byte LimitWhere = 6;
-        private void DISTINCT_CheckedChanged(object sender, EventArgs e) => ISDistinct = !ISDistinct;//Галочка на убирание повторений в запросе
-        private void button3_Click(object sender, EventArgs e)//Выполнить запрос из формы
-        {
-            if (IsQueryWorked()) return;//Если запрос уже активен и выполняется, ничего не делать
-            Query_IsWorking = true;//Запрос выполняется
-            SelectQuery = "SELECT ";//Выборка
-            if (ISDistinct) SelectQuery += "DISTINCT ";//Если требуется уборка повторений
-
-            if (ColumnsSELECT.Text == string.Empty) SelectQuery += "*";//Все столбцы или только выбранные
-            else SelectQuery += ColumnsSELECT.Text;
-
-            SelectQuery += $" FROM {TableNameSELECT.Text} ";//Из таблицы
-
-            if (WhereSelectBoxes[0].Text != string.Empty)//Добавление условий при их наличии
-            {
-                SelectQuery += $"WHERE {WhereSelectBoxes[0].Text} ";//Добавление первого условия
-                foreach (var item in WhereSelectBoxes)//Добавление всех остальных условий
-                {
-                    if (item.Text != string.Empty)//Если оно не пустое
-                        SelectQuery += $"AND {item.Text} ";//Добавить условие
-                }
-            }
-
-            Thread UpdateThread = new Thread(() => db.SetQueryAsync(SelectQuery));//Создание потока с запросом
-            UpdateThread.Start();//Старт потока
-            QueueTimer.Start();//Старт таймера на проверку завершения потока
-            RunCounter();//Старт Счётчиков
-            RemoveNewConditions();//Удалить пользовательские условия
-        }
-        private void RemoveNewConditions()//Удалить добавленные пользовательские условия
-        {
-            WhereSelectBoxes.Clear();//удаление боксов с условиями из списка
-            WhereSelectBoxes.Add(ConditionSelect);//Добавление первого бокса в список
-
-            string tempName;
-            foreach (var item in tabPage3.Controls)//Удаление всех текстбоксов с цифрой в конце(генерируемых)
-            {
-                if ((item as TextBox) is TextBox)
-                {
-                    tempName = item.GetType().GetProperty("Name").GetValue(item).ToString();//Получение имени
-                    if (char.IsDigit(tempName[tempName.Length - 1]))//Проверка последнего символа
-                        tabPage3.Controls.Remove((Control)item);//Удаление
-                }
-            }
-        }
-        private void AddNewConditionButton_Click(object sender, EventArgs e)//Добавить новое условие
-        {
-            if (WhereSelectBoxes.Count >= LimitWhere) return;//Не добавлять новое условие если достигнут лимит
-
-            TextBox temp = new TextBox();//Создание нового бокса с условием
-
-            //Его местоположение и новое имя
-            temp.Location = new Point(WhereSelectBoxes[WhereSelectBoxes.Count - 1].Location.X + WhereSelectBoxes[WhereSelectBoxes.Count - 1].Size.Width + 10, 56);
-            temp.Name = $"ConditionSelect{WhereSelectBoxes.Count}";
-            WhereSelectBoxes.Add(temp);//Добавление в коллекцию 
-
-            tabPage3.Controls.Add(WhereSelectBoxes[WhereSelectBoxes.Count - 1]);//Добавление на страницу
         }
         private void UpdateTimeTimer_Tick(object sender, EventArgs e)=>
             CounterOfConnection.Text = $"Time of query: {(decimal)sw.ElapsedMilliseconds/(decimal)1000}";//Обновление счётчика
@@ -252,6 +178,24 @@ namespace Bd_Curs
             }
             else
                 return false;
+        }
+
+        private void SelectedTable_CellClick(object sender, DataGridViewCellEventArgs e)//Выделение записи для редактирования
+        {
+            try
+            {
+                MessageBox.Show($"{SelectedTable.Columns[e.ColumnIndex].Name}\t|\t{e.RowIndex}");//
+            }
+            catch (ArgumentOutOfRangeException) { }         
+        }
+
+        private void SelectedTable_RowPostPaint(object sender, DataGridViewRowPostPaintEventArgs e)//Создание индексов элементов слева
+        {
+            int Index = e.RowIndex;
+            string indexStr = (Index + 1).ToString();
+            object header = SelectedTable.Rows[Index].HeaderCell.Value;
+            if (header == null || !header.Equals(indexStr))
+                SelectedTable.Rows[Index].HeaderCell.Value = indexStr;
         }
     }
 }

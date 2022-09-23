@@ -32,6 +32,7 @@
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.ConnectionStatus = new System.Windows.Forms.Label();
             this.splitContainer2 = new System.Windows.Forms.SplitContainer();
+            this.CounterOfConnection = new System.Windows.Forms.Label();
             this.button1 = new System.Windows.Forms.Button();
             this.label4 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
@@ -46,7 +47,6 @@
             this.splitContainer4 = new System.Windows.Forms.SplitContainer();
             this.splitContainer5 = new System.Windows.Forms.SplitContainer();
             this.label5 = new System.Windows.Forms.Label();
-            this.CounterOfConnection = new System.Windows.Forms.Label();
             this.SelectedTable = new System.Windows.Forms.DataGridView();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
@@ -62,6 +62,7 @@
             this.TableNameSELECT = new System.Windows.Forms.TextBox();
             this.ColumnsLabel = new System.Windows.Forms.Label();
             this.TableLabel = new System.Windows.Forms.Label();
+            this.tabPage4 = new System.Windows.Forms.TabPage();
             this.QueueTimer = new System.Windows.Forms.Timer(this.components);
             this.UpdateTimer = new System.Windows.Forms.Timer(this.components);
             this.UpdateTimeTimer = new System.Windows.Forms.Timer(this.components);
@@ -154,6 +155,15 @@
             this.splitContainer2.SplitterWidth = 1;
             this.splitContainer2.TabIndex = 0;
             this.splitContainer2.TabStop = false;
+            // 
+            // CounterOfConnection
+            // 
+            this.CounterOfConnection.AutoSize = true;
+            this.CounterOfConnection.BackColor = System.Drawing.SystemColors.Control;
+            this.CounterOfConnection.Location = new System.Drawing.Point(10, 0);
+            this.CounterOfConnection.Name = "CounterOfConnection";
+            this.CounterOfConnection.Size = new System.Drawing.Size(0, 13);
+            this.CounterOfConnection.TabIndex = 1;
             // 
             // button1
             // 
@@ -325,32 +335,27 @@
             this.label5.TabIndex = 0;
             this.label5.Text = "Tables:";
             // 
-            // CounterOfConnection
-            // 
-            this.CounterOfConnection.AutoSize = true;
-            this.CounterOfConnection.BackColor = System.Drawing.SystemColors.Control;
-            this.CounterOfConnection.Location = new System.Drawing.Point(10, 0);
-            this.CounterOfConnection.Name = "CounterOfConnection";
-            this.CounterOfConnection.Size = new System.Drawing.Size(0, 13);
-            this.CounterOfConnection.TabIndex = 1;
-            // 
             // SelectedTable
             // 
             this.SelectedTable.AllowUserToAddRows = false;
             this.SelectedTable.AllowUserToDeleteRows = false;
             this.SelectedTable.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.SelectedTable.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.SelectedTable.EnableHeadersVisualStyles = false;
             this.SelectedTable.Location = new System.Drawing.Point(0, 0);
             this.SelectedTable.Name = "SelectedTable";
             this.SelectedTable.ReadOnly = true;
             this.SelectedTable.Size = new System.Drawing.Size(810, 375);
             this.SelectedTable.TabIndex = 0;
+            this.SelectedTable.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.SelectedTable_CellClick);
+            this.SelectedTable.RowPostPaint += new System.Windows.Forms.DataGridViewRowPostPaintEventHandler(this.SelectedTable_RowPostPaint);
             // 
             // tabControl1
             // 
             this.tabControl1.Controls.Add(this.tabPage1);
             this.tabControl1.Controls.Add(this.tabPage2);
             this.tabControl1.Controls.Add(this.tabPage3);
+            this.tabControl1.Controls.Add(this.tabPage4);
             this.tabControl1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tabControl1.Location = new System.Drawing.Point(0, 0);
             this.tabControl1.Name = "tabControl1";
@@ -491,6 +496,16 @@
             this.TableLabel.TabIndex = 1;
             this.TableLabel.Text = "Table";
             // 
+            // tabPage4
+            // 
+            this.tabPage4.Location = new System.Drawing.Point(4, 22);
+            this.tabPage4.Name = "tabPage4";
+            this.tabPage4.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage4.Size = new System.Drawing.Size(798, 150);
+            this.tabPage4.TabIndex = 3;
+            this.tabPage4.Text = "Update";
+            this.tabPage4.UseVisualStyleBackColor = true;
+            // 
             // QueueTimer
             // 
             this.QueueTimer.Interval = 10;
@@ -586,6 +601,7 @@
         private System.Windows.Forms.Timer UpdateTimer;
         private System.Windows.Forms.Label CounterOfConnection;
         private System.Windows.Forms.Timer UpdateTimeTimer;
+        private System.Windows.Forms.TabPage tabPage4;
     }
 }
 
