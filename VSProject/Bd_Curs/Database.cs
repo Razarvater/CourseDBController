@@ -20,7 +20,7 @@ namespace Bd_Curs
         public bool Connected { get; set; }//Подключена ли БД
         public Database(string server,string database) =>
             connection = new SqlConnection($"Server={server};Database={database};Trusted_Connection=True;");//Создание объекта SQl connection
-        async public Task startConnectionAsync(string name, string password)//Подключится к базе данных 
+        public async Task startConnectionAsync(string name, string password)//Подключится к базе данных 
         {
             if (Connected) return ;//Не подключаться повторно если БД уже подключена
             try
@@ -46,7 +46,7 @@ namespace Bd_Curs
             if(Array.IndexOf(TableNames.ToArray(),"Users")!=-1)//Только если есть таблица с пользователями
                 await AuthAsync(name,password);//Авторизация 
         }
-        async public Task AuthAsync(string name, string password)//Авторизация в базе данных
+        public async Task AuthAsync(string name, string password)//Авторизация в базе данных
         {
             try
             {
@@ -119,8 +119,12 @@ namespace Bd_Curs
                             IsTableName = true;//После этих операторов следует имя таблицы
 
                         if (tempstr == "DROP")//Запрет на DROP баз данных и таблиц(сделать тоже самое схемами)
+                        {
+                            IsQueryCompleted = true;//Запрос завершён
+                            Show.Invoke("Don't DROP");
                             return;
-
+                        }
+                           
                         if (tempstr == "SELECT")//Если запрос на выборку
                             IsSelect = true;
 

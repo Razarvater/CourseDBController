@@ -4,7 +4,6 @@ using System.Drawing;
 using System.Threading;
 using System.Windows.Forms;
 using System.Diagnostics;
-using System.CodeDom;
 
 namespace Bd_Curs
 {
@@ -52,6 +51,7 @@ namespace Bd_Curs
             if (db_Connected)//Изменение сообщения о подключении
             {
                 ConnectionStatus.Text = $"Was Connected to: Server:{ServerName.Text}          Database:{DbName.Text}";
+                SelectedTableName = db.TableNames[0];
             }
             else
             {
@@ -179,16 +179,6 @@ namespace Bd_Curs
             else
                 return false;
         }
-
-        private void SelectedTable_CellClick(object sender, DataGridViewCellEventArgs e)//Выделение записи для редактирования
-        {
-            try
-            {
-                MessageBox.Show($"{SelectedTable.Columns[e.ColumnIndex].Name}\t|\t{e.RowIndex}");//
-            }
-            catch (ArgumentOutOfRangeException) { }         
-        }
-
         private void SelectedTable_RowPostPaint(object sender, DataGridViewRowPostPaintEventArgs e)//Создание индексов элементов слева
         {
             int Index = e.RowIndex;

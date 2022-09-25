@@ -62,7 +62,6 @@
             this.TableNameSELECT = new System.Windows.Forms.TextBox();
             this.ColumnsLabel = new System.Windows.Forms.Label();
             this.TableLabel = new System.Windows.Forms.Label();
-            this.tabPage4 = new System.Windows.Forms.TabPage();
             this.QueueTimer = new System.Windows.Forms.Timer(this.components);
             this.UpdateTimer = new System.Windows.Forms.Timer(this.components);
             this.UpdateTimeTimer = new System.Windows.Forms.Timer(this.components);
@@ -344,10 +343,10 @@
             this.SelectedTable.EnableHeadersVisualStyles = false;
             this.SelectedTable.Location = new System.Drawing.Point(0, 0);
             this.SelectedTable.Name = "SelectedTable";
-            this.SelectedTable.ReadOnly = true;
             this.SelectedTable.Size = new System.Drawing.Size(810, 375);
             this.SelectedTable.TabIndex = 0;
             this.SelectedTable.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.SelectedTable_CellClick);
+            this.SelectedTable.CellEndEdit += new System.Windows.Forms.DataGridViewCellEventHandler(this.SelectedTable_CellEndEdit);
             this.SelectedTable.RowPostPaint += new System.Windows.Forms.DataGridViewRowPostPaintEventHandler(this.SelectedTable_RowPostPaint);
             // 
             // tabControl1
@@ -355,7 +354,6 @@
             this.tabControl1.Controls.Add(this.tabPage1);
             this.tabControl1.Controls.Add(this.tabPage2);
             this.tabControl1.Controls.Add(this.tabPage3);
-            this.tabControl1.Controls.Add(this.tabPage4);
             this.tabControl1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tabControl1.Location = new System.Drawing.Point(0, 0);
             this.tabControl1.Name = "tabControl1";
@@ -379,7 +377,7 @@
             this.tabPage2.Location = new System.Drawing.Point(4, 22);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(798, 150);
+            this.tabPage2.Size = new System.Drawing.Size(802, 151);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "SQL_Query";
             this.tabPage2.UseVisualStyleBackColor = true;
@@ -390,7 +388,7 @@
             this.textBox2.Location = new System.Drawing.Point(3, 3);
             this.textBox2.Multiline = true;
             this.textBox2.Name = "textBox2";
-            this.textBox2.Size = new System.Drawing.Size(792, 144);
+            this.textBox2.Size = new System.Drawing.Size(796, 145);
             this.textBox2.TabIndex = 0;
             this.textBox2.TabStop = false;
             this.textBox2.Text = "SELECT ItemID FROM Items WHERE ItemID>=1000 AND ItemID<=2000 ORDER BY ItemID";
@@ -410,7 +408,7 @@
             this.tabPage3.Location = new System.Drawing.Point(4, 22);
             this.tabPage3.Name = "tabPage3";
             this.tabPage3.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage3.Size = new System.Drawing.Size(798, 150);
+            this.tabPage3.Size = new System.Drawing.Size(802, 151);
             this.tabPage3.TabIndex = 2;
             this.tabPage3.Text = "Sample form";
             this.tabPage3.UseVisualStyleBackColor = true;
@@ -495,16 +493,6 @@
             this.TableLabel.Size = new System.Drawing.Size(34, 13);
             this.TableLabel.TabIndex = 1;
             this.TableLabel.Text = "Table";
-            // 
-            // tabPage4
-            // 
-            this.tabPage4.Location = new System.Drawing.Point(4, 22);
-            this.tabPage4.Name = "tabPage4";
-            this.tabPage4.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage4.Size = new System.Drawing.Size(798, 150);
-            this.tabPage4.TabIndex = 3;
-            this.tabPage4.Text = "Update";
-            this.tabPage4.UseVisualStyleBackColor = true;
             // 
             // QueueTimer
             // 
@@ -601,7 +589,6 @@
         private System.Windows.Forms.Timer UpdateTimer;
         private System.Windows.Forms.Label CounterOfConnection;
         private System.Windows.Forms.Timer UpdateTimeTimer;
-        private System.Windows.Forms.TabPage tabPage4;
     }
 }
 
