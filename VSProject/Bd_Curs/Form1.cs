@@ -15,8 +15,8 @@ namespace Bd_Curs
         private bool IsError = false;
         private int ButtonsMin = 100;//Кнопки таблиц
         private string SelectedTableName;
+        private int IndexSelectedTable = 0;
         private Stopwatch sw = new Stopwatch();
-
         public Form1()
         {
             InitializeComponent();
@@ -28,7 +28,7 @@ namespace Bd_Curs
             IsError = true;
             MessageBox.Show(mess);//сообщение от класса Database
         }
-        private void timer1_Tick(object sender, EventArgs e) => IsQueue();//Таймер проверки запроса
+        private void Timer1_Tick(object sender, EventArgs e) => IsQueue();//Таймер проверки запроса
         private void UpdateTimer_Tick(object sender, EventArgs e) => UpdateTable();//Таймер на обновление таблицы
         private async void ConnectButton_Click(object sender, EventArgs e)//Подключение к БД
         {
@@ -81,6 +81,7 @@ namespace Bd_Curs
         }
         private void SetSelectedtable(string name = "DeFaUlT_TaBlE")
         {
+
             if (name == "DeFaUlT_TaBlE") name = db.TableNames[0];//Если имя таблицы не задано то выбрать первое из доступных
 
             SelectedTable.DataSource = null;//очистка выделенной таблицы
@@ -104,7 +105,7 @@ namespace Bd_Curs
             if (!IsError)
             {
                 SelectedTable.DataSource = db.TableData;//Установить новый источник данных
-
+                SelectedTable.RowHeadersWidth = db.TableData.Rows.Count.ToString().Length * 4 + 50;
                 //Выбор форматирования таблицы
                 if (SelectedTable.Columns.Count <= 10) SelectedTable.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
                 else SelectedTable.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.ColumnHeader;
@@ -120,8 +121,11 @@ namespace Bd_Curs
         {
             if (IsQueryWorked()) return;//Если запрос уже активен и выполняется, ничего не делать
 
+            splitContainer5.Panel2.Controls[IndexSelectedTable].BackColor = Color.Transparent;
             Query_IsWorking = true;
             SelectedTableName = sender.GetType().GetProperty("Text").GetValue(sender).ToString();//Задание выбранной таблицы
+            IndexSelectedTable = Array.IndexOf(db.TableNames.ToArray(), SelectedTableName);//Индекс выбранной таблицы
+            splitContainer5.Panel2.Controls[IndexSelectedTable].BackColor = Color.LightGreen;
             SetSelectedtable(SelectedTableName);//Печать таблицы указанной в названий кнопки
         }
 

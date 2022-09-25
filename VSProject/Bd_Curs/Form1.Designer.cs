@@ -166,13 +166,15 @@
             // 
             // button1
             // 
+            this.button1.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
+            this.button1.BackColor = System.Drawing.Color.Transparent;
             this.button1.Enabled = false;
             this.button1.Location = new System.Drawing.Point(0, 612);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(189, 38);
             this.button1.TabIndex = 7;
             this.button1.Text = "DisConnect";
-            this.button1.UseVisualStyleBackColor = true;
+            this.button1.UseVisualStyleBackColor = false;
             this.button1.Click += new System.EventHandler(this.Disconnect_Click);
             // 
             // label4
@@ -252,12 +254,14 @@
             // 
             // ConnectButton
             // 
+            this.ConnectButton.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
+            this.ConnectButton.BackColor = System.Drawing.Color.Transparent;
             this.ConnectButton.Location = new System.Drawing.Point(0, 571);
             this.ConnectButton.Name = "ConnectButton";
             this.ConnectButton.Size = new System.Drawing.Size(189, 38);
             this.ConnectButton.TabIndex = 0;
             this.ConnectButton.Text = "Connect";
-            this.ConnectButton.UseVisualStyleBackColor = true;
+            this.ConnectButton.UseVisualStyleBackColor = false;
             this.ConnectButton.Click += new System.EventHandler(this.ConnectButton_Click);
             // 
             // splitContainer3
@@ -343,6 +347,7 @@
             this.SelectedTable.EnableHeadersVisualStyles = false;
             this.SelectedTable.Location = new System.Drawing.Point(0, 0);
             this.SelectedTable.Name = "SelectedTable";
+            this.SelectedTable.RowHeadersWidth = 100;
             this.SelectedTable.Size = new System.Drawing.Size(810, 375);
             this.SelectedTable.TabIndex = 0;
             this.SelectedTable.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.SelectedTable_CellClick);
@@ -377,7 +382,7 @@
             this.tabPage2.Location = new System.Drawing.Point(4, 22);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(802, 151);
+            this.tabPage2.Size = new System.Drawing.Size(798, 150);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "SQL_Query";
             this.tabPage2.UseVisualStyleBackColor = true;
@@ -388,7 +393,7 @@
             this.textBox2.Location = new System.Drawing.Point(3, 3);
             this.textBox2.Multiline = true;
             this.textBox2.Name = "textBox2";
-            this.textBox2.Size = new System.Drawing.Size(796, 145);
+            this.textBox2.Size = new System.Drawing.Size(792, 144);
             this.textBox2.TabIndex = 0;
             this.textBox2.TabStop = false;
             this.textBox2.Text = "SELECT ItemID FROM Items WHERE ItemID>=1000 AND ItemID<=2000 ORDER BY ItemID";
@@ -408,7 +413,7 @@
             this.tabPage3.Location = new System.Drawing.Point(4, 22);
             this.tabPage3.Name = "tabPage3";
             this.tabPage3.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage3.Size = new System.Drawing.Size(802, 151);
+            this.tabPage3.Size = new System.Drawing.Size(798, 150);
             this.tabPage3.TabIndex = 2;
             this.tabPage3.Text = "Sample form";
             this.tabPage3.UseVisualStyleBackColor = true;
@@ -497,7 +502,7 @@
             // QueueTimer
             // 
             this.QueueTimer.Interval = 10;
-            this.QueueTimer.Tick += new System.EventHandler(this.timer1_Tick);
+            this.QueueTimer.Tick += new System.EventHandler(this.Timer1_Tick);
             // 
             // UpdateTimer
             // 
@@ -513,8 +518,10 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.AutoValidate = System.Windows.Forms.AutoValidate.EnablePreventFocusChange;
             this.ClientSize = new System.Drawing.Size(1008, 681);
             this.Controls.Add(this.splitContainer1);
+            this.MinimumSize = new System.Drawing.Size(1024, 720);
             this.Name = "Form1";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "DatabaseController";

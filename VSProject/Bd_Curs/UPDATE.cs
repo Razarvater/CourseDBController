@@ -39,7 +39,6 @@ namespace Bd_Curs
             Query += $" {SelectedTable.Columns[SelectedTable.Columns.Count - 1].HeaderText} = '{SelectedParLast.Cells[SelectedParLast.Cells.Count - 1].Value}'";
             
             textBox2.Text = Query;  
-            MessageBox.Show(Query);
             Thread UpdateThread = new Thread(() => db.SetQueryAsync(Query));//Создание потока с запросом
             UpdateThread.Start();//Старт потока
             QueueTimer.Start();//Старт таймера на проверку завершения потока
