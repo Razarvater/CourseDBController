@@ -47,6 +47,7 @@
             this.splitContainer4 = new System.Windows.Forms.SplitContainer();
             this.splitContainer5 = new System.Windows.Forms.SplitContainer();
             this.label5 = new System.Windows.Forms.Label();
+            this.progressBar1 = new System.Windows.Forms.ProgressBar();
             this.SelectedTable = new System.Windows.Forms.DataGridView();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
@@ -303,6 +304,7 @@
             // 
             // splitContainer4.Panel2
             // 
+            this.splitContainer4.Panel2.Controls.Add(this.progressBar1);
             this.splitContainer4.Panel2.Controls.Add(this.SelectedTable);
             this.splitContainer4.Size = new System.Drawing.Size(810, 469);
             this.splitContainer4.SplitterDistance = 93;
@@ -338,6 +340,17 @@
             this.label5.TabIndex = 0;
             this.label5.Text = "Tables:";
             // 
+            // progressBar1
+            // 
+            this.progressBar1.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.progressBar1.Location = new System.Drawing.Point(355, 183);
+            this.progressBar1.MarqueeAnimationSpeed = 50;
+            this.progressBar1.Name = "progressBar1";
+            this.progressBar1.Size = new System.Drawing.Size(100, 15);
+            this.progressBar1.Style = System.Windows.Forms.ProgressBarStyle.Marquee;
+            this.progressBar1.TabIndex = 1;
+            this.progressBar1.Visible = false;
+            // 
             // SelectedTable
             // 
             this.SelectedTable.AllowUserToAddRows = false;
@@ -352,6 +365,7 @@
             this.SelectedTable.TabIndex = 0;
             this.SelectedTable.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.SelectedTable_CellClick);
             this.SelectedTable.CellEndEdit += new System.Windows.Forms.DataGridViewCellEventHandler(this.SelectedTable_CellEndEdit);
+            this.SelectedTable.DataError += new System.Windows.Forms.DataGridViewDataErrorEventHandler(this.SelectedTable_DataError);
             this.SelectedTable.RowPostPaint += new System.Windows.Forms.DataGridViewRowPostPaintEventHandler(this.SelectedTable_RowPostPaint);
             // 
             // tabControl1
@@ -596,6 +610,7 @@
         private System.Windows.Forms.Timer UpdateTimer;
         private System.Windows.Forms.Label CounterOfConnection;
         private System.Windows.Forms.Timer UpdateTimeTimer;
+        private System.Windows.Forms.ProgressBar progressBar1;
     }
 }
 

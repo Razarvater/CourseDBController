@@ -60,7 +60,7 @@ namespace Bd_Curs
             }
             //-------------Создание кнопок таблиц------------\\
             splitContainer5.Panel2.Controls.Clear();//Очистка предыдущих кнопок
-            int tempHeight = splitContainer5.Panel2.Height - 4;//Установка высоты для кнопок
+            int tempHeight = splitContainer5.Panel2.Height - 5;//Установка высоты для кнопок
             //уменьшить высоту кнопок если они не помещаются в контейнер
             if (ButtonsMin * db.TableNames.Count > splitContainer5.Panel2.Width) tempHeight -= 16;
             for (int i = 0; i < db.TableNames.Count; i++)//Создание кнопок для всех таблиц
@@ -81,7 +81,7 @@ namespace Bd_Curs
         }
         private void SetSelectedtable(string name = "DeFaUlT_TaBlE")
         {
-
+            IsErrorAll = false;//Возможность вывода ошибки о переполнении таблицы
             if (name == "DeFaUlT_TaBlE") name = db.TableNames[0];//Если имя таблицы не задано то выбрать первое из доступных
 
             SelectedTable.DataSource = null;//очистка выделенной таблицы
@@ -102,20 +102,21 @@ namespace Bd_Curs
         private void UpdateTable()
         {
             UpdateTimer.Stop();//Остановить таймер
-            if (!IsError)
-            {
-                SelectedTable.DataSource = db.TableData;//Установить новый источник данных
-                SelectedTable.RowHeadersWidth = db.TableData.Rows.Count.ToString().Length * 4 + 50;
-                //Выбор форматирования таблицы
-                if (SelectedTable.Columns.Count <= 10) SelectedTable.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
-                else SelectedTable.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.ColumnHeader;
-
-                //Сортировка таблицы по первому столбцу
-                SelectedTable.Sort(SelectedTable.Columns[0], ListSortDirection.Ascending);
-            }
-            IsError = false;
             StopCounter();//Остановка счётчика запроса
+                if (!IsError)
+                {
+                    SelectedTable.DataSource = db.TableData;//Установить новый источник данных
+                    SelectedTable.RowHeadersWidth = db.TableData.Rows.Count.ToString().Length * 4 + 50;
+                    //Выбор форматирования таблицы
+                    if (SelectedTable.Columns.Count <= 10) SelectedTable.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+                    else SelectedTable.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.ColumnHeader;
+
+                    //Сортировка таблицы по первому столбцу
+                    SelectedTable.Sort(SelectedTable.Columns[0], ListSortDirection.Ascending);
+                }
+            IsError = false;
             Query_IsWorking = false;//запрос не выполняется
+
         }
         private void ChooseNewTable(object sender, EventArgs e)//Выбор другой таблицы
         {
@@ -164,11 +165,13 @@ namespace Bd_Curs
             CounterOfConnection.Text = $"Time of query: {(decimal)sw.ElapsedMilliseconds/(decimal)1000}";//Обновление счётчика
         private void RunCounter()
         {
+            progressBar1.Visible = true;
             sw.Restart();//Рестарт счётчика времени
             UpdateTimeTimer.Start();//Старт таймера для отображения времени
         }
         private void StopCounter()
         {
+            progressBar1.Visible = false;
             sw.Stop();//Остановка счётчика времени
             UpdateTimeTimer.Stop();//Остановка таймера для отображения времени
         }
@@ -190,6 +193,14 @@ namespace Bd_Curs
             object header = SelectedTable.Rows[Index].HeaderCell.Value;
             if (header == null || !header.Equals(indexStr))
                 SelectedTable.Rows[Index].HeaderCell.Value = indexStr;
+        }
+
+        private bool IsErrorAll = false;
+        private void SelectedTable_DataError(object sender, DataGridViewDataErrorEventArgs e)
+        {
+            if (IsErrorAll) return;
+            IsErrorAll = true;
+            MessageBox.Show("An error occurred while populating the table (type varchar(max) is invalid)");
         }
     }
 }

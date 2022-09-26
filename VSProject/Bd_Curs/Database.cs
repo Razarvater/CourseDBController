@@ -82,7 +82,6 @@ namespace Bd_Curs
             {
                 command = new SqlCommand($"SELECT * FROM {table}", connection);//Создание команды
                 SqlDataAdapter adapter = new SqlDataAdapter(command);//Создание адаптера
-
                 TableData = new DataTable();//Очистка предыдущей выбранной таблицы
                 adapter.Fill(TableData);//Новое заполение
                 IsQueryCompleted = true;//Запрос завершён
