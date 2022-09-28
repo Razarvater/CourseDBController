@@ -3,6 +3,7 @@ using System.Data.SqlClient;
 using System.Threading.Tasks;
 using System.Collections.Generic;
 using System.Data;
+using System.Windows.Forms;
 
 namespace Bd_Curs
 {
@@ -11,6 +12,7 @@ namespace Bd_Curs
         private SqlConnection connection;//подклбючение к БД
         private SqlCommand command;//SQL команда
         public List<string> TableNames;//Имена таблиц
+        public List<List<string>> PrimaryKeys;
         public DataTable TableData = new DataTable();//Выбранная таблица
 
         public delegate void MessageShow(string message);//Делегат для выдачи сообщений в форму
@@ -28,9 +30,9 @@ namespace Bd_Curs
                 await connection.OpenAsync();//Асинхронное открытие подключения
                 Connected = true;//Подключено
             }
-            catch (SqlException e) 
+            catch (SqlException ex) 
             {
-                Show.Invoke($"An SQL exception occurred, Unable to connect to database:[{e.Message}]");
+                Show.Invoke($"An SQL exception occurred, Unable to connect to database:[{ex.Number}|{ex.Message}]");
                 return; 
             }
 
@@ -39,9 +41,27 @@ namespace Bd_Curs
             TableNames = new List<string>();//Имена таблиц
             while(await temp.ReadAsync())//Получение имён таблиц для базы данных
             {
+
                 TableNames.Add(temp[0].ToString());
             }
             temp.Close();
+
+            PrimaryKeys = new List<List<string>>();
+            for(int i = 0; i<TableNames.Count;i++)
+            {
+                try
+                {
+                    command = new SqlCommand($"SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.KEY_COLUMN_USAGE WHERE TABLE_NAME = '{TableNames[i]}'", connection);
+                    SqlDataReader tempo = await command.ExecuteReaderAsync();
+                    PrimaryKeys.Add(new List<string>());
+                    while(await tempo.ReadAsync())
+                    {
+                        PrimaryKeys[i].Add(tempo[0].ToString());
+                    }
+                    tempo.Close();
+                }
+                catch (InvalidOperationException) { }
+            }
 
             if(Array.IndexOf(TableNames.ToArray(),"Users")!=-1)//Только если есть таблица с пользователями
                 await AuthAsync(name,password);//Авторизация 
@@ -49,8 +69,13 @@ namespace Bd_Curs
         public async Task AuthAsync(string name, string password)//Авторизация в базе данных
         {
             try
-            {
-                command = new SqlCommand($"SELECT * FROM Users WHERE name = '{name}' AND pass = '{password}'", connection);
+            { 
+                //Параметризированный запрос для защиты от SQL инъекций
+                command = new SqlCommand($"SELECT * FROM Users WHERE name = '@name' AND pass = '@password'", connection);
+                command.Parameters.Add(new SqlParameter("@name", name));
+                command.Parameters.Add(new SqlParameter("@name", password));
+
+
                 SqlDataReader temp = await command.ExecuteReaderAsync();//запрос к таблице Users
                 if (temp.HasRows)//Если пользователя с таким именем и паролем нет то закрыть подключение
                 {
@@ -59,9 +84,14 @@ namespace Bd_Curs
                 }
                 CloseConnection();//Закрытие подключения
             }
-            catch (SqlException e)
+            catch (SqlException ex)
             {
-                Show.Invoke($"An SQL exception occurred, Unable to connect to Table Users:[{e.Message}]");
+                if(ex.Number != 134)
+                    Show.Invoke($"An SQL exception occurred, Unable to connect to Table Users:[{ex.Number}|{ex.Message}]");
+                else
+                    Show.Invoke($"An SQL exception occurred, Unable to connect to Table Users, (name is not full or password)/ u tried make SQL Injection");
+
+                CloseConnection();//Закрытие подключения
             }
         }
         public void CloseConnection()//Закрытие подключения
@@ -71,9 +101,9 @@ namespace Bd_Curs
                 connection.Close();//Закрытие подключения
                 Connected = false;//Не подключено
             }
-            catch (SqlException e )
+            catch (SqlException ex )
             {
-                Show.Invoke($"An SQL exception occurred, Unable to disconnect from database:[{e.Message}]");
+                Show.Invoke($"An SQL exception occurred, Unable to disconnect from database:[{ex.Number}|{ex.Message}]");
             }
         }
         public void GetSelectedTable(string table)
@@ -142,14 +172,15 @@ namespace Bd_Curs
                 }
                 else
                 {
+                    command.CommandTimeout = 180;
                     command.ExecuteNonQuery();//Выполнение запроса не на выборку
                     GetSelectedTable(TableName);//Отображение таблицы к которой применялся запрос
                 }
             }
-            catch (SqlException e)
+            catch (SqlException ex)
             {
                 IsQueryCompleted = true;//Запрос завершён
-                Show.Invoke($"An SQL exception occurred, please check the correctness of the entered query: [{e.Message}]");
+                Show.Invoke($"An SQL exception occurred, please check the correctness of the entered query: [{ex.Number}|{ex.Message}]");
             }
         }
     }     

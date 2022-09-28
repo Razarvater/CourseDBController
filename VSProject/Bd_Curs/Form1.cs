@@ -65,6 +65,7 @@ namespace Bd_Curs
             if (ButtonsMin * db.TableNames.Count > splitContainer5.Panel2.Width) tempHeight -= 16;
             for (int i = 0; i < db.TableNames.Count; i++)//Создание кнопок для всех таблиц
             {
+                if (db.TableNames[i] == "Users") continue;
                 Button temp = new Button();
 
                 temp.Text = db.TableNames[i].ToString();//Установка текста кнопки
@@ -81,7 +82,6 @@ namespace Bd_Curs
         }
         private void SetSelectedtable(string name = "DeFaUlT_TaBlE")
         {
-            IsErrorAll = false;//Возможность вывода ошибки о переполнении таблицы
             if (name == "DeFaUlT_TaBlE") name = db.TableNames[0];//Если имя таблицы не задано то выбрать первое из доступных
 
             SelectedTable.DataSource = null;//очистка выделенной таблицы
@@ -195,12 +195,11 @@ namespace Bd_Curs
                 SelectedTable.Rows[Index].HeaderCell.Value = indexStr;
         }
 
-        private bool IsErrorAll = false;
         private void SelectedTable_DataError(object sender, DataGridViewDataErrorEventArgs e)
         {
-            if (IsErrorAll) return;
+            /*if (IsErrorAll) return;
             IsErrorAll = true;
-            MessageBox.Show("An error occurred while populating the table (type varchar(max) is invalid)");
+            MessageBox.Show("An error occurred while populating the table (type varchar(max) is invalid)");*/
         }
     }
 }

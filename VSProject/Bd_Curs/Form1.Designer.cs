@@ -214,7 +214,7 @@
             this.DbName.Name = "DbName";
             this.DbName.Size = new System.Drawing.Size(183, 20);
             this.DbName.TabIndex = 3;
-            this.DbName.Text = "Test";
+            this.DbName.Text = "Northwind";
             // 
             // label2
             // 
@@ -343,7 +343,7 @@
             // progressBar1
             // 
             this.progressBar1.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.progressBar1.Location = new System.Drawing.Point(355, 183);
+            this.progressBar1.Location = new System.Drawing.Point(355, 185);
             this.progressBar1.MarqueeAnimationSpeed = 50;
             this.progressBar1.Name = "progressBar1";
             this.progressBar1.Size = new System.Drawing.Size(100, 15);
