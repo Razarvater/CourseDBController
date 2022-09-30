@@ -32,12 +32,13 @@
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.ConnectionStatus = new System.Windows.Forms.Label();
             this.splitContainer2 = new System.Windows.Forms.SplitContainer();
+            this.DbName = new System.Windows.Forms.ComboBox();
+            this.ConnectServer = new System.Windows.Forms.Button();
             this.CounterOfConnection = new System.Windows.Forms.Label();
             this.button1 = new System.Windows.Forms.Button();
             this.label4 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.ServerName = new System.Windows.Forms.TextBox();
-            this.DbName = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.NameBox = new System.Windows.Forms.TextBox();
@@ -51,8 +52,6 @@
             this.SelectedTable = new System.Windows.Forms.DataGridView();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
-            this.tabPage2 = new System.Windows.Forms.TabPage();
-            this.textBox2 = new System.Windows.Forms.TextBox();
             this.tabPage3 = new System.Windows.Forms.TabPage();
             this.checkBox2 = new System.Windows.Forms.CheckBox();
             this.button3 = new System.Windows.Forms.Button();
@@ -60,9 +59,7 @@
             this.ConditionLabel = new System.Windows.Forms.Label();
             this.ConditionSelect = new System.Windows.Forms.TextBox();
             this.ColumnsSELECT = new System.Windows.Forms.TextBox();
-            this.TableNameSELECT = new System.Windows.Forms.TextBox();
             this.ColumnsLabel = new System.Windows.Forms.Label();
-            this.TableLabel = new System.Windows.Forms.Label();
             this.QueueTimer = new System.Windows.Forms.Timer(this.components);
             this.UpdateTimer = new System.Windows.Forms.Timer(this.components);
             this.UpdateTimeTimer = new System.Windows.Forms.Timer(this.components);
@@ -87,7 +84,6 @@
             this.splitContainer5.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.SelectedTable)).BeginInit();
             this.tabControl1.SuspendLayout();
-            this.tabPage2.SuspendLayout();
             this.tabPage3.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -135,12 +131,13 @@
             // 
             // splitContainer2.Panel1
             // 
+            this.splitContainer2.Panel1.Controls.Add(this.DbName);
+            this.splitContainer2.Panel1.Controls.Add(this.ConnectServer);
             this.splitContainer2.Panel1.Controls.Add(this.CounterOfConnection);
             this.splitContainer2.Panel1.Controls.Add(this.button1);
             this.splitContainer2.Panel1.Controls.Add(this.label4);
             this.splitContainer2.Panel1.Controls.Add(this.label3);
             this.splitContainer2.Panel1.Controls.Add(this.ServerName);
-            this.splitContainer2.Panel1.Controls.Add(this.DbName);
             this.splitContainer2.Panel1.Controls.Add(this.label2);
             this.splitContainer2.Panel1.Controls.Add(this.label1);
             this.splitContainer2.Panel1.Controls.Add(this.NameBox);
@@ -155,6 +152,26 @@
             this.splitContainer2.SplitterWidth = 1;
             this.splitContainer2.TabIndex = 0;
             this.splitContainer2.TabStop = false;
+            // 
+            // DbName
+            // 
+            this.DbName.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
+            this.DbName.FormattingEnabled = true;
+            this.DbName.Location = new System.Drawing.Point(3, 359);
+            this.DbName.Name = "DbName";
+            this.DbName.Size = new System.Drawing.Size(183, 21);
+            this.DbName.TabIndex = 2;
+            // 
+            // ConnectServer
+            // 
+            this.ConnectServer.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
+            this.ConnectServer.Location = new System.Drawing.Point(10, 295);
+            this.ConnectServer.Name = "ConnectServer";
+            this.ConnectServer.Size = new System.Drawing.Size(174, 35);
+            this.ConnectServer.TabIndex = 2;
+            this.ConnectServer.Text = "Connect To Server";
+            this.ConnectServer.UseVisualStyleBackColor = true;
+            this.ConnectServer.Click += new System.EventHandler(this.ConnectServer_Click);
             // 
             // CounterOfConnection
             // 
@@ -182,7 +199,7 @@
             // 
             this.label4.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(60, 372);
+            this.label4.Location = new System.Drawing.Point(62, 343);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(81, 13);
             this.label4.TabIndex = 6;
@@ -192,7 +209,7 @@
             // 
             this.label3.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(60, 333);
+            this.label3.Location = new System.Drawing.Point(62, 253);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(73, 13);
             this.label3.TabIndex = 5;
@@ -201,20 +218,12 @@
             // ServerName
             // 
             this.ServerName.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
-            this.ServerName.Location = new System.Drawing.Point(3, 349);
+            this.ServerName.HideSelection = false;
+            this.ServerName.Location = new System.Drawing.Point(3, 269);
             this.ServerName.Name = "ServerName";
             this.ServerName.Size = new System.Drawing.Size(183, 20);
             this.ServerName.TabIndex = 4;
             this.ServerName.Text = "DESKTOP-G634C4B\\SQLEXPRESS";
-            // 
-            // DbName
-            // 
-            this.DbName.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
-            this.DbName.Location = new System.Drawing.Point(3, 386);
-            this.DbName.Name = "DbName";
-            this.DbName.Size = new System.Drawing.Size(183, 20);
-            this.DbName.TabIndex = 3;
-            this.DbName.Text = "Northwind";
             // 
             // label2
             // 
@@ -243,6 +252,7 @@
             this.NameBox.Name = "NameBox";
             this.NameBox.Size = new System.Drawing.Size(183, 20);
             this.NameBox.TabIndex = 1;
+            this.NameBox.Text = "Test";
             // 
             // PassBox
             // 
@@ -261,7 +271,7 @@
             this.ConnectButton.Name = "ConnectButton";
             this.ConnectButton.Size = new System.Drawing.Size(189, 38);
             this.ConnectButton.TabIndex = 0;
-            this.ConnectButton.Text = "Connect";
+            this.ConnectButton.Text = "Connect To Database";
             this.ConnectButton.UseVisualStyleBackColor = false;
             this.ConnectButton.Click += new System.EventHandler(this.ConnectButton_Click);
             // 
@@ -343,7 +353,7 @@
             // progressBar1
             // 
             this.progressBar1.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.progressBar1.Location = new System.Drawing.Point(355, 185);
+            this.progressBar1.Location = new System.Drawing.Point(355, 191);
             this.progressBar1.MarqueeAnimationSpeed = 50;
             this.progressBar1.Name = "progressBar1";
             this.progressBar1.Size = new System.Drawing.Size(100, 15);
@@ -371,7 +381,6 @@
             // tabControl1
             // 
             this.tabControl1.Controls.Add(this.tabPage1);
-            this.tabControl1.Controls.Add(this.tabPage2);
             this.tabControl1.Controls.Add(this.tabPage3);
             this.tabControl1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tabControl1.Location = new System.Drawing.Point(0, 0);
@@ -390,29 +399,6 @@
             this.tabPage1.Text = "ControlSelectedTable";
             this.tabPage1.UseVisualStyleBackColor = true;
             // 
-            // tabPage2
-            // 
-            this.tabPage2.Controls.Add(this.textBox2);
-            this.tabPage2.Location = new System.Drawing.Point(4, 22);
-            this.tabPage2.Name = "tabPage2";
-            this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(798, 150);
-            this.tabPage2.TabIndex = 1;
-            this.tabPage2.Text = "SQL_Query";
-            this.tabPage2.UseVisualStyleBackColor = true;
-            // 
-            // textBox2
-            // 
-            this.textBox2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.textBox2.Location = new System.Drawing.Point(3, 3);
-            this.textBox2.Multiline = true;
-            this.textBox2.Name = "textBox2";
-            this.textBox2.Size = new System.Drawing.Size(792, 144);
-            this.textBox2.TabIndex = 0;
-            this.textBox2.TabStop = false;
-            this.textBox2.Text = "SELECT ItemID FROM Items WHERE ItemID>=1000 AND ItemID<=2000 ORDER BY ItemID";
-            this.textBox2.KeyUp += new System.Windows.Forms.KeyEventHandler(this.textBox2_KeyUp);
-            // 
             // tabPage3
             // 
             this.tabPage3.Controls.Add(this.checkBox2);
@@ -421,9 +407,7 @@
             this.tabPage3.Controls.Add(this.ConditionLabel);
             this.tabPage3.Controls.Add(this.ConditionSelect);
             this.tabPage3.Controls.Add(this.ColumnsSELECT);
-            this.tabPage3.Controls.Add(this.TableNameSELECT);
             this.tabPage3.Controls.Add(this.ColumnsLabel);
-            this.tabPage3.Controls.Add(this.TableLabel);
             this.tabPage3.Location = new System.Drawing.Point(4, 22);
             this.tabPage3.Name = "tabPage3";
             this.tabPage3.Padding = new System.Windows.Forms.Padding(3);
@@ -435,7 +419,7 @@
             // checkBox2
             // 
             this.checkBox2.AutoSize = true;
-            this.checkBox2.Location = new System.Drawing.Point(89, 117);
+            this.checkBox2.Location = new System.Drawing.Point(89, 125);
             this.checkBox2.Name = "checkBox2";
             this.checkBox2.Size = new System.Drawing.Size(69, 17);
             this.checkBox2.TabIndex = 11;
@@ -445,7 +429,7 @@
             // 
             // button3
             // 
-            this.button3.Location = new System.Drawing.Point(6, 110);
+            this.button3.Location = new System.Drawing.Point(6, 118);
             this.button3.Name = "button3";
             this.button3.Size = new System.Drawing.Size(77, 29);
             this.button3.TabIndex = 7;
@@ -455,7 +439,7 @@
             // 
             // AddNewConditionButton
             // 
-            this.AddNewConditionButton.Location = new System.Drawing.Point(6, 82);
+            this.AddNewConditionButton.Location = new System.Drawing.Point(6, 90);
             this.AddNewConditionButton.Name = "AddNewConditionButton";
             this.AddNewConditionButton.Size = new System.Drawing.Size(84, 20);
             this.AddNewConditionButton.TabIndex = 6;
@@ -466,7 +450,7 @@
             // ConditionLabel
             // 
             this.ConditionLabel.AutoSize = true;
-            this.ConditionLabel.Location = new System.Drawing.Point(10, 60);
+            this.ConditionLabel.Location = new System.Drawing.Point(10, 68);
             this.ConditionLabel.Name = "ConditionLabel";
             this.ConditionLabel.Size = new System.Drawing.Size(51, 13);
             this.ConditionLabel.TabIndex = 5;
@@ -474,44 +458,28 @@
             // 
             // ConditionSelect
             // 
-            this.ConditionSelect.Location = new System.Drawing.Point(67, 56);
+            this.ConditionSelect.Location = new System.Drawing.Point(67, 64);
             this.ConditionSelect.Name = "ConditionSelect";
             this.ConditionSelect.Size = new System.Drawing.Size(100, 20);
             this.ConditionSelect.TabIndex = 4;
             // 
             // ColumnsSELECT
             // 
-            this.ColumnsSELECT.Location = new System.Drawing.Point(67, 32);
+            this.ColumnsSELECT.Location = new System.Drawing.Point(67, 40);
             this.ColumnsSELECT.Name = "ColumnsSELECT";
             this.ColumnsSELECT.Size = new System.Drawing.Size(732, 20);
             this.ColumnsSELECT.TabIndex = 2;
             this.ColumnsSELECT.Text = "If you want to select all columns, leave this field blank, if you want to select " +
     "specific columns, specify them in the form: [column1],[column2],[column3]...";
             // 
-            // TableNameSELECT
-            // 
-            this.TableNameSELECT.Location = new System.Drawing.Point(67, 9);
-            this.TableNameSELECT.Name = "TableNameSELECT";
-            this.TableNameSELECT.Size = new System.Drawing.Size(100, 20);
-            this.TableNameSELECT.TabIndex = 0;
-            // 
             // ColumnsLabel
             // 
             this.ColumnsLabel.AutoSize = true;
-            this.ColumnsLabel.Location = new System.Drawing.Point(14, 35);
+            this.ColumnsLabel.Location = new System.Drawing.Point(14, 43);
             this.ColumnsLabel.Name = "ColumnsLabel";
             this.ColumnsLabel.Size = new System.Drawing.Size(47, 13);
             this.ColumnsLabel.TabIndex = 3;
             this.ColumnsLabel.Text = "Columns";
-            // 
-            // TableLabel
-            // 
-            this.TableLabel.AutoSize = true;
-            this.TableLabel.Location = new System.Drawing.Point(21, 12);
-            this.TableLabel.Name = "TableLabel";
-            this.TableLabel.Size = new System.Drawing.Size(34, 13);
-            this.TableLabel.TabIndex = 1;
-            this.TableLabel.Text = "Table";
             // 
             // QueueTimer
             // 
@@ -564,8 +532,6 @@
             this.splitContainer5.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.SelectedTable)).EndInit();
             this.tabControl1.ResumeLayout(false);
-            this.tabPage2.ResumeLayout(false);
-            this.tabPage2.PerformLayout();
             this.tabPage3.ResumeLayout(false);
             this.tabPage3.PerformLayout();
             this.ResumeLayout(false);
@@ -583,7 +549,6 @@
         private System.Windows.Forms.TextBox NameBox;
         private System.Windows.Forms.TextBox PassBox;
         private System.Windows.Forms.TextBox ServerName;
-        private System.Windows.Forms.TextBox DbName;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label ConnectionStatus;
@@ -594,8 +559,6 @@
         private System.Windows.Forms.SplitContainer splitContainer5;
         private System.Windows.Forms.TabControl tabControl1;
         private System.Windows.Forms.TabPage tabPage1;
-        private System.Windows.Forms.TabPage tabPage2;
-        private System.Windows.Forms.TextBox textBox2;
         private System.Windows.Forms.TabPage tabPage3;
         private System.Windows.Forms.CheckBox checkBox2;
         private System.Windows.Forms.Button button3;
@@ -603,14 +566,14 @@
         private System.Windows.Forms.Label ConditionLabel;
         private System.Windows.Forms.TextBox ConditionSelect;
         private System.Windows.Forms.TextBox ColumnsSELECT;
-        private System.Windows.Forms.TextBox TableNameSELECT;
         private System.Windows.Forms.Label ColumnsLabel;
-        private System.Windows.Forms.Label TableLabel;
         private System.Windows.Forms.Timer QueueTimer;
         private System.Windows.Forms.Timer UpdateTimer;
         private System.Windows.Forms.Label CounterOfConnection;
         private System.Windows.Forms.Timer UpdateTimeTimer;
         private System.Windows.Forms.ProgressBar progressBar1;
+        private System.Windows.Forms.Button ConnectServer;
+        private System.Windows.Forms.ComboBox DbName;
     }
 }
 

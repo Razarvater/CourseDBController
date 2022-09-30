@@ -11,7 +11,7 @@ namespace Bd_Curs
         private bool ISDistinct = false;
         private List<TextBox> WhereSelectBoxes = new List<TextBox>();
         private string SelectQuery;
-        private byte LimitWhere = 6;
+        private byte LimitWhere = 10;
         private void DISTINCT_CheckedChanged(object sender, EventArgs e) => ISDistinct = !ISDistinct;//Галочка на убирание повторений в запросе
         private void button3_Click(object sender, EventArgs e)//Выполнить запрос из формы
         {
@@ -23,7 +23,7 @@ namespace Bd_Curs
             if (ColumnsSELECT.Text == string.Empty) SelectQuery += "*";//Все столбцы или только выбранные
             else SelectQuery += ColumnsSELECT.Text;
 
-            SelectQuery += $" FROM {TableNameSELECT.Text} ";//Из таблицы
+            SelectQuery += $" FROM [{SelectedTableName}] ";//Из таблицы
 
             if (WhereSelectBoxes[0].Text != string.Empty)//Добавление условий при их наличии
             {
@@ -34,7 +34,7 @@ namespace Bd_Curs
                         SelectQuery += $"AND {item.Text} ";//Добавить условие
                 }
             }
-            Thread UpdateThread = new Thread(() => db.SetQueryAsync(SelectQuery));//Создание потока с запросом
+            Thread UpdateThread = new Thread(() => db.SetQueryAsync(SelectQuery,new System.Data.SqlClient.SqlCommand(SelectQuery,db.connection)));//Создание потока с запросом
             UpdateThread.Start();//Старт потока
             QueueTimer.Start();//Старт таймера на проверку завершения потока
             RunCounter();//Старт Счётчиков
@@ -42,19 +42,22 @@ namespace Bd_Curs
         }
         private void RemoveNewConditions()//Удалить добавленные пользовательские условия
         {
-            WhereSelectBoxes.Clear();//удаление боксов с условиями из списка
-            WhereSelectBoxes.Add(ConditionSelect);//Добавление первого бокса в список
-
             string tempName;
-            foreach (var item in tabPage3.Controls)//Удаление всех текстбоксов с цифрой в конце(генерируемых)
+            for (int i = 0; i < tabPage3.Controls.Count; i++)
             {
-                if ((item as TextBox) is TextBox)
+                if (tabPage3.Controls[i] as TextBox is TextBox)
                 {
-                    tempName = item.GetType().GetProperty("Name").GetValue(item).ToString();//Получение имени
+                    tempName = tabPage3.Controls[i].GetType().GetProperty("Name").GetValue(tabPage3.Controls[i]).ToString();//Получение имени
                     if (char.IsDigit(tempName[tempName.Length - 1]))//Проверка последнего символа
-                        tabPage3.Controls.Remove((Control)item);//Удаление
+                    {
+                        tabPage3.Controls.Remove((Control)tabPage3.Controls[i]);//Удаление
+                        i--;
+                    }                                                          
                 }
             }
+
+            WhereSelectBoxes.Clear();//удаление боксов с условиями из списка
+            WhereSelectBoxes.Add(ConditionSelect);//Добавление первого бокса в список
         }
         private void AddNewConditionButton_Click(object sender, EventArgs e)//Добавить новое условие
         {
@@ -63,10 +66,10 @@ namespace Bd_Curs
             TextBox temp = new TextBox();//Создание нового бокса с условием
 
             //Его местоположение и новое имя
-            temp.Location = new Point(WhereSelectBoxes[WhereSelectBoxes.Count - 1].Location.X + WhereSelectBoxes[WhereSelectBoxes.Count - 1].Size.Width + 10, 56);
+            temp.Location = new Point(WhereSelectBoxes[WhereSelectBoxes.Count - 1].Location.X + WhereSelectBoxes[WhereSelectBoxes.Count - 1].Size.Width + 10, WhereSelectBoxes[0].Location.Y);
             temp.Name = $"ConditionSelect{WhereSelectBoxes.Count}";
+            temp.Anchor = WhereSelectBoxes[0].Anchor;
             WhereSelectBoxes.Add(temp);//Добавление в коллекцию 
-
             tabPage3.Controls.Add(WhereSelectBoxes[WhereSelectBoxes.Count - 1]);//Добавление на страницу
         }
     }

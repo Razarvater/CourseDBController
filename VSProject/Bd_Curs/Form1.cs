@@ -10,6 +10,7 @@ namespace Bd_Curs
     public partial class Form1 : Form
     {
         private Database db;//Переменная базы данных
+        private string ConnectedServer;
         private bool db_Connected = false;//Подключена ли БД
         private bool Query_IsWorking = false;
         private bool IsError = false;
@@ -35,12 +36,12 @@ namespace Bd_Curs
 
             if (!db_Connected)//Если БД не подключена то
             {
-                db = new Database(ServerName.Text, DbName.Text);//Создать новое подключение к БД
+                db = new Database(ConnectedServer, DbName.Text);//Создать новое подключение к БД
             }
             else
             {
                 db.CloseConnection();//Закрыть старое подключение
-                db = new Database(ServerName.Text, DbName.Text);//Создать новое подключение к БД
+                db = new Database(ConnectedServer, DbName.Text);//Создать новое подключение к БД
             }
 
             db.Show += Message;
@@ -65,7 +66,6 @@ namespace Bd_Curs
             if (ButtonsMin * db.TableNames.Count > splitContainer5.Panel2.Width) tempHeight -= 16;
             for (int i = 0; i < db.TableNames.Count; i++)//Создание кнопок для всех таблиц
             {
-                if (db.TableNames[i] == "Users") continue;
                 Button temp = new Button();
 
                 temp.Text = db.TableNames[i].ToString();//Установка текста кнопки
@@ -103,20 +103,20 @@ namespace Bd_Curs
         {
             UpdateTimer.Stop();//Остановить таймер
             StopCounter();//Остановка счётчика запроса
-                if (!IsError)
+                if (!IsError && !IsUpdate)
                 {
                     SelectedTable.DataSource = db.TableData;//Установить новый источник данных
                     SelectedTable.RowHeadersWidth = db.TableData.Rows.Count.ToString().Length * 4 + 50;
                     //Выбор форматирования таблицы
                     if (SelectedTable.Columns.Count <= 10) SelectedTable.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
-                    else SelectedTable.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.ColumnHeader;
+                    else SelectedTable.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.None;
 
                     //Сортировка таблицы по первому столбцу
                     SelectedTable.Sort(SelectedTable.Columns[0], ListSortDirection.Ascending);
                 }
             IsError = false;
+            IsUpdate = false;
             Query_IsWorking = false;//запрос не выполняется
-
         }
         private void ChooseNewTable(object sender, EventArgs e)//Выбор другой таблицы
         {
@@ -147,19 +147,6 @@ namespace Bd_Curs
             CounterOfConnection.BackColor = SystemColors.AppWorkspace;//Изменение цвета отображения времени последнего запроса
             CounterOfConnection.Text = string.Empty;
 
-        }
-        private void textBox2_KeyUp(object sender, KeyEventArgs e)
-        {
-            if (e.KeyCode == Keys.Enter)
-            {
-                if (IsQueryWorked()) return;//Если запрос уже активен и выполняется, ничего не делать
-                Query_IsWorking = true;//Запрос выполняется
-                SelectedTable.DataSource = null;//Очистка выводящейся таблицы
-                Thread UpdateThread = new Thread(() => db.SetQueryAsync(textBox2.Text));//Создание нового потока с запросом
-                UpdateThread.Start();//Старт потока
-                QueueTimer.Start();//Старкт таймера проверяющего закончился ли выполнятся поток
-                RunCounter();//Таймер отвечающий за отображение счётчика времени выполнения запроса
-            }
         }
         private void UpdateTimeTimer_Tick(object sender, EventArgs e)=>
             CounterOfConnection.Text = $"Time of query: {(decimal)sw.ElapsedMilliseconds/(decimal)1000}";//Обновление счётчика
@@ -195,11 +182,18 @@ namespace Bd_Curs
                 SelectedTable.Rows[Index].HeaderCell.Value = indexStr;
         }
 
-        private void SelectedTable_DataError(object sender, DataGridViewDataErrorEventArgs e)
+        //Заглушка для отсутствия ошибки о слишком длинных полях
+        private void SelectedTable_DataError(object sender, DataGridViewDataErrorEventArgs e) { }
+
+        private void ConnectServer_Click(object sender, EventArgs e)
         {
-            /*if (IsErrorAll) return;
-            IsErrorAll = true;
-            MessageBox.Show("An error occurred while populating the table (type varchar(max) is invalid)");*/
+            ConnectedServer = ServerName.Text;
+            ServerConnection serv = new ServerConnection(ServerName.Text);
+            DbName.Items.Clear();
+            foreach (var item in serv.GetDatabases())
+            {
+                DbName.Items.Add(item);
+            }
         }
     }
 }

@@ -3,13 +3,12 @@ using System.Data.SqlClient;
 using System.Threading.Tasks;
 using System.Collections.Generic;
 using System.Data;
-using System.Windows.Forms;
 
 namespace Bd_Curs
 {
     public class Database
     {
-        private SqlConnection connection;//подклбючение к БД
+        public SqlConnection connection;//подклбючение к БД
         private SqlCommand command;//SQL команда
         public List<string> TableNames;//Имена таблиц
         public List<List<string>> PrimaryKeys;
@@ -65,17 +64,16 @@ namespace Bd_Curs
 
             if(Array.IndexOf(TableNames.ToArray(),"Users")!=-1)//Только если есть таблица с пользователями
                 await AuthAsync(name,password);//Авторизация 
+            TableNames.Remove("Users");
         }
         public async Task AuthAsync(string name, string password)//Авторизация в базе данных
         {
             try
             { 
                 //Параметризированный запрос для защиты от SQL инъекций
-                command = new SqlCommand($"SELECT * FROM Users WHERE name = '@name' AND pass = '@password'", connection);
+                command = new SqlCommand($"SELECT * FROM Users WHERE name = @name AND pass = @password", connection);
                 command.Parameters.Add(new SqlParameter("@name", name));
-                command.Parameters.Add(new SqlParameter("@name", password));
-
-
+                command.Parameters.Add(new SqlParameter("@password", password));
                 SqlDataReader temp = await command.ExecuteReaderAsync();//запрос к таблице Users
                 if (temp.HasRows)//Если пользователя с таким именем и паролем нет то закрыть подключение
                 {
@@ -110,7 +108,7 @@ namespace Bd_Curs
         {
             try
             {
-                command = new SqlCommand($"SELECT * FROM {table}", connection);//Создание команды
+                command = new SqlCommand($"SELECT * FROM [{table}]", connection);//Создание команды
                 SqlDataAdapter adapter = new SqlDataAdapter(command);//Создание адаптера
                 TableData = new DataTable();//Очистка предыдущей выбранной таблицы
                 adapter.Fill(TableData);//Новое заполение
@@ -122,11 +120,11 @@ namespace Bd_Curs
                 Show.Invoke($"An SQL exception occurred, please check the correctness of the entered query: [{e.Message}]");
             }
         }     
-        public void SetQueryAsync(string Query)//Выполнение запроса
+        public void SetQueryAsync(string Query, SqlCommand sqlCommand)//Выполнение запроса
         {
             try
             { 
-                command = new SqlCommand(Query, connection);//Создание новой SQL команды
+                command = sqlCommand;//Создание новой SQL команды
 
                 string TableName = string.Empty;//Имя таблицы для которой применяется запрос
 
@@ -164,7 +162,7 @@ namespace Bd_Curs
                 }
                 if (IsSelect)//Если запрос на выборку
                 {
-                    command = new SqlCommand(Query, connection);//Создание SQL команды
+                    
                     SqlDataAdapter adapter = new SqlDataAdapter(command);//Создание адаптера
                     TableData = new DataTable();//Очистка предыдущей выбранной таблицы
                     adapter.Fill(TableData);//Заполнение новыми данными
