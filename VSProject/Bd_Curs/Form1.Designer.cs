@@ -35,7 +35,7 @@
             this.DbName = new System.Windows.Forms.ComboBox();
             this.ConnectServer = new System.Windows.Forms.Button();
             this.CounterOfConnection = new System.Windows.Forms.Label();
-            this.button1 = new System.Windows.Forms.Button();
+            this.DisconnectButton = new System.Windows.Forms.Button();
             this.label4 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.ServerName = new System.Windows.Forms.TextBox();
@@ -48,6 +48,7 @@
             this.splitContainer4 = new System.Windows.Forms.SplitContainer();
             this.splitContainer5 = new System.Windows.Forms.SplitContainer();
             this.label5 = new System.Windows.Forms.Label();
+            this.button1 = new System.Windows.Forms.Button();
             this.progressBar1 = new System.Windows.Forms.ProgressBar();
             this.SelectedTable = new System.Windows.Forms.DataGridView();
             this.tabControl1 = new System.Windows.Forms.TabControl();
@@ -134,7 +135,7 @@
             this.splitContainer2.Panel1.Controls.Add(this.DbName);
             this.splitContainer2.Panel1.Controls.Add(this.ConnectServer);
             this.splitContainer2.Panel1.Controls.Add(this.CounterOfConnection);
-            this.splitContainer2.Panel1.Controls.Add(this.button1);
+            this.splitContainer2.Panel1.Controls.Add(this.DisconnectButton);
             this.splitContainer2.Panel1.Controls.Add(this.label4);
             this.splitContainer2.Panel1.Controls.Add(this.label3);
             this.splitContainer2.Panel1.Controls.Add(this.ServerName);
@@ -156,6 +157,7 @@
             // DbName
             // 
             this.DbName.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
+            this.DbName.Enabled = false;
             this.DbName.FormattingEnabled = true;
             this.DbName.Location = new System.Drawing.Point(3, 359);
             this.DbName.Name = "DbName";
@@ -182,18 +184,18 @@
             this.CounterOfConnection.Size = new System.Drawing.Size(0, 13);
             this.CounterOfConnection.TabIndex = 1;
             // 
-            // button1
+            // DisconnectButton
             // 
-            this.button1.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
-            this.button1.BackColor = System.Drawing.Color.Transparent;
-            this.button1.Enabled = false;
-            this.button1.Location = new System.Drawing.Point(0, 612);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(189, 38);
-            this.button1.TabIndex = 7;
-            this.button1.Text = "DisConnect";
-            this.button1.UseVisualStyleBackColor = false;
-            this.button1.Click += new System.EventHandler(this.Disconnect_Click);
+            this.DisconnectButton.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
+            this.DisconnectButton.BackColor = System.Drawing.Color.Transparent;
+            this.DisconnectButton.Enabled = false;
+            this.DisconnectButton.Location = new System.Drawing.Point(0, 612);
+            this.DisconnectButton.Name = "DisconnectButton";
+            this.DisconnectButton.Size = new System.Drawing.Size(189, 38);
+            this.DisconnectButton.TabIndex = 7;
+            this.DisconnectButton.Text = "DisConnect";
+            this.DisconnectButton.UseVisualStyleBackColor = false;
+            this.DisconnectButton.Click += new System.EventHandler(this.Disconnect_Click);
             // 
             // label4
             // 
@@ -248,6 +250,7 @@
             // NameBox
             // 
             this.NameBox.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
+            this.NameBox.Enabled = false;
             this.NameBox.Location = new System.Drawing.Point(3, 466);
             this.NameBox.Name = "NameBox";
             this.NameBox.Size = new System.Drawing.Size(183, 20);
@@ -257,6 +260,7 @@
             // PassBox
             // 
             this.PassBox.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
+            this.PassBox.Enabled = false;
             this.PassBox.Location = new System.Drawing.Point(3, 505);
             this.PassBox.Name = "PassBox";
             this.PassBox.Size = new System.Drawing.Size(183, 20);
@@ -267,6 +271,7 @@
             // 
             this.ConnectButton.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
             this.ConnectButton.BackColor = System.Drawing.Color.Transparent;
+            this.ConnectButton.Enabled = false;
             this.ConnectButton.Location = new System.Drawing.Point(0, 571);
             this.ConnectButton.Name = "ConnectButton";
             this.ConnectButton.Size = new System.Drawing.Size(189, 38);
@@ -314,6 +319,7 @@
             // 
             // splitContainer4.Panel2
             // 
+            this.splitContainer4.Panel2.Controls.Add(this.button1);
             this.splitContainer4.Panel2.Controls.Add(this.progressBar1);
             this.splitContainer4.Panel2.Controls.Add(this.SelectedTable);
             this.splitContainer4.Size = new System.Drawing.Size(810, 469);
@@ -350,10 +356,21 @@
             this.label5.TabIndex = 0;
             this.label5.Text = "Tables:";
             // 
+            // button1
+            // 
+            this.button1.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.button1.Location = new System.Drawing.Point(0, 348);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(810, 27);
+            this.button1.TabIndex = 2;
+            this.button1.Text = "New";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
+            // 
             // progressBar1
             // 
             this.progressBar1.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.progressBar1.Location = new System.Drawing.Point(355, 191);
+            this.progressBar1.Location = new System.Drawing.Point(355, 200);
             this.progressBar1.MarqueeAnimationSpeed = 50;
             this.progressBar1.Name = "progressBar1";
             this.progressBar1.Size = new System.Drawing.Size(100, 15);
@@ -555,7 +572,7 @@
         private System.Windows.Forms.DataGridView SelectedTable;
         private System.Windows.Forms.SplitContainer splitContainer4;
         private System.Windows.Forms.Label label5;
-        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button DisconnectButton;
         private System.Windows.Forms.SplitContainer splitContainer5;
         private System.Windows.Forms.TabControl tabControl1;
         private System.Windows.Forms.TabPage tabPage1;
@@ -574,6 +591,7 @@
         private System.Windows.Forms.ProgressBar progressBar1;
         private System.Windows.Forms.Button ConnectServer;
         private System.Windows.Forms.ComboBox DbName;
+        private System.Windows.Forms.Button button1;
     }
 }
 

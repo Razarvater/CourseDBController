@@ -51,14 +51,14 @@ namespace Bd_Curs
             }
             
 
-            for (int j = 0;j < db.PrimaryKeys[db.TableNames.IndexOf(SelectedTableName)].Count;j++)
+            for (int j = 0;j < db.Tables[SelectedTableNameINT].PrimaryKeys.Count;j++)
             {
-                if(j>0)Query += $" AND {db.PrimaryKeys[db.TableNames.IndexOf(SelectedTableName)][j]} = ";
-                else Query += $"{db.PrimaryKeys[db.TableNames.IndexOf(SelectedTableName)][j]} = ";
-                Parameter = db.PrimaryKeys[db.TableNames.IndexOf(SelectedTableName)][j];
+                if(j>0)Query += $" AND {db.Tables[SelectedTableNameINT].PrimaryKeys[j]} = ";
+                else Query += $"{db.Tables[SelectedTableNameINT].PrimaryKeys[j]} = ";
+                Parameter = db.Tables[SelectedTableNameINT].PrimaryKeys[j];
                 for (int i = 0; i < SelectedTable.Rows[0].Cells.Count; i++)
                 {
-                    if (SelectedTable.Columns[i].HeaderText == db.PrimaryKeys[db.TableNames.IndexOf(SelectedTableName)][j])
+                    if (SelectedTable.Columns[i].HeaderText == db.Tables[SelectedTableNameINT].PrimaryKeys[j])
                     {
                         if (float.TryParse(SelectedParSecond.Cells[SelectedColumnIndex].Value.ToString(), out temp))
                         {
@@ -76,12 +76,15 @@ namespace Bd_Curs
             }
 
             sqlCommand.CommandText = Query;
+            MessageBox.Show(Query);
             IsUpdate = true;
 
             Thread UpdateThread = new Thread(() => db.SetQueryAsync(Query,sqlCommand));//Создание потока с запросом
             UpdateThread.Start();//Старт потока
             QueueTimer.Start();//Старт таймера на проверку завершения потока
             RunCounter();//Старт Счётчиков
+            SelectedParLast = null;
+            SelectedParSecond = null;
         }
     }
 }                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 

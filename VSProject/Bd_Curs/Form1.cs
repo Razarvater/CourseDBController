@@ -16,6 +16,7 @@ namespace Bd_Curs
         private bool IsError = false;
         private int ButtonsMin = 100;//Кнопки таблиц
         private string SelectedTableName;
+        private int SelectedTableNameINT;
         private int IndexSelectedTable = 0;
         private Stopwatch sw = new Stopwatch();
         public Form1()
@@ -33,6 +34,7 @@ namespace Bd_Curs
         private void UpdateTimer_Tick(object sender, EventArgs e) => UpdateTable();//Таймер на обновление таблицы
         private async void ConnectButton_Click(object sender, EventArgs e)//Подключение к БД
         {
+            if (DbName.Text == string.Empty) return;
 
             if (!db_Connected)//Если БД не подключена то
             {
@@ -51,14 +53,11 @@ namespace Bd_Curs
 
             if (db_Connected)//Изменение сообщения о подключении
             {
-                ConnectionStatus.Text = $"Was Connected to: Server:{ServerName.Text}          Database:{DbName.Text}";
+                ConnectionStatus.Text = $"Server:{ConnectedServer}          Database:{DbName.Text}";
                 SelectedTableName = db.TableNames[0];
+                SelectedTableNameINT = 0;
             }
-            else
-            {
-                ConnectionStatus.Text = "Wasn't Connected";
-                return;
-            }
+            else return;
             //-------------Создание кнопок таблиц------------\\
             splitContainer5.Panel2.Controls.Clear();//Очистка предыдущих кнопок
             int tempHeight = splitContainer5.Panel2.Height - 5;//Установка высоты для кнопок
@@ -76,7 +75,7 @@ namespace Bd_Curs
                 splitContainer5.Panel2.Controls.Add(temp);//Отображение кнопки
             }
             SetSelectedtable();//Отобразить первую таблицу
-            button1.Enabled = true;//Включение кнопки для дисконекта от БД
+            DisconnectButton.Enabled = true;//Включение кнопки для дисконекта от БД
 
             tabControl1.Enabled = true;//Включение контроллера таблиц
         }
@@ -109,7 +108,8 @@ namespace Bd_Curs
                     SelectedTable.RowHeadersWidth = db.TableData.Rows.Count.ToString().Length * 4 + 50;
                     //Выбор форматирования таблицы
                     if (SelectedTable.Columns.Count <= 10) SelectedTable.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
-                    else SelectedTable.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.None;
+                    else SelectedTable.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.ColumnHeader;
+                    if (SelectedTable.Width < splitContainer4.Panel2.Width) SelectedTable.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
 
                     //Сортировка таблицы по первому столбцу
                     SelectedTable.Sort(SelectedTable.Columns[0], ListSortDirection.Ascending);
@@ -125,6 +125,7 @@ namespace Bd_Curs
             splitContainer5.Panel2.Controls[IndexSelectedTable].BackColor = Color.Transparent;
             Query_IsWorking = true;
             SelectedTableName = sender.GetType().GetProperty("Text").GetValue(sender).ToString();//Задание выбранной таблицы
+            SelectedTableNameINT = Array.IndexOf(db.TableNames.ToArray(),SelectedTableName);
             IndexSelectedTable = Array.IndexOf(db.TableNames.ToArray(), SelectedTableName);//Индекс выбранной таблицы
             splitContainer5.Panel2.Controls[IndexSelectedTable].BackColor = Color.LightGreen;
             SetSelectedtable(SelectedTableName);//Печать таблицы указанной в названий кнопки
@@ -141,7 +142,7 @@ namespace Bd_Curs
 
             ConnectionStatus.Text = "Wasn't Connected";//Изменение строки подключения
 
-            button1.Enabled = false;//Выключение кнопки дисконнекта
+            DisconnectButton.Enabled = false;//Выключение кнопки дисконнекта
 
             tabControl1.Enabled = false;//Отключение контроллера форм
             CounterOfConnection.BackColor = SystemColors.AppWorkspace;//Изменение цвета отображения времени последнего запроса
@@ -187,6 +188,10 @@ namespace Bd_Curs
 
         private void ConnectServer_Click(object sender, EventArgs e)
         {
+
+            if (DisconnectButton.Enabled)
+                Disconnect_Click(this,EventArgs.Empty);
+
             ConnectedServer = ServerName.Text;
             ServerConnection serv = new ServerConnection(ServerName.Text);
             DbName.Items.Clear();
@@ -194,6 +199,25 @@ namespace Bd_Curs
             {
                 DbName.Items.Add(item);
             }
+
+            if (DbName.Items.Count > 0)
+            {
+                ConnectButton.Enabled = true;
+                DbName.Enabled = true;
+                NameBox.Enabled = true;
+                PassBox.Enabled = true;
+                ConnectionStatus.Text = $"Server:{ConnectedServer}";
+            }
+            else
+            {
+                ConnectButton.Enabled = false;
+                DbName.Enabled = false;
+                NameBox.Enabled = false;
+                PassBox.Enabled = false;
+                ConnectionStatus.Text = "Wasn't connected";
+            }
         }
+
+
     }
 }

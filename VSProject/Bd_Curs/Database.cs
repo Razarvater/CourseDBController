@@ -3,15 +3,36 @@ using System.Data.SqlClient;
 using System.Threading.Tasks;
 using System.Collections.Generic;
 using System.Data;
+using System.Windows.Forms;
+using System.Linq;
+using System.CodeDom.Compiler;
 
 namespace Bd_Curs
 {
+    public class TableSql
+    {
+        public string name;
+        public List<Column> Columns;
+        public List<string> PrimaryKeys;
+        public bool isAutoIncremented = false;
+    }
+    public class Column
+    {
+        public string TableName;
+        public string Name { get; set; }
+        public object DefaultValue;
+        public bool IsNullable;
+        public bool IsPrimaryKey;
+        public bool IsAutoIncrement;
+        public SqlDbType type;
+    }
+
     public class Database
     {
         public SqlConnection connection;//подклбючение к БД
         private SqlCommand command;//SQL команда
+        public List<TableSql> Tables;
         public List<string> TableNames;//Имена таблиц
-        public List<List<string>> PrimaryKeys;
         public DataTable TableData = new DataTable();//Выбранная таблица
 
         public delegate void MessageShow(string message);//Делегат для выдачи сообщений в форму
@@ -37,30 +58,87 @@ namespace Bd_Curs
 
             command = new SqlCommand("SELECT TABLE_NAME FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME!='sysdiagrams' AND TABLE_TYPE = 'BASE TABLE'\r\n", connection);
             SqlDataReader temp = await command.ExecuteReaderAsync();
-            TableNames = new List<string>();//Имена таблиц
+            
+            Tables = new List<TableSql>();//Имена таблиц
+            TableNames = new List<string>();
             while(await temp.ReadAsync())//Получение имён таблиц для базы данных
             {
-
                 TableNames.Add(temp[0].ToString());
+                Tables.Add(new TableSql());
+                Tables[Tables.Count - 1].name = temp[0].ToString();
             }
             temp.Close();
 
-            PrimaryKeys = new List<List<string>>();
-            for(int i = 0; i<TableNames.Count;i++)
+            
+            for (int i = 0; i < TableNames.Count; i++)
             {
                 try
                 {
+                    Tables[i].PrimaryKeys = new List<string>();
                     command = new SqlCommand($"SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.KEY_COLUMN_USAGE WHERE TABLE_NAME = '{TableNames[i]}'", connection);
                     SqlDataReader tempo = await command.ExecuteReaderAsync();
-                    PrimaryKeys.Add(new List<string>());
-                    while(await tempo.ReadAsync())
+                    while (await tempo.ReadAsync())
                     {
-                        PrimaryKeys[i].Add(tempo[0].ToString());
+                        Tables[i].PrimaryKeys.Add(tempo[0].ToString());
                     }
                     tempo.Close();
                 }
                 catch (InvalidOperationException) { }
             }
+
+            
+            
+            for (int i = 0; i < TableNames.Count; i++)
+            {
+                Tables[i].Columns = new List<Column>();
+                command = new SqlCommand($"SELECT COLUMN_NAME,COLUMN_DEFAULT,IS_NULLABLE,DATA_TYPE FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = '{TableNames[i]}'", connection);
+                temp = await command.ExecuteReaderAsync();
+                while (await temp.ReadAsync())
+                {
+                    Tables[i].Columns.Add(new Column());
+                    Tables[i].Columns[Tables[i].Columns.Count - 1].TableName = TableNames[i];
+                    Tables[i].Columns[Tables[i].Columns.Count - 1].Name = temp[0].ToString();
+                    Tables[i].Columns[Tables[i].Columns.Count - 1].DefaultValue = temp[1];
+                    Tables[i].Columns[Tables[i].Columns.Count - 1].IsNullable = temp[2].ToString() == "YES";
+                    Tables[i].Columns[Tables[i].Columns.Count - 1].IsPrimaryKey = Array.IndexOf(Tables[i].PrimaryKeys.ToArray(), $"{Tables[i].Columns[Tables[i].Columns.Count - 1].Name}") != -1;
+                    foreach (var item in Enum.GetValues(typeof(SqlDbType)).Cast<SqlDbType>())//Установка типа данных
+                    {
+                        if (item.ToString().ToLower() == temp[3].ToString().ToLower())
+                        {
+                            Tables[i].Columns[Tables[i].Columns.Count - 1].type = item;
+                            break;
+                        }
+                    }
+                }
+                temp.Close();
+            }
+           
+
+            for (int i = 0; i < TableNames.Count; i++)
+            {
+                command = new SqlCommand($"SELECT IDENT_CURRENT('{TableNames[i]}');", connection);
+                temp = await command.ExecuteReaderAsync();
+
+
+
+                await temp.ReadAsync();
+                for (int j = 0; j < Tables[i].Columns.Count && !Tables[i].isAutoIncremented; j++)
+                {
+                    bool tempbool = Tables[i].Columns[j].type != SqlDbType.TinyInt && Tables[i].Columns[j].type != SqlDbType.SmallInt && Tables[i].Columns[j].type != SqlDbType.Int;
+                    tempbool = tempbool && Tables[i].Columns[j].type != SqlDbType.BigInt && Tables[i].Columns[j].type != SqlDbType.Decimal;
+
+                   
+
+                    if (Tables[i].Columns[j].IsPrimaryKey && !tempbool )
+                    {
+                        Tables[i].Columns[j].IsAutoIncrement = temp[0].ToString() != string.Empty;
+                        if (Tables[i].Columns[j].IsAutoIncrement)
+                            Tables[i].isAutoIncremented = true;
+                    }
+                }
+                temp.Close();
+            }
+            
 
             if(Array.IndexOf(TableNames.ToArray(),"Users")!=-1)//Только если есть таблица с пользователями
                 await AuthAsync(name,password);//Авторизация 
@@ -172,7 +250,7 @@ namespace Bd_Curs
                 {
                     command.CommandTimeout = 180;
                     command.ExecuteNonQuery();//Выполнение запроса не на выборку
-                    GetSelectedTable(TableName);//Отображение таблицы к которой применялся запрос
+                    IsQueryCompleted = true;//Запрос завершён
                 }
             }
             catch (SqlException ex)
