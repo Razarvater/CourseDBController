@@ -36,6 +36,8 @@ namespace Bd_Curs
         {
             if (DbName.Text == string.Empty) return;
 
+            tabControl1.SelectedTab = tabPage1;
+
             if (!db_Connected)//Если БД не подключена то
             {
                 db = new Database(ConnectedServer, DbName.Text);//Создать новое подключение к БД
@@ -61,21 +63,42 @@ namespace Bd_Curs
             //-------------Создание кнопок таблиц------------\\
             splitContainer5.Panel2.Controls.Clear();//Очистка предыдущих кнопок
             int tempHeight = splitContainer5.Panel2.Height - 5;//Установка высоты для кнопок
+            int tempCount = 0;
             //уменьшить высоту кнопок если они не помещаются в контейнер
             if (ButtonsMin * db.TableNames.Count > splitContainer5.Panel2.Width) tempHeight -= 16;
             for (int i = 0; i < db.TableNames.Count; i++)//Создание кнопок для всех таблиц
             {
+                if (db.TableNames[i] == "Users")
+                {
+                    Button tempr = new Button();
+
+                    tempr.Text = db.TableNames[i].ToString();//Установка текста кнопки
+                    tempr.Location = new Point(ButtonsMin * tempCount, 0);//Установка следующей позиции кнопки
+                    tempr.Size = new Size(0, 0);//Установка размера кнопки
+                    tempr.Click += new EventHandler(ChooseNewTable);//Установка события на смену отображаемой таблицы
+
+                    tempr.TabStop = false;
+                    splitContainer5.Panel2.Controls.Add(tempr);//Отображение кнопки
+
+                    continue;
+                }
+   
                 Button temp = new Button();
 
                 temp.Text = db.TableNames[i].ToString();//Установка текста кнопки
-                temp.Location = new Point(ButtonsMin * i, 0);//Установка следующей позиции кнопки
+                temp.Location = new Point(ButtonsMin * tempCount, 0);//Установка следующей позиции кнопки
                 temp.Size = new Size(ButtonsMin, tempHeight);//Установка размера кнопки
                 temp.Click += new EventHandler(ChooseNewTable);//Установка события на смену отображаемой таблицы
 
                 splitContainer5.Panel2.Controls.Add(temp);//Отображение кнопки
+                tempCount++;
+
+                
             }
+            //db.TableNames.Remove("Users");
             SetSelectedtable();//Отобразить первую таблицу
             DisconnectButton.Enabled = true;//Включение кнопки для дисконекта от БД
+            IndexSelectedTable = 0;
 
             tabControl1.Enabled = true;//Включение контроллера таблиц
         }
@@ -83,6 +106,7 @@ namespace Bd_Curs
         {
             if (name == "DeFaUlT_TaBlE") name = db.TableNames[0];//Если имя таблицы не задано то выбрать первое из доступных
 
+            splitContainer5.Panel2.Controls[IndexSelectedTable].BackColor = Color.LightGreen;
             SelectedTable.DataSource = null;//очистка выделенной таблицы
             Thread UpdateThread = new Thread(() => db.GetSelectedTable($"{name}"));//Создание потока с запросом
             UpdateThread.Start();//Стар потока
@@ -108,11 +132,20 @@ namespace Bd_Curs
                     SelectedTable.RowHeadersWidth = db.TableData.Rows.Count.ToString().Length * 4 + 50;
                     //Выбор форматирования таблицы
                     if (SelectedTable.Columns.Count <= 10) SelectedTable.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
-                    else SelectedTable.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.ColumnHeader;
-                    if (SelectedTable.Width < splitContainer4.Panel2.Width) SelectedTable.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+                    else
+                    {
+                        SelectedTable.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.None;
+                        for (int i = 0; i < SelectedTable.Columns.Count; i++)
+                        {
+                            SelectedTable.Columns[i].Width = 100;
+                        }
+                    }
+                    if (SelectedTable.Columns[0].Width * SelectedTable.Columns.Count <= splitContainer4.Panel2.Width) SelectedTable.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
 
                     //Сортировка таблицы по первому столбцу
                     SelectedTable.Sort(SelectedTable.Columns[0], ListSortDirection.Ascending);
+                    //СОздание формы редактирования
+                    CreateInsertForm();
                 }
             IsError = false;
             IsUpdate = false;
@@ -120,6 +153,7 @@ namespace Bd_Curs
         }
         private void ChooseNewTable(object sender, EventArgs e)//Выбор другой таблицы
         {
+            tabControl1.SelectedTab = tabPage1;
             if (IsQueryWorked()) return;//Если запрос уже активен и выполняется, ничего не делать
 
             splitContainer5.Panel2.Controls[IndexSelectedTable].BackColor = Color.Transparent;

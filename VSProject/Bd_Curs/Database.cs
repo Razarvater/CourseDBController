@@ -116,18 +116,16 @@ namespace Bd_Curs
 
             for (int i = 0; i < TableNames.Count; i++)
             {
+
+
                 command = new SqlCommand($"SELECT IDENT_CURRENT('{TableNames[i]}');", connection);
                 temp = await command.ExecuteReaderAsync();
-
-
 
                 await temp.ReadAsync();
                 for (int j = 0; j < Tables[i].Columns.Count && !Tables[i].isAutoIncremented; j++)
                 {
                     bool tempbool = Tables[i].Columns[j].type != SqlDbType.TinyInt && Tables[i].Columns[j].type != SqlDbType.SmallInt && Tables[i].Columns[j].type != SqlDbType.Int;
                     tempbool = tempbool && Tables[i].Columns[j].type != SqlDbType.BigInt && Tables[i].Columns[j].type != SqlDbType.Decimal;
-
-                   
 
                     if (Tables[i].Columns[j].IsPrimaryKey && !tempbool )
                     {
@@ -142,7 +140,7 @@ namespace Bd_Curs
 
             if(Array.IndexOf(TableNames.ToArray(),"Users")!=-1)//Только если есть таблица с пользователями
                 await AuthAsync(name,password);//Авторизация 
-            TableNames.Remove("Users");
+            //TableNames.Remove("Users");
         }
         public async Task AuthAsync(string name, string password)//Авторизация в базе данных
         {
