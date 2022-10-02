@@ -209,6 +209,7 @@ namespace Bd_Curs
 
                 bool IsTableName = false;//Является ли следующее слово в запросе именем таблицы
                 bool IsSelect = false;
+                bool IsDelete = false;
                 string tempstr = string.Empty;
 
                 foreach (var item in Query)//Определение таблицы к которой применялся запрос
@@ -233,6 +234,8 @@ namespace Bd_Curs
                            
                         if (tempstr == "SELECT")//Если запрос на выборку
                             IsSelect = true;
+                        if (tempstr == "DELETE")//Если запрос на удаление то выбрать повторно
+                            IsDelete = true;
 
                         tempstr = String.Empty;//Очистка предыдущего слова
                     }
@@ -251,6 +254,12 @@ namespace Bd_Curs
                 {
                     command.CommandTimeout = 180;
                     command.ExecuteNonQuery();//Выполнение запроса не на выборку
+                    if(IsDelete)
+                    {
+                        SqlDataAdapter adapter = new SqlDataAdapter(new SqlCommand($"SELECT * FROM {TableName}",connection));//Создание адаптера
+                        TableData = new DataTable();//Очистка предыдущей выбранной таблицы
+                        adapter.Fill(TableData);//Заполнение новыми данными
+                    }
                     IsQueryCompleted = true;//Запрос завершён
                 }
             }

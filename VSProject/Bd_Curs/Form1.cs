@@ -10,15 +10,14 @@ namespace Bd_Curs
     public partial class Form1 : Form
     {
         private Database db;//Переменная базы данных
-        private string ConnectedServer;
+        private string ConnectedServer;//Имя поключенного сервера
         private bool db_Connected = false;//Подключена ли БД
-        private bool Query_IsWorking = false;
-        private bool IsError = false;
+        private bool Query_IsWorking = false;//Статус выполнения запроса
+        private bool IsError = false;//Возникла ли ошибка
         private int ButtonsMin = 100;//Кнопки таблиц
-        private string SelectedTableName;
-        private int SelectedTableNameINT;
-        private int IndexSelectedTable = 0;
-        private Stopwatch sw = new Stopwatch();
+        private string SelectedTableName;//Имя выбранной таблицы
+        private int IndexSelectedTable = 0;//Индекс выбраной таблицы
+        private Stopwatch Query_Time = new Stopwatch();//Время выполнения запроса
         public Form1()
         {
             InitializeComponent();
@@ -35,7 +34,7 @@ namespace Bd_Curs
         {
             if (DbName.Text == string.Empty) return;
 
-            tabControl1.SelectedTab = tabPage1;
+            tabControl1.SelectedTab = tabPage1;//Выбрана первая форма редактирования
 
             if (!db_Connected)//Если БД не подключена то
             {
@@ -47,7 +46,7 @@ namespace Bd_Curs
                 db = new Database(ConnectedServer, DbName.Text);//Создать новое подключение к БД
             }
 
-            db.Show += Message;
+            db.Show += Message;//Подключение Message
 
             await db.startConnectionAsync(NameBox.Text, PassBox.Text);//Подключение к базе данных
             db_Connected = db.Connected;//Подключена ли БД
@@ -55,8 +54,7 @@ namespace Bd_Curs
             if (db_Connected)//Изменение сообщения о подключении
             {
                 ConnectionStatus.Text = $"Server:{ConnectedServer}          Database:{DbName.Text}";
-                SelectedTableName = db.TableNames[0];
-                SelectedTableNameINT = 0;
+                SelectedTableName = db.TableNames[0];//Выбранная таблица
             }
             else return;
             //-------------Создание кнопок таблиц------------\\
@@ -67,7 +65,7 @@ namespace Bd_Curs
             if (ButtonsMin * db.TableNames.Count > splitContainer5.Panel2.Width) tempHeight -= 16;
             for (int i = 0; i < db.TableNames.Count; i++)//Создание кнопок для всех таблиц
             {
-                if (db.TableNames[i] == "Users")
+                if (db.TableNames[i] == "Users")//Если таблица Users
                 {
                     Button tempr = new Button();
 
@@ -79,7 +77,7 @@ namespace Bd_Curs
                     tempr.TabStop = false;
                     splitContainer5.Panel2.Controls.Add(tempr);//Отображение кнопки
 
-                    continue;
+                    continue;//То напечатать размерами 0 на 0 и скрыть под следующей кнопкой
                 }
    
                 Button temp = new Button();
@@ -94,10 +92,9 @@ namespace Bd_Curs
 
                 
             }
-            //db.TableNames.Remove("Users");
             SetSelectedtable();//Отобразить первую таблицу
             DisconnectButton.Enabled = true;//Включение кнопки для дисконекта от БД
-            IndexSelectedTable = 0;
+            IndexSelectedTable = 0;//Индекс выбранной таблицы
 
             tabControl1.Enabled = true;//Включение контроллера таблиц
         }
@@ -108,8 +105,11 @@ namespace Bd_Curs
             CreateInsertForm();
             //Создание формы отображения
             InitSelectForm();
+            //Создание формы Удаления
+            InitConditionsDel();
             if (name == "DeFaUlT_TaBlE") name = db.TableNames[0];//Если имя таблицы не задано то выбрать первое из доступных
 
+            //Установка цвета выбранной кнопки таблицы
             splitContainer5.Panel2.Controls[IndexSelectedTable].BackColor = Color.LightGreen;
             SelectedTable.DataSource = null;//очистка выделенной таблицы
             Thread UpdateThread = new Thread(() => db.GetSelectedTable($"{name}"));//Создание потока с запросом
@@ -141,15 +141,21 @@ namespace Bd_Curs
                         SelectedTable.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.None;
                         for (int i = 0; i < SelectedTable.Columns.Count; i++)
                         {
-                            SelectedTable.Columns[i].Width = 100;
+                            SelectedTable.Columns[i].Width = 100;//Установка дефолтной ширины столбцов
                         }
                     }
                     if (SelectedTable.Columns[0].Width * SelectedTable.Columns.Count <= splitContainer4.Panel2.Width) SelectedTable.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
 
                     //Сортировка таблицы по первому столбцу
                     SelectedTable.Sort(SelectedTable.Columns[0], ListSortDirection.Ascending);
-
+                    
+                    //Переинициализация форм
                     InitConditions();
+                    InitConditionsDel();
+                }
+                if (IsInsert && !IsError)//Создание новой строки
+                {
+                    NewRow();
                 }
             IsError = false;
             IsUpdate = false;
@@ -157,48 +163,44 @@ namespace Bd_Curs
         }
         private void ChooseNewTable(object sender, EventArgs e)//Выбор другой таблицы
         {
-
             if (IsQueryWorked()) return;//Если запрос уже активен и выполняется, ничего не делать
-
+            //Сброс цвета предыдущей выбранной кнопки
             splitContainer5.Panel2.Controls[IndexSelectedTable].BackColor = Color.Transparent;
-            Query_IsWorking = true;
+            Query_IsWorking = true;//Обновление статуса выполнения запроса
             SelectedTableName = sender.GetType().GetProperty("Text").GetValue(sender).ToString();//Задание выбранной таблицы
-            SelectedTableNameINT = Array.IndexOf(db.TableNames.ToArray(),SelectedTableName);
             IndexSelectedTable = Array.IndexOf(db.TableNames.ToArray(), SelectedTableName);//Индекс выбранной таблицы
             splitContainer5.Panel2.Controls[IndexSelectedTable].BackColor = Color.LightGreen;
             SetSelectedtable(SelectedTableName);//Печать таблицы указанной в названий кнопки
         }
-
         private void Disconnect_Click(object sender, EventArgs e)//Дисконнект
         {
-            db.CloseConnection();
+            db.CloseConnection();//Закрытие подключения
 
             SelectedTable.Columns.Clear();//Очистка выделенного поля
-            splitContainer5.Panel2.Controls.Clear();
+            splitContainer5.Panel2.Controls.Clear();//Очистка выбранных таблиц
 
             db_Connected = db.Connected;//Подключена ли БД
 
             ConnectionStatus.Text = "Wasn't Connected";//Изменение строки подключения
 
             DisconnectButton.Enabled = false;//Выключение кнопки дисконнекта
-
+            tabControl1.SelectedTab = tabPage1;//Выбор первой формы редактирования
             tabControl1.Enabled = false;//Отключение контроллера форм
-            CounterOfConnection.BackColor = SystemColors.AppWorkspace;//Изменение цвета отображения времени последнего запроса
-            CounterOfConnection.Text = string.Empty;
+            CounterOfConnection.Text = string.Empty;//Обнуление счётчика
 
         }
         private void UpdateTimeTimer_Tick(object sender, EventArgs e)=>
-            CounterOfConnection.Text = $"Time of query: {(decimal)sw.ElapsedMilliseconds/(decimal)1000}";//Обновление счётчика
+            CounterOfConnection.Text = $"Time of query: {(decimal)Query_Time.ElapsedMilliseconds/(decimal)1000}";//Обновление счётчика
         private void RunCounter()
         {
             progressBar1.Visible = true;
-            sw.Restart();//Рестарт счётчика времени
+            Query_Time.Restart();//Рестарт счётчика времени
             UpdateTimeTimer.Start();//Старт таймера для отображения времени
         }
         private void StopCounter()
         {
             progressBar1.Visible = false;
-            sw.Stop();//Остановка счётчика времени
+            Query_Time.Stop();//Остановка счётчика времени
             UpdateTimeTimer.Stop();//Остановка таймера для отображения времени
         }
         private bool IsQueryWorked()
@@ -220,25 +222,21 @@ namespace Bd_Curs
             if (header == null || !header.Equals(indexStr))
                 SelectedTable.Rows[Index].HeaderCell.Value = indexStr;
         }
-
         //Заглушка для отсутствия ошибки о слишком длинных полях
         private void SelectedTable_DataError(object sender, DataGridViewDataErrorEventArgs e) { }
-
-        private void ConnectServer_Click(object sender, EventArgs e)
+        private void ConnectServer_Click(object sender, EventArgs e)//Подключение к серверу и получение списка Баз данных
         {
-
             if (DisconnectButton.Enabled)
-                Disconnect_Click(this,EventArgs.Empty);
+                Disconnect_Click(this,EventArgs.Empty);//Отключится от Базы данных если уже подключены к БД
 
-            ConnectedServer = ServerName.Text;
-            ServerConnection serv = new ServerConnection(ServerName.Text);
-            DbName.Items.Clear();
-            foreach (var item in serv.GetDatabases())
+            ConnectedServer = ServerName.Text;//Изменение подключенного сервера
+            ServerConnection serv = new ServerConnection(ServerName.Text);//Подключение к серверу
+            DbName.Items.Clear();//Очистка списка баз данных
+            foreach (var item in serv.GetDatabases())//Получение списка всех Баз данных на данном сервере
             {
-                DbName.Items.Add(item);
+                DbName.Items.Add(item);//Отображение их в списке
             }
-
-            if (DbName.Items.Count > 0)
+            if (DbName.Items.Count > 0)//Включение/отключение возможности подключится к БД
             {
                 ConnectButton.Enabled = true;
                 DbName.Enabled = true;
@@ -255,7 +253,5 @@ namespace Bd_Curs
                 ConnectionStatus.Text = "Wasn't connected";
             }
         }
-
-
     }
 }

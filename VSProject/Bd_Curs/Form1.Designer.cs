@@ -51,16 +51,17 @@
             this.label5 = new System.Windows.Forms.Label();
             this.progressBar1 = new System.Windows.Forms.ProgressBar();
             this.SelectedTable = new System.Windows.Forms.DataGridView();
-            this.QueueTimer = new System.Windows.Forms.Timer(this.components);
-            this.UpdateTimer = new System.Windows.Forms.Timer(this.components);
-            this.UpdateTimeTimer = new System.Windows.Forms.Timer(this.components);
-            this.tabPage3 = new System.Windows.Forms.TabPage();
-            this.tabPage2 = new System.Windows.Forms.TabPage();
-            this.tabPage1 = new System.Windows.Forms.TabPage();
             this.tabControl1 = new System.Windows.Forms.TabControl();
+            this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.tabPage2 = new System.Windows.Forms.TabPage();
+            this.tabPage3 = new System.Windows.Forms.TabPage();
             this.tabControl2 = new System.Windows.Forms.TabControl();
             this.tabPage4 = new System.Windows.Forms.TabPage();
             this.tabPage5 = new System.Windows.Forms.TabPage();
+            this.tabPage6 = new System.Windows.Forms.TabPage();
+            this.QueueTimer = new System.Windows.Forms.Timer(this.components);
+            this.UpdateTimer = new System.Windows.Forms.Timer(this.components);
+            this.UpdateTimeTimer = new System.Windows.Forms.Timer(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -81,8 +82,8 @@
             this.splitContainer5.Panel1.SuspendLayout();
             this.splitContainer5.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.SelectedTable)).BeginInit();
-            this.tabPage3.SuspendLayout();
             this.tabControl1.SuspendLayout();
+            this.tabPage3.SuspendLayout();
             this.tabControl2.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -357,7 +358,7 @@
             // progressBar1
             // 
             this.progressBar1.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.progressBar1.Location = new System.Drawing.Point(355, 206);
+            this.progressBar1.Location = new System.Drawing.Point(355, 208);
             this.progressBar1.MarqueeAnimationSpeed = 50;
             this.progressBar1.Name = "progressBar1";
             this.progressBar1.Size = new System.Drawing.Size(100, 15);
@@ -382,43 +383,19 @@
             this.SelectedTable.DataError += new System.Windows.Forms.DataGridViewDataErrorEventHandler(this.SelectedTable_DataError);
             this.SelectedTable.RowPostPaint += new System.Windows.Forms.DataGridViewRowPostPaintEventHandler(this.SelectedTable_RowPostPaint);
             // 
-            // QueueTimer
+            // tabControl1
             // 
-            this.QueueTimer.Interval = 10;
-            this.QueueTimer.Tick += new System.EventHandler(this.Timer1_Tick);
-            // 
-            // UpdateTimer
-            // 
-            this.UpdateTimer.Interval = 1;
-            this.UpdateTimer.Tick += new System.EventHandler(this.UpdateTimer_Tick);
-            // 
-            // UpdateTimeTimer
-            // 
-            this.UpdateTimeTimer.Interval = 2;
-            this.UpdateTimeTimer.Tick += new System.EventHandler(this.UpdateTimeTimer_Tick);
-            // 
-            // tabPage3
-            // 
-            this.tabPage3.Controls.Add(this.tabControl2);
-            this.tabPage3.Location = new System.Drawing.Point(4, 22);
-            this.tabPage3.Name = "tabPage3";
-            this.tabPage3.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage3.Size = new System.Drawing.Size(802, 151);
-            this.tabPage3.TabIndex = 2;
-            this.tabPage3.Text = "Sample form";
-            this.tabPage3.UseVisualStyleBackColor = true;
-            // 
-            // tabPage2
-            // 
-            this.tabPage2.AutoScroll = true;
-            this.tabPage2.AutoScrollMinSize = new System.Drawing.Size(0, 160);
-            this.tabPage2.Location = new System.Drawing.Point(4, 22);
-            this.tabPage2.Name = "tabPage2";
-            this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(802, 151);
-            this.tabPage2.TabIndex = 3;
-            this.tabPage2.Text = "Insert Form";
-            this.tabPage2.UseVisualStyleBackColor = true;
+            this.tabControl1.Controls.Add(this.tabPage1);
+            this.tabControl1.Controls.Add(this.tabPage2);
+            this.tabControl1.Controls.Add(this.tabPage3);
+            this.tabControl1.Controls.Add(this.tabPage6);
+            this.tabControl1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tabControl1.Location = new System.Drawing.Point(0, 0);
+            this.tabControl1.Multiline = true;
+            this.tabControl1.Name = "tabControl1";
+            this.tabControl1.SelectedIndex = 0;
+            this.tabControl1.Size = new System.Drawing.Size(810, 177);
+            this.tabControl1.TabIndex = 7;
             // 
             // tabPage1
             // 
@@ -430,18 +407,28 @@
             this.tabPage1.Text = "ControlSelectedTable";
             this.tabPage1.UseVisualStyleBackColor = true;
             // 
-            // tabControl1
+            // tabPage2
             // 
-            this.tabControl1.Controls.Add(this.tabPage1);
-            this.tabControl1.Controls.Add(this.tabPage2);
-            this.tabControl1.Controls.Add(this.tabPage3);
-            this.tabControl1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tabControl1.Location = new System.Drawing.Point(0, 0);
-            this.tabControl1.Multiline = true;
-            this.tabControl1.Name = "tabControl1";
-            this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(810, 177);
-            this.tabControl1.TabIndex = 7;
+            this.tabPage2.AutoScroll = true;
+            this.tabPage2.AutoScrollMinSize = new System.Drawing.Size(0, 160);
+            this.tabPage2.Location = new System.Drawing.Point(4, 22);
+            this.tabPage2.Name = "tabPage2";
+            this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage2.Size = new System.Drawing.Size(798, 150);
+            this.tabPage2.TabIndex = 3;
+            this.tabPage2.Text = "Insert Form";
+            this.tabPage2.UseVisualStyleBackColor = true;
+            // 
+            // tabPage3
+            // 
+            this.tabPage3.Controls.Add(this.tabControl2);
+            this.tabPage3.Location = new System.Drawing.Point(4, 22);
+            this.tabPage3.Name = "tabPage3";
+            this.tabPage3.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage3.Size = new System.Drawing.Size(802, 151);
+            this.tabPage3.TabIndex = 2;
+            this.tabPage3.Text = "Sample form";
+            this.tabPage3.UseVisualStyleBackColor = true;
             // 
             // tabControl2
             // 
@@ -474,6 +461,31 @@
             this.tabPage5.TabIndex = 1;
             this.tabPage5.Text = "Conditions";
             this.tabPage5.UseVisualStyleBackColor = true;
+            // 
+            // tabPage6
+            // 
+            this.tabPage6.Location = new System.Drawing.Point(4, 22);
+            this.tabPage6.Name = "tabPage6";
+            this.tabPage6.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage6.Size = new System.Drawing.Size(798, 150);
+            this.tabPage6.TabIndex = 4;
+            this.tabPage6.Text = "Delete Form";
+            this.tabPage6.UseVisualStyleBackColor = true;
+            // 
+            // QueueTimer
+            // 
+            this.QueueTimer.Interval = 10;
+            this.QueueTimer.Tick += new System.EventHandler(this.Timer1_Tick);
+            // 
+            // UpdateTimer
+            // 
+            this.UpdateTimer.Interval = 1;
+            this.UpdateTimer.Tick += new System.EventHandler(this.UpdateTimer_Tick);
+            // 
+            // UpdateTimeTimer
+            // 
+            this.UpdateTimeTimer.Interval = 2;
+            this.UpdateTimeTimer.Tick += new System.EventHandler(this.UpdateTimeTimer_Tick);
             // 
             // Form1
             // 
@@ -511,8 +523,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer5)).EndInit();
             this.splitContainer5.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.SelectedTable)).EndInit();
-            this.tabPage3.ResumeLayout(false);
             this.tabControl1.ResumeLayout(false);
+            this.tabPage3.ResumeLayout(false);
             this.tabControl2.ResumeLayout(false);
             this.ResumeLayout(false);
 
@@ -551,6 +563,7 @@
         private System.Windows.Forms.TabControl tabControl2;
         private System.Windows.Forms.TabPage tabPage4;
         private System.Windows.Forms.TabPage tabPage5;
+        private System.Windows.Forms.TabPage tabPage6;
     }
 }
 
