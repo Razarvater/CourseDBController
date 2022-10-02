@@ -22,7 +22,6 @@ namespace Bd_Curs
         public Form1()
         {
             InitializeComponent();
-            WhereSelectBoxes.Add(ConditionSelect);//Добавления текстбокс с условием в коллекцию
             tabControl1.Enabled = false;
         }
         public void Message(string mess) 
@@ -144,8 +143,10 @@ namespace Bd_Curs
 
                     //Сортировка таблицы по первому столбцу
                     SelectedTable.Sort(SelectedTable.Columns[0], ListSortDirection.Ascending);
-                    //СОздание формы редактирования
+                    //Создание формы редактирования
                     CreateInsertForm();
+                    //Создание формы отображения
+                    InitSelectForm();
                 }
             IsError = false;
             IsUpdate = false;

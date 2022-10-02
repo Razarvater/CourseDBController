@@ -5,6 +5,7 @@ using System.Data.SqlClient;
 using System;
 using System.Drawing;
 using System.Collections.Generic;
+using System.Windows.Forms.VisualStyles;
 
 namespace Bd_Curs
 {
@@ -12,7 +13,7 @@ namespace Bd_Curs
     {
         private List<Control> InsertBoxes;
         private List<Label> labels;
-        
+
         private void CreateInsertForm()
         {
             int Y = 10;
@@ -21,9 +22,9 @@ namespace Bd_Curs
             InsertBoxes = new List<Control>();
             labels = new List<Label>();
             tabPage2.Controls.Clear();
-            if(SelectedTableName == "Employees")
+            if (SelectedTableName == "Employees")
                 Console.WriteLine("");
-            for (int i = 0; i < db.Tables[SelectedTableNameINT].Columns.Count;i++)
+            for (int i = 0; i < db.Tables[SelectedTableNameINT].Columns.Count; i++)
             {
                 if (db.Tables[SelectedTableNameINT].Columns[i].IsAutoIncrement || db.Tables[SelectedTableNameINT].Columns[i].type == SqlDbType.Image) continue;
 
@@ -46,13 +47,15 @@ namespace Bd_Curs
                     temp.Size = new Size(100, 20);
                     temp.Name = $"{db.Tables[SelectedTableNameINT].Columns[i].Name}";
                     temp.Anchor = AnchorStyles.Left;
+                    temp.CheckedChanged += CheckClick;
+                    CheckClick(temp, EventArgs.Empty);
                     InsertBoxes.Add(temp);//Добавление в коллекцию 
                     tabPage2.Controls.Add(InsertBoxes[InsertBoxes.Count - 1]);//Добавление на страницу
                 }
-                
+
                 Label tempo = new Label();
-                tempo.Location = new Point(X - 100,Y + 3);
-                tempo.Size = new Size(100,13);
+                tempo.Location = new Point(X - 100, Y + 3);
+                tempo.Size = new Size(100, 13);
                 tempo.Text = $"{db.Tables[SelectedTableNameINT].Columns[i].Name}";
                 tempo.Anchor = AnchorStyles.Left;
                 labels.Add(tempo);//Добавление в коллекцию 
@@ -74,26 +77,44 @@ namespace Bd_Curs
             button.Click += button1_Click;
             tabPage2.Controls.Add(button);//Добавление на страницу
         }
-        
+        private void CheckClick(object sender, EventArgs e)
+        {
+            if(sender.GetType().GetProperty("Checked").GetValue(sender).ToString().ToLower() == "true")
+                sender.GetType().GetProperty("Text").SetValue(sender,"True");
+            else
+                sender.GetType().GetProperty("Text").SetValue(sender,"False");
+        }
         private void button1_Click(object sender, EventArgs e)//Короче вместо всей этой херни автогенерируемую форму сделать и не париться...
         {
             ((DataTable) SelectedTable.DataSource).Rows.Add();
-            //SelectedTable.Rows[0].Cells[i].Value = InsertBoxes[i].Text;
+
             int tempINdex = 0;
 
-                for (int i = 0; i < SelectedTable.Rows[0].Cells.Count; i++)
+            for (int i = 0; i < SelectedTable.Rows[0].Cells.Count; i++)
+            {
+                foreach (var item2 in InsertBoxes)
                 {
-                    foreach (var item2 in InsertBoxes)
+                    if (SelectedTable.Columns[i].HeaderText == item2.Name)
                     {
-                        if (SelectedTable.Columns[i].HeaderText == item2.Name)
-                        {
-                            SelectedTable.Rows[0].Cells[tempINdex].Value = item2.Text;
-                            
-                            break;
-                        }
+                        SelectedTable.Rows[0].Cells[tempINdex].Value = item2.Text;
+                        break;
                     }
-                    tempINdex++;
+                   
                 }
+                tempINdex++;
+            }
+            for (int i = 0; i < SelectedTable.Rows[0].Cells.Count; i++)
+            {
+                foreach (var item in db.Tables[IndexSelectedTable].Columns)
+                {
+                    if (SelectedTable.Columns[i].HeaderText == item.Name && item.IsAutoIncrement)
+                    {
+                        SelectedTable.Rows[0].Cells[i].Value = db.GetAutoIndex(SelectedTableName).ToString();
+                        i = SelectedTable.Rows[0].Cells.Count;
+                        break;
+                    }
+                }
+            }
 
             string Query = $"INSERT INTO [{SelectedTableName}] (";
             for (int i = 0; i < InsertBoxes.Count; i++)
@@ -118,7 +139,6 @@ namespace Bd_Curs
             Query = Query.Remove(Query.Length - 2);
             Query += ")";
             sqlCommand.CommandText = Query;
-            ColumnsSELECT.Text = Query;
 
             IsUpdate = true;
             Thread UpdateThread = new Thread(() => db.SetQueryAsync(Query, sqlCommand));//Создание потока с запросом

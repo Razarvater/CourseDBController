@@ -257,5 +257,16 @@ namespace Bd_Curs
                 Show.Invoke($"An SQL exception occurred, please check the correctness of the entered query: [{ex.Number}|{ex.Message}]");
             }
         }
+        public int GetAutoIndex(string NameTable)
+        {
+            SqlCommand command = new SqlCommand($"SELECT IDENT_CURRENT('{NameTable}');", connection);
+            SqlDataReader temp = command.ExecuteReader();
+
+            temp.ReadAsync();
+                int Result = int.Parse(temp[0].ToString()) + 1;
+            temp.Close();
+
+            return Result;
+        }
     }     
 }

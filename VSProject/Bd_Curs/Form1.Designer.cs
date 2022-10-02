@@ -57,11 +57,6 @@
             this.tabPage3 = new System.Windows.Forms.TabPage();
             this.checkBox2 = new System.Windows.Forms.CheckBox();
             this.button3 = new System.Windows.Forms.Button();
-            this.AddNewConditionButton = new System.Windows.Forms.Button();
-            this.ConditionLabel = new System.Windows.Forms.Label();
-            this.ConditionSelect = new System.Windows.Forms.TextBox();
-            this.ColumnsSELECT = new System.Windows.Forms.TextBox();
-            this.ColumnsLabel = new System.Windows.Forms.Label();
             this.QueueTimer = new System.Windows.Forms.Timer(this.components);
             this.UpdateTimer = new System.Windows.Forms.Timer(this.components);
             this.UpdateTimeTimer = new System.Windows.Forms.Timer(this.components);
@@ -359,7 +354,7 @@
             // progressBar1
             // 
             this.progressBar1.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.progressBar1.Location = new System.Drawing.Point(355, 204);
+            this.progressBar1.Location = new System.Drawing.Point(355, 205);
             this.progressBar1.MarqueeAnimationSpeed = 50;
             this.progressBar1.Name = "progressBar1";
             this.progressBar1.Size = new System.Drawing.Size(100, 15);
@@ -422,15 +417,10 @@
             // 
             this.tabPage3.Controls.Add(this.checkBox2);
             this.tabPage3.Controls.Add(this.button3);
-            this.tabPage3.Controls.Add(this.AddNewConditionButton);
-            this.tabPage3.Controls.Add(this.ConditionLabel);
-            this.tabPage3.Controls.Add(this.ConditionSelect);
-            this.tabPage3.Controls.Add(this.ColumnsSELECT);
-            this.tabPage3.Controls.Add(this.ColumnsLabel);
             this.tabPage3.Location = new System.Drawing.Point(4, 22);
             this.tabPage3.Name = "tabPage3";
             this.tabPage3.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage3.Size = new System.Drawing.Size(798, 150);
+            this.tabPage3.Size = new System.Drawing.Size(802, 151);
             this.tabPage3.TabIndex = 2;
             this.tabPage3.Text = "Sample form";
             this.tabPage3.UseVisualStyleBackColor = true;
@@ -455,50 +445,6 @@
             this.button3.Text = "Start Query";
             this.button3.UseVisualStyleBackColor = true;
             this.button3.Click += new System.EventHandler(this.button3_Click);
-            // 
-            // AddNewConditionButton
-            // 
-            this.AddNewConditionButton.Location = new System.Drawing.Point(6, 90);
-            this.AddNewConditionButton.Name = "AddNewConditionButton";
-            this.AddNewConditionButton.Size = new System.Drawing.Size(84, 20);
-            this.AddNewConditionButton.TabIndex = 6;
-            this.AddNewConditionButton.Text = "NewCondition";
-            this.AddNewConditionButton.UseVisualStyleBackColor = true;
-            this.AddNewConditionButton.Click += new System.EventHandler(this.AddNewConditionButton_Click);
-            // 
-            // ConditionLabel
-            // 
-            this.ConditionLabel.AutoSize = true;
-            this.ConditionLabel.Location = new System.Drawing.Point(10, 68);
-            this.ConditionLabel.Name = "ConditionLabel";
-            this.ConditionLabel.Size = new System.Drawing.Size(51, 13);
-            this.ConditionLabel.TabIndex = 5;
-            this.ConditionLabel.Text = "Condition";
-            // 
-            // ConditionSelect
-            // 
-            this.ConditionSelect.Location = new System.Drawing.Point(67, 64);
-            this.ConditionSelect.Name = "ConditionSelect";
-            this.ConditionSelect.Size = new System.Drawing.Size(100, 20);
-            this.ConditionSelect.TabIndex = 4;
-            // 
-            // ColumnsSELECT
-            // 
-            this.ColumnsSELECT.Location = new System.Drawing.Point(67, 40);
-            this.ColumnsSELECT.Name = "ColumnsSELECT";
-            this.ColumnsSELECT.Size = new System.Drawing.Size(732, 20);
-            this.ColumnsSELECT.TabIndex = 2;
-            this.ColumnsSELECT.Text = "If you want to select all columns, leave this field blank, if you want to select " +
-    "specific columns, specify them in the form: [column1],[column2],[column3]...";
-            // 
-            // ColumnsLabel
-            // 
-            this.ColumnsLabel.AutoSize = true;
-            this.ColumnsLabel.Location = new System.Drawing.Point(14, 43);
-            this.ColumnsLabel.Name = "ColumnsLabel";
-            this.ColumnsLabel.Size = new System.Drawing.Size(47, 13);
-            this.ColumnsLabel.TabIndex = 3;
-            this.ColumnsLabel.Text = "Columns";
             // 
             // QueueTimer
             // 
@@ -582,11 +528,6 @@
         private System.Windows.Forms.TabPage tabPage3;
         private System.Windows.Forms.CheckBox checkBox2;
         private System.Windows.Forms.Button button3;
-        private System.Windows.Forms.Button AddNewConditionButton;
-        private System.Windows.Forms.Label ConditionLabel;
-        private System.Windows.Forms.TextBox ConditionSelect;
-        private System.Windows.Forms.TextBox ColumnsSELECT;
-        private System.Windows.Forms.Label ColumnsLabel;
         private System.Windows.Forms.Timer QueueTimer;
         private System.Windows.Forms.Timer UpdateTimer;
         private System.Windows.Forms.Label CounterOfConnection;
