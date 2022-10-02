@@ -3,9 +3,7 @@ using System.Data.SqlClient;
 using System.Threading.Tasks;
 using System.Collections.Generic;
 using System.Data;
-using System.Windows.Forms;
 using System.Linq;
-using System.CodeDom.Compiler;
 
 namespace Bd_Curs
 {
@@ -57,6 +55,7 @@ namespace Bd_Curs
                 return; 
             }
 
+            //Получение всех имён таблиц
             command = new SqlCommand("SELECT TABLE_NAME FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME!='sysdiagrams' AND TABLE_TYPE = 'BASE TABLE'\r\n", connection);
             SqlDataReader temp = await command.ExecuteReaderAsync();
             
@@ -70,7 +69,7 @@ namespace Bd_Curs
             }
             temp.Close();
 
-            
+            //Получение всех первичных ключей
             for (int i = 0; i < TableNames.Count; i++)
             {
                 try
@@ -87,8 +86,7 @@ namespace Bd_Curs
                 catch (InvalidOperationException) { }
             }
 
-            
-            
+            //Получение всех колонок и некоторых их харрактеристик
             for (int i = 0; i < TableNames.Count; i++)
             {
                 Tables[i].Columns = new List<Column>();
@@ -115,12 +113,10 @@ namespace Bd_Curs
                 }
                 temp.Close();
             }
-           
 
+            //Установка втоинкрементных столбцов
             for (int i = 0; i < TableNames.Count; i++)
             {
-
-
                 command = new SqlCommand($"SELECT IDENT_CURRENT('{TableNames[i]}');", connection);
                 temp = await command.ExecuteReaderAsync();
 
@@ -139,7 +135,6 @@ namespace Bd_Curs
                 }
                 temp.Close();
             }
-            
 
             if(Array.IndexOf(TableNames.ToArray(),"Users")!=-1)//Только если есть таблица с пользователями
                 await AuthAsync(name,password);//Авторизация 
@@ -244,7 +239,6 @@ namespace Bd_Curs
                 }
                 if (IsSelect)//Если запрос на выборку
                 {
-                    
                     SqlDataAdapter adapter = new SqlDataAdapter(command);//Создание адаптера
                     TableData = new DataTable();//Очистка предыдущей выбранной таблицы
                     adapter.Fill(TableData);//Заполнение новыми данными
@@ -269,11 +263,12 @@ namespace Bd_Curs
                 Show.Invoke($"An SQL exception occurred, please check the correctness of the entered query: [{ex.Number}|{ex.Message}]");
             }
         }
-        public int GetAutoIndex(string NameTable)
+        public int GetAutoIndex(string NameTable)//Получение следующего автоинкремента у таблицы
         {
             SqlCommand command = new SqlCommand($"SELECT IDENT_CURRENT('{NameTable}');", connection);
             SqlDataReader temp = command.ExecuteReader();
 
+            //Получение значения
             temp.ReadAsync();
                 int Result = int.Parse(temp[0].ToString()) + 1;
             temp.Close();
