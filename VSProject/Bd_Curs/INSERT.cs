@@ -18,7 +18,7 @@ namespace Bd_Curs
         {
             int Y = 10;
             int X = 100;
-            tabPage2.AutoScrollMinSize = new Size(0, (db.Tables[SelectedTableNameINT].Columns.Count * 30) / 5 + 100);
+            tabPage2.AutoScrollMinSize = new Size(0, (db.Tables[SelectedTableNameINT].Columns.Count * 30) / 3 + 100);
             InsertBoxes = new List<Control>();
             labels = new List<Label>();
             tabPage2.Controls.Clear();
@@ -44,7 +44,7 @@ namespace Bd_Curs
                 {
                     CheckBox temp = new CheckBox();//Создание нового бокса с условием
                     temp.Location = new Point(X, Y);//Его местоположение и новое имя
-                    temp.Size = new Size(100, 20);
+                    temp.Size = new Size(200, 20);
                     temp.Name = $"{db.Tables[SelectedTableNameINT].Columns[i].Name}";
                     temp.Anchor = AnchorStyles.Left;
                     temp.CheckedChanged += CheckClick;

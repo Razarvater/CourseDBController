@@ -103,6 +103,11 @@ namespace Bd_Curs
         }
         private void SetSelectedtable(string name = "DeFaUlT_TaBlE")
         {
+            tabControl1.SelectedTab = tabPage1;
+            //Создание формы редактирования
+            CreateInsertForm();
+            //Создание формы отображения
+            InitSelectForm();
             if (name == "DeFaUlT_TaBlE") name = db.TableNames[0];//Если имя таблицы не задано то выбрать первое из доступных
 
             splitContainer5.Panel2.Controls[IndexSelectedTable].BackColor = Color.LightGreen;
@@ -143,10 +148,8 @@ namespace Bd_Curs
 
                     //Сортировка таблицы по первому столбцу
                     SelectedTable.Sort(SelectedTable.Columns[0], ListSortDirection.Ascending);
-                    //Создание формы редактирования
-                    CreateInsertForm();
-                    //Создание формы отображения
-                    InitSelectForm();
+
+                    InitConditions();
                 }
             IsError = false;
             IsUpdate = false;
@@ -154,7 +157,7 @@ namespace Bd_Curs
         }
         private void ChooseNewTable(object sender, EventArgs e)//Выбор другой таблицы
         {
-            tabControl1.SelectedTab = tabPage1;
+
             if (IsQueryWorked()) return;//Если запрос уже активен и выполняется, ничего не делать
 
             splitContainer5.Panel2.Controls[IndexSelectedTable].BackColor = Color.Transparent;

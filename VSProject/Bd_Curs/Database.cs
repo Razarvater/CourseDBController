@@ -13,6 +13,7 @@ namespace Bd_Curs
     {
         public string name;
         public List<Column> Columns;
+        public List<string> ColumnsNames;
         public List<string> PrimaryKeys;
         public bool isAutoIncremented = false;
     }
@@ -91,6 +92,7 @@ namespace Bd_Curs
             for (int i = 0; i < TableNames.Count; i++)
             {
                 Tables[i].Columns = new List<Column>();
+                Tables[i].ColumnsNames = new List<string>();
                 command = new SqlCommand($"SELECT COLUMN_NAME,COLUMN_DEFAULT,IS_NULLABLE,DATA_TYPE FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = '{TableNames[i]}'", connection);
                 temp = await command.ExecuteReaderAsync();
                 while (await temp.ReadAsync())
@@ -98,6 +100,7 @@ namespace Bd_Curs
                     Tables[i].Columns.Add(new Column());
                     Tables[i].Columns[Tables[i].Columns.Count - 1].TableName = TableNames[i];
                     Tables[i].Columns[Tables[i].Columns.Count - 1].Name = temp[0].ToString();
+                    Tables[i].ColumnsNames.Add(temp[0].ToString());
                     Tables[i].Columns[Tables[i].Columns.Count - 1].DefaultValue = temp[1];
                     Tables[i].Columns[Tables[i].Columns.Count - 1].IsNullable = temp[2].ToString() == "YES";
                     Tables[i].Columns[Tables[i].Columns.Count - 1].IsPrimaryKey = Array.IndexOf(Tables[i].PrimaryKeys.ToArray(), $"{Tables[i].Columns[Tables[i].Columns.Count - 1].Name}") != -1;
