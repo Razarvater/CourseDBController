@@ -33,6 +33,7 @@
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.ConnectionStatus = new System.Windows.Forms.Label();
             this.splitContainer2 = new System.Windows.Forms.SplitContainer();
+            this.progressBar2 = new System.Windows.Forms.ProgressBar();
             this.DbName = new System.Windows.Forms.ComboBox();
             this.ConnectServer = new System.Windows.Forms.Button();
             this.CounterOfConnection = new System.Windows.Forms.Label();
@@ -131,6 +132,7 @@
             // 
             // splitContainer2.Panel1
             // 
+            this.splitContainer2.Panel1.Controls.Add(this.progressBar2);
             this.splitContainer2.Panel1.Controls.Add(this.DbName);
             this.splitContainer2.Panel1.Controls.Add(this.ConnectServer);
             this.splitContainer2.Panel1.Controls.Add(this.CounterOfConnection);
@@ -153,21 +155,32 @@
             this.splitContainer2.TabIndex = 0;
             this.splitContainer2.TabStop = false;
             // 
+            // progressBar2
+            // 
+            this.progressBar2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.progressBar2.Location = new System.Drawing.Point(47, 307);
+            this.progressBar2.MarqueeAnimationSpeed = 50;
+            this.progressBar2.Name = "progressBar2";
+            this.progressBar2.Size = new System.Drawing.Size(100, 15);
+            this.progressBar2.Style = System.Windows.Forms.ProgressBarStyle.Marquee;
+            this.progressBar2.TabIndex = 2;
+            this.progressBar2.Visible = false;
+            // 
             // DbName
             // 
-            this.DbName.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
+            this.DbName.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.DbName.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.DbName.Enabled = false;
             this.DbName.FormattingEnabled = true;
-            this.DbName.Location = new System.Drawing.Point(3, 359);
+            this.DbName.Location = new System.Drawing.Point(2, 360);
             this.DbName.Name = "DbName";
             this.DbName.Size = new System.Drawing.Size(183, 21);
             this.DbName.TabIndex = 2;
             // 
             // ConnectServer
             // 
-            this.ConnectServer.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
-            this.ConnectServer.Location = new System.Drawing.Point(10, 295);
+            this.ConnectServer.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.ConnectServer.Location = new System.Drawing.Point(9, 295);
             this.ConnectServer.Name = "ConnectServer";
             this.ConnectServer.Size = new System.Drawing.Size(174, 35);
             this.ConnectServer.TabIndex = 2;
@@ -186,10 +199,10 @@
             // 
             // DisconnectButton
             // 
-            this.DisconnectButton.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
+            this.DisconnectButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.DisconnectButton.BackColor = System.Drawing.Color.Transparent;
             this.DisconnectButton.Enabled = false;
-            this.DisconnectButton.Location = new System.Drawing.Point(0, 612);
+            this.DisconnectButton.Location = new System.Drawing.Point(-1, 612);
             this.DisconnectButton.Name = "DisconnectButton";
             this.DisconnectButton.Size = new System.Drawing.Size(189, 38);
             this.DisconnectButton.TabIndex = 7;
@@ -199,9 +212,9 @@
             // 
             // label4
             // 
-            this.label4.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
+            this.label4.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(62, 343);
+            this.label4.Location = new System.Drawing.Point(61, 343);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(81, 13);
             this.label4.TabIndex = 6;
@@ -209,9 +222,9 @@
             // 
             // label3
             // 
-            this.label3.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
+            this.label3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(62, 253);
+            this.label3.Location = new System.Drawing.Point(61, 253);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(73, 13);
             this.label3.TabIndex = 5;
@@ -219,9 +232,9 @@
             // 
             // ServerName
             // 
-            this.ServerName.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
+            this.ServerName.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.ServerName.HideSelection = false;
-            this.ServerName.Location = new System.Drawing.Point(3, 269);
+            this.ServerName.Location = new System.Drawing.Point(2, 269);
             this.ServerName.Name = "ServerName";
             this.ServerName.Size = new System.Drawing.Size(183, 20);
             this.ServerName.TabIndex = 4;
@@ -229,9 +242,9 @@
             // 
             // label2
             // 
-            this.label2.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
+            this.label2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(79, 450);
+            this.label2.Location = new System.Drawing.Point(78, 451);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(33, 13);
             this.label2.TabIndex = 2;
@@ -239,9 +252,9 @@
             // 
             // label1
             // 
-            this.label1.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
+            this.label1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(69, 489);
+            this.label1.Location = new System.Drawing.Point(68, 490);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(53, 13);
             this.label1.TabIndex = 0;
@@ -249,9 +262,9 @@
             // 
             // NameBox
             // 
-            this.NameBox.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
+            this.NameBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.NameBox.Enabled = false;
-            this.NameBox.Location = new System.Drawing.Point(3, 466);
+            this.NameBox.Location = new System.Drawing.Point(2, 467);
             this.NameBox.Name = "NameBox";
             this.NameBox.Size = new System.Drawing.Size(183, 20);
             this.NameBox.TabIndex = 1;
@@ -259,9 +272,9 @@
             // 
             // PassBox
             // 
-            this.PassBox.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
+            this.PassBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.PassBox.Enabled = false;
-            this.PassBox.Location = new System.Drawing.Point(3, 505);
+            this.PassBox.Location = new System.Drawing.Point(2, 506);
             this.PassBox.Name = "PassBox";
             this.PassBox.Size = new System.Drawing.Size(183, 20);
             this.PassBox.TabIndex = 0;
@@ -269,10 +282,10 @@
             // 
             // ConnectButton
             // 
-            this.ConnectButton.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
+            this.ConnectButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.ConnectButton.BackColor = System.Drawing.Color.Transparent;
             this.ConnectButton.Enabled = false;
-            this.ConnectButton.Location = new System.Drawing.Point(0, 571);
+            this.ConnectButton.Location = new System.Drawing.Point(-1, 572);
             this.ConnectButton.Name = "ConnectButton";
             this.ConnectButton.Size = new System.Drawing.Size(189, 38);
             this.ConnectButton.TabIndex = 0;
@@ -299,7 +312,7 @@
             this.splitContainer3.Panel2.Controls.Add(this.tabControl1);
             this.splitContainer3.Panel2MinSize = 180;
             this.splitContainer3.Size = new System.Drawing.Size(814, 655);
-            this.splitContainer3.SplitterDistance = 473;
+            this.splitContainer3.SplitterDistance = 472;
             this.splitContainer3.SplitterWidth = 1;
             this.splitContainer3.TabIndex = 0;
             this.splitContainer3.TabStop = false;
@@ -321,7 +334,7 @@
             // 
             this.splitContainer4.Panel2.Controls.Add(this.progressBar1);
             this.splitContainer4.Panel2.Controls.Add(this.SelectedTable);
-            this.splitContainer4.Size = new System.Drawing.Size(810, 469);
+            this.splitContainer4.Size = new System.Drawing.Size(810, 468);
             this.splitContainer4.SplitterDistance = 93;
             this.splitContainer4.SplitterWidth = 1;
             this.splitContainer4.TabIndex = 1;
@@ -358,7 +371,7 @@
             // progressBar1
             // 
             this.progressBar1.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.progressBar1.Location = new System.Drawing.Point(355, 208);
+            this.progressBar1.Location = new System.Drawing.Point(356, 210);
             this.progressBar1.MarqueeAnimationSpeed = 50;
             this.progressBar1.Name = "progressBar1";
             this.progressBar1.Size = new System.Drawing.Size(100, 15);
@@ -376,7 +389,7 @@
             this.SelectedTable.Location = new System.Drawing.Point(0, 0);
             this.SelectedTable.Name = "SelectedTable";
             this.SelectedTable.RowHeadersWidth = 100;
-            this.SelectedTable.Size = new System.Drawing.Size(810, 375);
+            this.SelectedTable.Size = new System.Drawing.Size(810, 374);
             this.SelectedTable.TabIndex = 0;
             this.SelectedTable.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.SelectedTable_CellClick);
             this.SelectedTable.CellEndEdit += new System.Windows.Forms.DataGridViewCellEventHandler(this.SelectedTable_CellEndEdit);
@@ -394,15 +407,15 @@
             this.tabControl1.Multiline = true;
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(810, 177);
+            this.tabControl1.Size = new System.Drawing.Size(810, 178);
             this.tabControl1.TabIndex = 7;
             // 
             // tabPage1
             // 
             this.tabPage1.Location = new System.Drawing.Point(4, 22);
             this.tabPage1.Name = "tabPage1";
-            this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(802, 151);
+            this.tabPage1.Padding = new System.Windows.Forms.Padding(3, 3, 3, 3);
+            this.tabPage1.Size = new System.Drawing.Size(802, 152);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "ControlSelectedTable";
             this.tabPage1.UseVisualStyleBackColor = true;
@@ -413,8 +426,8 @@
             this.tabPage2.AutoScrollMinSize = new System.Drawing.Size(0, 160);
             this.tabPage2.Location = new System.Drawing.Point(4, 22);
             this.tabPage2.Name = "tabPage2";
-            this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(798, 150);
+            this.tabPage2.Padding = new System.Windows.Forms.Padding(3, 3, 3, 3);
+            this.tabPage2.Size = new System.Drawing.Size(848, 153);
             this.tabPage2.TabIndex = 3;
             this.tabPage2.Text = "Insert Form";
             this.tabPage2.UseVisualStyleBackColor = true;
@@ -424,8 +437,8 @@
             this.tabPage3.Controls.Add(this.tabControl2);
             this.tabPage3.Location = new System.Drawing.Point(4, 22);
             this.tabPage3.Name = "tabPage3";
-            this.tabPage3.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage3.Size = new System.Drawing.Size(802, 151);
+            this.tabPage3.Padding = new System.Windows.Forms.Padding(3, 3, 3, 3);
+            this.tabPage3.Size = new System.Drawing.Size(848, 153);
             this.tabPage3.TabIndex = 2;
             this.tabPage3.Text = "Sample form";
             this.tabPage3.UseVisualStyleBackColor = true;
@@ -438,15 +451,15 @@
             this.tabControl2.Location = new System.Drawing.Point(3, 3);
             this.tabControl2.Name = "tabControl2";
             this.tabControl2.SelectedIndex = 0;
-            this.tabControl2.Size = new System.Drawing.Size(796, 145);
+            this.tabControl2.Size = new System.Drawing.Size(842, 147);
             this.tabControl2.TabIndex = 0;
             // 
             // tabPage4
             // 
             this.tabPage4.Location = new System.Drawing.Point(4, 22);
             this.tabPage4.Name = "tabPage4";
-            this.tabPage4.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage4.Size = new System.Drawing.Size(788, 119);
+            this.tabPage4.Padding = new System.Windows.Forms.Padding(3, 3, 3, 3);
+            this.tabPage4.Size = new System.Drawing.Size(834, 121);
             this.tabPage4.TabIndex = 0;
             this.tabPage4.Text = "Select";
             this.tabPage4.UseVisualStyleBackColor = true;
@@ -456,8 +469,8 @@
             this.tabPage5.AutoScroll = true;
             this.tabPage5.Location = new System.Drawing.Point(4, 22);
             this.tabPage5.Name = "tabPage5";
-            this.tabPage5.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage5.Size = new System.Drawing.Size(788, 119);
+            this.tabPage5.Padding = new System.Windows.Forms.Padding(3, 3, 3, 3);
+            this.tabPage5.Size = new System.Drawing.Size(786, 120);
             this.tabPage5.TabIndex = 1;
             this.tabPage5.Text = "Conditions";
             this.tabPage5.UseVisualStyleBackColor = true;
@@ -466,8 +479,8 @@
             // 
             this.tabPage6.Location = new System.Drawing.Point(4, 22);
             this.tabPage6.Name = "tabPage6";
-            this.tabPage6.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage6.Size = new System.Drawing.Size(798, 150);
+            this.tabPage6.Padding = new System.Windows.Forms.Padding(3, 3, 3, 3);
+            this.tabPage6.Size = new System.Drawing.Size(848, 153);
             this.tabPage6.TabIndex = 4;
             this.tabPage6.Text = "Delete Form";
             this.tabPage6.UseVisualStyleBackColor = true;
@@ -495,7 +508,7 @@
             this.ClientSize = new System.Drawing.Size(1008, 681);
             this.Controls.Add(this.splitContainer1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.MinimumSize = new System.Drawing.Size(1024, 720);
+            this.MinimumSize = new System.Drawing.Size(1023, 675);
             this.Name = "Form1";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "DatabaseController";
@@ -564,6 +577,7 @@
         private System.Windows.Forms.TabPage tabPage4;
         private System.Windows.Forms.TabPage tabPage5;
         private System.Windows.Forms.TabPage tabPage6;
+        private System.Windows.Forms.ProgressBar progressBar2;
     }
 }
 

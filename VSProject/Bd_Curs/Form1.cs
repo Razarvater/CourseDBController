@@ -4,6 +4,7 @@ using System.Drawing;
 using System.Threading;
 using System.Windows.Forms;
 using System.Diagnostics;
+using System.Threading.Tasks;
 
 namespace Bd_Curs
 {
@@ -33,6 +34,9 @@ namespace Bd_Curs
         private async void ConnectButton_Click(object sender, EventArgs e)//Подключение к БД
         {
             if (DbName.Text == string.Empty) return;
+            
+                
+
 
             tabControl1.SelectedTab = tabPage1;//Выбрана первая форма редактирования
 
@@ -88,14 +92,14 @@ namespace Bd_Curs
                 temp.Click += new EventHandler(ChooseNewTable);//Установка события на смену отображаемой таблицы
 
                 splitContainer5.Panel2.Controls.Add(temp);//Отображение кнопки
-                tempCount++;
-
-                
+                tempCount++;  
             }
             SetSelectedtable();//Отобразить первую таблицу
             DisconnectButton.Enabled = true;//Включение кнопки для дисконекта от БД
+            if (splitContainer5.Panel2.Controls.Count > IndexSelectedTable)
+                splitContainer5.Panel2.Controls[IndexSelectedTable].BackColor = Color.Transparent;
             IndexSelectedTable = 0;//Индекс выбранной таблицы
-
+            splitContainer5.Panel2.Controls[IndexSelectedTable].BackColor = Color.LightGreen;
             tabControl1.Enabled = true;//Включение контроллера таблиц
         }
         private void SetSelectedtable(string name = "DeFaUlT_TaBlE")
@@ -152,6 +156,7 @@ namespace Bd_Curs
                     //Переинициализация форм
                     InitConditions();
                     InitConditionsDel();
+                    PrintPrimaryKeys();
                 }
                 if (IsInsert && !IsError)//Создание новой строки
                 {
@@ -160,6 +165,24 @@ namespace Bd_Curs
             IsError = false;
             IsUpdate = false;
             Query_IsWorking = false;//запрос не выполняется
+        }
+        private void PrintPrimaryKeys()//Отображение первичных ключей
+        {
+            int CountSearchedPK = 0;//Количество найденных первичных ключей
+            for (int i = 0; i < SelectedTable.Columns.Count; i++)//Проход по всем колонкам
+            {
+                if (CountSearchedPK == db.Tables[IndexSelectedTable].PrimaryKeys.Count)//Если найдены все ключи
+                    break;
+                for (int j = 0; j < db.Tables[IndexSelectedTable].PrimaryKeys.Count; j++)//Проход по всем первичным ключам таблицы
+                {
+                    if (db.Tables[IndexSelectedTable].PrimaryKeys[j] == SelectedTable.Columns[i].HeaderText)
+                    {
+                        SelectedTable.Columns[i].HeaderText = $"🔑{SelectedTable.Columns[i].HeaderText} ";
+                        CountSearchedPK++;
+                        break;
+                    }
+                }
+            }
         }
         private void ChooseNewTable(object sender, EventArgs e)//Выбор другой таблицы
         {
@@ -174,8 +197,10 @@ namespace Bd_Curs
         }
         private void Disconnect_Click(object sender, EventArgs e)//Дисконнект
         {
-            db.CloseConnection();//Закрытие подключения
 
+            db.CloseConnection();//Закрытие подключения
+            splitContainer5.Panel2.Controls[IndexSelectedTable].BackColor = Color.Transparent;
+            IndexSelectedTable = 0;
             SelectedTable.Columns.Clear();//Очистка выделенного поля
             splitContainer5.Panel2.Controls.Clear();//Очистка выбранных таблиц
 
@@ -224,15 +249,17 @@ namespace Bd_Curs
         }
         //Заглушка для отсутствия ошибки о слишком длинных полях
         private void SelectedTable_DataError(object sender, DataGridViewDataErrorEventArgs e) { }
-        private void ConnectServer_Click(object sender, EventArgs e)//Подключение к серверу и получение списка Баз данных
+        private async void ConnectServer_Click(object sender, EventArgs e)//Подключение к серверу и получение списка Баз данных
         {
+            progressBar2.Visible = true;
             if (DisconnectButton.Enabled)
                 Disconnect_Click(this,EventArgs.Empty);//Отключится от Базы данных если уже подключены к БД
 
             ConnectedServer = ServerName.Text;//Изменение подключенного сервера
             ServerConnection serv = new ServerConnection(ServerName.Text);//Подключение к серверу
             DbName.Items.Clear();//Очистка списка баз данных
-            foreach (var item in serv.GetDatabases())//Получение списка всех Баз данных на данном сервере
+            await serv.GetDatabases();
+            foreach (var item in serv.Databases)//Получение списка всех Баз данных на данном сервере
             {
                 DbName.Items.Add(item);//Отображение их в списке
             }
@@ -252,6 +279,7 @@ namespace Bd_Curs
                 PassBox.Enabled = false;
                 ConnectionStatus.Text = "Wasn't connected";
             }
+            progressBar2.Visible = false;
         }
     }
 }

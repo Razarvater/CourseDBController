@@ -34,7 +34,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationIcon>MainIcon.ico</ApplicationIcon>
+    <ApplicationIcon>Icons\MainIcon.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -50,17 +50,17 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Delete.cs">
+    <Compile Include="LittleForms\Delete.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="INSERT.cs">
+    <Compile Include="LittleForms\INSERT.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="ServerConnection.cs" />
-    <Compile Include="UPDATE.cs">
+    <Compile Include="Plogic\ServerConnection.cs" />
+    <Compile Include="LittleForms\UPDATE.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Database.cs" />
+    <Compile Include="Plogic\Database.cs" />
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -69,7 +69,7 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SELECT.cs">
+    <Compile Include="LittleForms\SELECT.cs">
       <SubType>Form</SubType>
     </Compile>
     <EmbeddedResource Include="Form1.resx">
@@ -98,7 +98,7 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="MainIcon.ico" />
+    <Content Include="Icons\MainIcon.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
