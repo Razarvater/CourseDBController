@@ -12,15 +12,14 @@ namespace Bd_Curs
         private string SelectQuery;//Текст запроса
         private List<CheckBox> CheckBoxes;//Боксы для статуса выбрано поле для отображения или нет
         private List<Label> SelectLabels;//Имена полей
-
-        private List<string> OperationsCollection = new List<string> {"=","!=","<",">","=>","<="};//Коллекция возможных операций для WHERE
+        private List<string> OperationsCollection = new List<string> {"=","!=","<",">",">=","<="};//Коллекция возможных операций для WHERE
         private List<ComboBox> ColumnNames;//Боксы для выбора столбцов в условии
         private List<ComboBox> Operations;//Боксы для выбора операции в условии
         private List<TextBox> Values;//Боксы для выбора значения в условии
         private List<ComboBox> AndOR;//Боксы для выбора AND OR в условиях
         private int x = 5;//x координата генерируемого элемента
         private int y = 5;//y координата генерируемого элемента
-        private void InitConditions()//Инициализация условий формы
+        private void InitConditions(object sender, EventArgs e)//Инициализация условий формы
         {
             //Сброс сгенерированного интерфейса
             x = 5;
@@ -35,6 +34,14 @@ namespace Bd_Curs
             button.Click += AddNewCondition;
             button.Anchor = AnchorStyles.Left | AnchorStyles.Top;
             tabPage5.Controls.Add(button);//Добавление на страницу
+
+            Button button2 = new Button();
+            button2.Location = new Point(x + 110, y);
+            button2.Size = new Size(100, 40);
+            button2.Text = $"RemoveAllConditions";
+            button2.Click += InitConditions;
+            button2.Anchor = AnchorStyles.Left | AnchorStyles.Top;
+            tabPage5.Controls.Add(button2);//Добавление на страницу
             y += 50;
 
             //Сброс сгенерированных элементов
@@ -55,8 +62,16 @@ namespace Bd_Curs
             if (AndOR.Count != 0 && ColumnNames.Count > 1 && AndOR[AndOR.Count - 1].Text == string.Empty)
                 return;
 
-            AnchorStyles style = (AnchorStyles.Left | AnchorStyles.Top);//Стиль расположения кнопки
+            if(AndOR.Count != 0)
+                AndOR[AndOR.Count - 1].Enabled = false;
+            if(ColumnNames.Count != 0)
+                ColumnNames[ColumnNames.Count - 1].Enabled = false;
+            if(Values.Count != 0)
+                Values[Values.Count - 1].Enabled = false;
+            if(Operations.Count != 0)
+                Operations[Operations.Count - 1].Enabled = false;
 
+            AnchorStyles style = (AnchorStyles.Left | AnchorStyles.Top);//Стиль расположения кнопки
             if (ColumnNames.Count>0)//Если условие не первое то 
             {
                 //Сгенерировать Бокс для AND OR
@@ -74,7 +89,6 @@ namespace Bd_Curs
                 AndOR.Add(tempy);
                 tabPage5.Controls.Add(tempy);
             }
-
             //Генерация бокса с именем столбца
             ComboBox temp = new ComboBox();
             temp.Location = new Point(x,y);
@@ -171,7 +185,7 @@ namespace Bd_Curs
             button.Anchor = AnchorStyles.Left;
             button.Click += button3_Click;
             tabPage4.Controls.Add(button);//Добавление на страницу
-            InitConditions();
+            InitConditions(1, EventArgs.Empty);
         }  
         private void button3_Click(object sender, EventArgs e)//Выполнить запрос из формы
         {

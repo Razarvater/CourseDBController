@@ -191,6 +191,7 @@ namespace Bd_Curs
             catch (SqlException e)
             {
                 IsQueryCompleted = true;//Запрос завершён
+                
                 Show.Invoke($"An SQL exception occurred, please check the correctness of the entered query: [{e.Message}]");
             }
         }     
@@ -260,6 +261,7 @@ namespace Bd_Curs
             catch (SqlException ex)
             {
                 IsQueryCompleted = true;//Запрос завершён
+                
                 Show.Invoke($"An SQL exception occurred, please check the correctness of the entered query: [{ex.Number}|{ex.Message}]");
             }
         }

@@ -11,7 +11,7 @@ namespace Bd_Curs
 {
     public partial class Form1 : Form
     {
-        private List<string> OperationsCollectionDel = new List<string> { "=", "!=", "<", ">", "=>", "<=" };//Коллекция возможных операций для WHERE
+        private List<string> OperationsCollectionDel = new List<string> { "=", "!=", "<", ">", ">=", "<=" };//Коллекция возможных операций для WHERE
         private List<ComboBox> ColumnNamesDel;//Боксы для выбора столбцов в условии
         private List<ComboBox> OperationsDel;//Боксы для выбора операции в условии
         private List<TextBox> ValuesDel;//Боксы для выбора значения в условии
@@ -19,7 +19,7 @@ namespace Bd_Curs
         private int xDel = 5;//x координата генерируемого элемента
         private int yDel = 5;//y координата генерируемого элемента
         private string DeleteQuery;//Текст запроса
-        private void InitConditionsDel()//Инициализация Формы
+        private void InitConditionsDel(object sender, EventArgs e)//Инициализация Формы
         {
             //Сброс сгенерированного интерфейса
             xDel = 5;
@@ -35,9 +35,17 @@ namespace Bd_Curs
             button.Anchor = AnchorStyles.Left | AnchorStyles.Top;
             tabPage6.Controls.Add(button);//Добавление на страницу
 
+            Button button2 = new Button();
+            button2.Location = new Point(xDel + 110, yDel);
+            button2.Size = new Size(100, 40);
+            button2.Text = $"RemoveAllConditions";
+            button2.Click += InitConditionsDel;
+            button2.Anchor = AnchorStyles.Left | AnchorStyles.Top;
+            tabPage6.Controls.Add(button2);//Добавление на страницу
+
             //Создание кнопки для удаления
             Button buttonr = new Button();
-            buttonr.Location = new Point(xDel + 100, yDel);
+            buttonr.Location = new Point(xDel + 220, yDel);
             buttonr.Size = new Size(100, 40);
             buttonr.Text = $"Delete";
             buttonr.Click += DeleteFields;
@@ -63,6 +71,14 @@ namespace Bd_Curs
             if (AndORDel.Count != 0 && ColumnNamesDel.Count > 1 && AndOR[AndORDel.Count - 1].Text == string.Empty)
                 return;
 
+            if (AndORDel.Count != 0)
+                AndORDel[AndORDel.Count - 1].Enabled = false;
+            if (ColumnNamesDel.Count != 0)
+                ColumnNamesDel[ColumnNamesDel.Count - 1].Enabled = false;
+            if (ValuesDel.Count != 0)
+                ValuesDel[ValuesDel.Count - 1].Enabled = false;
+            if (OperationsDel.Count != 0)
+                OperationsDel[OperationsDel.Count - 1].Enabled = false;
             AnchorStyles style = (AnchorStyles.Left | AnchorStyles.Top);//Стиль расположения кнопки
 
             if (ColumnNamesDel.Count > 0)//Если условие не первое то 

@@ -89,7 +89,7 @@ namespace Bd_Curs
             else
                 sender.GetType().GetProperty("Text").SetValue(sender,"False");
         }
-        private void button1_Click(object sender, EventArgs e)//Короче вместо всей этой херни автогенерируемую форму сделать и не париться...
+        private void button1_Click(object sender, EventArgs e)
         {
             string Query = $"INSERT INTO [{SelectedTableName}] (";//Создание запроса
             for (int i = 0; i < InsertBoxes.Count; i++)//Вставка всех имен полей
@@ -136,7 +136,6 @@ namespace Bd_Curs
                         SelectedTable.Rows[0].Cells[tempINdex].Value = item2.Text;
                         break;
                     }
-
                 }
                 tempINdex++;
             }
@@ -144,7 +143,7 @@ namespace Bd_Curs
             {
                 foreach (var item in db.Tables[IndexSelectedTable].Columns)
                 {
-                    if (SelectedTable.Columns[i].HeaderText == item.Name && item.IsAutoIncrement)
+                    if (SelectedTable.Columns[i].HeaderText == $"{item.Name}🔑" && item.IsAutoIncrement)
                     {
                         SelectedTable.Rows[0].Cells[i].Value = db.GetAutoIndex(SelectedTableName).ToString();
                         i = SelectedTable.Rows[0].Cells.Count;

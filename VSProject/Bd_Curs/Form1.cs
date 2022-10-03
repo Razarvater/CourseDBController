@@ -35,9 +35,6 @@ namespace Bd_Curs
         {
             if (DbName.Text == string.Empty) return;
             
-                
-
-
             tabControl1.SelectedTab = tabPage1;//Выбрана первая форма редактирования
 
             if (!db_Connected)//Если БД не подключена то
@@ -110,7 +107,7 @@ namespace Bd_Curs
             //Создание формы отображения
             InitSelectForm();
             //Создание формы Удаления
-            InitConditionsDel();
+            InitConditionsDel(1,EventArgs.Empty);
             if (name == "DeFaUlT_TaBlE") name = db.TableNames[0];//Если имя таблицы не задано то выбрать первое из доступных
 
             //Установка цвета выбранной кнопки таблицы
@@ -154,8 +151,8 @@ namespace Bd_Curs
                     SelectedTable.Sort(SelectedTable.Columns[0], ListSortDirection.Ascending);
                     
                     //Переинициализация форм
-                    InitConditions();
-                    InitConditionsDel();
+                    InitConditions(1, EventArgs.Empty);
+                    InitConditionsDel(1,EventArgs.Empty);
                     PrintPrimaryKeys();
                 }
                 if (IsInsert && !IsError)//Создание новой строки
@@ -164,6 +161,7 @@ namespace Bd_Curs
                 }
             IsError = false;
             IsUpdate = false;
+            IsInsert = false;
             Query_IsWorking = false;//запрос не выполняется
         }
         private void PrintPrimaryKeys()//Отображение первичных ключей
@@ -177,7 +175,7 @@ namespace Bd_Curs
                 {
                     if (db.Tables[IndexSelectedTable].PrimaryKeys[j] == SelectedTable.Columns[i].HeaderText)
                     {
-                        SelectedTable.Columns[i].HeaderText = $"🔑{SelectedTable.Columns[i].HeaderText} ";
+                        SelectedTable.Columns[i].HeaderText = $"{SelectedTable.Columns[i].HeaderText}🔑";
                         CountSearchedPK++;
                         break;
                     }
