@@ -1,6 +1,6 @@
 ﻿namespace Bd_Curs
 {
-    partial class Form1
+    partial class MainForm
     {
         /// <summary>
         /// Обязательная переменная конструктора.
@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.ConnectionStatus = new System.Windows.Forms.Label();
             this.splitContainer2 = new System.Windows.Forms.SplitContainer();
@@ -50,8 +50,11 @@
             this.splitContainer4 = new System.Windows.Forms.SplitContainer();
             this.splitContainer5 = new System.Windows.Forms.SplitContainer();
             this.label5 = new System.Windows.Forms.Label();
+            this.tabControl3 = new System.Windows.Forms.TabControl();
+            this.tabPage7 = new System.Windows.Forms.TabPage();
             this.progressBar1 = new System.Windows.Forms.ProgressBar();
             this.SelectedTable = new System.Windows.Forms.DataGridView();
+            this.tabPage8 = new System.Windows.Forms.TabPage();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.tabPage2 = new System.Windows.Forms.TabPage();
@@ -82,6 +85,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer5)).BeginInit();
             this.splitContainer5.Panel1.SuspendLayout();
             this.splitContainer5.SuspendLayout();
+            this.tabControl3.SuspendLayout();
+            this.tabPage7.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.SelectedTable)).BeginInit();
             this.tabControl1.SuspendLayout();
             this.tabPage3.SuspendLayout();
@@ -332,8 +337,7 @@
             // 
             // splitContainer4.Panel2
             // 
-            this.splitContainer4.Panel2.Controls.Add(this.progressBar1);
-            this.splitContainer4.Panel2.Controls.Add(this.SelectedTable);
+            this.splitContainer4.Panel2.Controls.Add(this.tabControl3);
             this.splitContainer4.Size = new System.Drawing.Size(810, 468);
             this.splitContainer4.SplitterDistance = 93;
             this.splitContainer4.SplitterWidth = 1;
@@ -368,13 +372,36 @@
             this.label5.TabIndex = 0;
             this.label5.Text = "Tables:";
             // 
+            // tabControl3
+            // 
+            this.tabControl3.Controls.Add(this.tabPage7);
+            this.tabControl3.Controls.Add(this.tabPage8);
+            this.tabControl3.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tabControl3.Location = new System.Drawing.Point(0, 0);
+            this.tabControl3.Name = "tabControl3";
+            this.tabControl3.SelectedIndex = 0;
+            this.tabControl3.Size = new System.Drawing.Size(810, 374);
+            this.tabControl3.TabIndex = 2;
+            // 
+            // tabPage7
+            // 
+            this.tabPage7.Controls.Add(this.progressBar1);
+            this.tabPage7.Controls.Add(this.SelectedTable);
+            this.tabPage7.Location = new System.Drawing.Point(4, 22);
+            this.tabPage7.Name = "tabPage7";
+            this.tabPage7.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage7.Size = new System.Drawing.Size(802, 348);
+            this.tabPage7.TabIndex = 0;
+            this.tabPage7.Text = "SelectedTable";
+            this.tabPage7.UseVisualStyleBackColor = true;
+            // 
             // progressBar1
             // 
             this.progressBar1.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.progressBar1.Location = new System.Drawing.Point(356, 210);
+            this.progressBar1.Location = new System.Drawing.Point(323, 163);
             this.progressBar1.MarqueeAnimationSpeed = 50;
             this.progressBar1.Name = "progressBar1";
-            this.progressBar1.Size = new System.Drawing.Size(100, 15);
+            this.progressBar1.Size = new System.Drawing.Size(150, 15);
             this.progressBar1.Style = System.Windows.Forms.ProgressBarStyle.Marquee;
             this.progressBar1.TabIndex = 1;
             this.progressBar1.Visible = false;
@@ -386,15 +413,26 @@
             this.SelectedTable.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.SelectedTable.Dock = System.Windows.Forms.DockStyle.Fill;
             this.SelectedTable.EnableHeadersVisualStyles = false;
-            this.SelectedTable.Location = new System.Drawing.Point(0, 0);
+            this.SelectedTable.Location = new System.Drawing.Point(3, 3);
             this.SelectedTable.Name = "SelectedTable";
             this.SelectedTable.RowHeadersWidth = 100;
-            this.SelectedTable.Size = new System.Drawing.Size(810, 374);
+            this.SelectedTable.Size = new System.Drawing.Size(796, 342);
             this.SelectedTable.TabIndex = 0;
             this.SelectedTable.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.SelectedTable_CellClick);
             this.SelectedTable.CellEndEdit += new System.Windows.Forms.DataGridViewCellEventHandler(this.SelectedTable_CellEndEdit);
             this.SelectedTable.DataError += new System.Windows.Forms.DataGridViewDataErrorEventHandler(this.SelectedTable_DataError);
             this.SelectedTable.RowPostPaint += new System.Windows.Forms.DataGridViewRowPostPaintEventHandler(this.SelectedTable_RowPostPaint);
+            // 
+            // tabPage8
+            // 
+            this.tabPage8.AutoScroll = true;
+            this.tabPage8.Location = new System.Drawing.Point(4, 22);
+            this.tabPage8.Name = "tabPage8";
+            this.tabPage8.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage8.Size = new System.Drawing.Size(802, 348);
+            this.tabPage8.TabIndex = 1;
+            this.tabPage8.Text = "DatabaseDiagram";
+            this.tabPage8.UseVisualStyleBackColor = true;
             // 
             // tabControl1
             // 
@@ -414,7 +452,7 @@
             // 
             this.tabPage1.Location = new System.Drawing.Point(4, 22);
             this.tabPage1.Name = "tabPage1";
-            this.tabPage1.Padding = new System.Windows.Forms.Padding(3, 3, 3, 3);
+            this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
             this.tabPage1.Size = new System.Drawing.Size(802, 152);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "ControlSelectedTable";
@@ -426,8 +464,8 @@
             this.tabPage2.AutoScrollMinSize = new System.Drawing.Size(0, 160);
             this.tabPage2.Location = new System.Drawing.Point(4, 22);
             this.tabPage2.Name = "tabPage2";
-            this.tabPage2.Padding = new System.Windows.Forms.Padding(3, 3, 3, 3);
-            this.tabPage2.Size = new System.Drawing.Size(848, 153);
+            this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage2.Size = new System.Drawing.Size(798, 151);
             this.tabPage2.TabIndex = 3;
             this.tabPage2.Text = "Insert Form";
             this.tabPage2.UseVisualStyleBackColor = true;
@@ -437,8 +475,8 @@
             this.tabPage3.Controls.Add(this.tabControl2);
             this.tabPage3.Location = new System.Drawing.Point(4, 22);
             this.tabPage3.Name = "tabPage3";
-            this.tabPage3.Padding = new System.Windows.Forms.Padding(3, 3, 3, 3);
-            this.tabPage3.Size = new System.Drawing.Size(848, 153);
+            this.tabPage3.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage3.Size = new System.Drawing.Size(798, 151);
             this.tabPage3.TabIndex = 2;
             this.tabPage3.Text = "Sample form";
             this.tabPage3.UseVisualStyleBackColor = true;
@@ -451,15 +489,15 @@
             this.tabControl2.Location = new System.Drawing.Point(3, 3);
             this.tabControl2.Name = "tabControl2";
             this.tabControl2.SelectedIndex = 0;
-            this.tabControl2.Size = new System.Drawing.Size(842, 147);
+            this.tabControl2.Size = new System.Drawing.Size(792, 145);
             this.tabControl2.TabIndex = 0;
             // 
             // tabPage4
             // 
             this.tabPage4.Location = new System.Drawing.Point(4, 22);
             this.tabPage4.Name = "tabPage4";
-            this.tabPage4.Padding = new System.Windows.Forms.Padding(3, 3, 3, 3);
-            this.tabPage4.Size = new System.Drawing.Size(834, 121);
+            this.tabPage4.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage4.Size = new System.Drawing.Size(784, 119);
             this.tabPage4.TabIndex = 0;
             this.tabPage4.Text = "Select";
             this.tabPage4.UseVisualStyleBackColor = true;
@@ -469,8 +507,8 @@
             this.tabPage5.AutoScroll = true;
             this.tabPage5.Location = new System.Drawing.Point(4, 22);
             this.tabPage5.Name = "tabPage5";
-            this.tabPage5.Padding = new System.Windows.Forms.Padding(3, 3, 3, 3);
-            this.tabPage5.Size = new System.Drawing.Size(786, 120);
+            this.tabPage5.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage5.Size = new System.Drawing.Size(784, 119);
             this.tabPage5.TabIndex = 1;
             this.tabPage5.Text = "Conditions";
             this.tabPage5.UseVisualStyleBackColor = true;
@@ -479,8 +517,8 @@
             // 
             this.tabPage6.Location = new System.Drawing.Point(4, 22);
             this.tabPage6.Name = "tabPage6";
-            this.tabPage6.Padding = new System.Windows.Forms.Padding(3, 3, 3, 3);
-            this.tabPage6.Size = new System.Drawing.Size(848, 153);
+            this.tabPage6.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage6.Size = new System.Drawing.Size(798, 151);
             this.tabPage6.TabIndex = 4;
             this.tabPage6.Text = "Delete Form";
             this.tabPage6.UseVisualStyleBackColor = true;
@@ -500,7 +538,7 @@
             this.UpdateTimeTimer.Interval = 2;
             this.UpdateTimeTimer.Tick += new System.EventHandler(this.UpdateTimeTimer_Tick);
             // 
-            // Form1
+            // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -509,7 +547,7 @@
             this.Controls.Add(this.splitContainer1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MinimumSize = new System.Drawing.Size(1023, 675);
-            this.Name = "Form1";
+            this.Name = "MainForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "DatabaseController";
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
@@ -535,6 +573,8 @@
             this.splitContainer5.Panel1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer5)).EndInit();
             this.splitContainer5.ResumeLayout(false);
+            this.tabControl3.ResumeLayout(false);
+            this.tabPage7.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.SelectedTable)).EndInit();
             this.tabControl1.ResumeLayout(false);
             this.tabPage3.ResumeLayout(false);
@@ -578,6 +618,9 @@
         private System.Windows.Forms.TabPage tabPage5;
         private System.Windows.Forms.TabPage tabPage6;
         private System.Windows.Forms.ProgressBar progressBar2;
+        private System.Windows.Forms.TabControl tabControl3;
+        private System.Windows.Forms.TabPage tabPage7;
+        private System.Windows.Forms.TabPage tabPage8;
     }
 }
 

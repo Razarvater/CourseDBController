@@ -9,7 +9,7 @@ using System.Windows.Forms.VisualStyles;
 
 namespace Bd_Curs
 {
-    public partial class Form1 : Form
+    public partial class MainForm : Form
     {
         private List<Control> InsertBoxes;//Боксы для значений
         private List<Label> labels;//Названия столбцов

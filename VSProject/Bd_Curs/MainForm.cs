@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Bd_Curs
 {
-    public partial class Form1 : Form
+    public partial class MainForm : Form
     {
         private Database db;//Переменная базы данных
         private string ConnectedServer;//Имя поключенного сервера
@@ -19,7 +19,7 @@ namespace Bd_Curs
         private string SelectedTableName;//Имя выбранной таблицы
         private int IndexSelectedTable = 0;//Индекс выбраной таблицы
         private Stopwatch Query_Time = new Stopwatch();//Время выполнения запроса
-        public Form1()
+        public MainForm()
         {
             InitializeComponent();
             tabControl1.Enabled = false;
@@ -37,6 +37,8 @@ namespace Bd_Curs
             
             tabControl1.SelectedTab = tabPage1;//Выбрана первая форма редактирования
 
+
+
             if (!db_Connected)//Если БД не подключена то
             {
                 db = new Database(ConnectedServer, DbName.Text);//Создать новое подключение к БД
@@ -46,7 +48,6 @@ namespace Bd_Curs
                 db.CloseConnection();//Закрыть старое подключение
                 db = new Database(ConnectedServer, DbName.Text);//Создать новое подключение к БД
             }
-
             db.Show += Message;//Подключение Message
 
             await db.startConnectionAsync(NameBox.Text, PassBox.Text);//Подключение к базе данных
@@ -98,6 +99,7 @@ namespace Bd_Curs
             IndexSelectedTable = 0;//Индекс выбранной таблицы
             splitContainer5.Panel2.Controls[IndexSelectedTable].BackColor = Color.LightGreen;
             tabControl1.Enabled = true;//Включение контроллера таблиц
+            PrintShema();
         }
         private void SetSelectedtable(string name = "DeFaUlT_TaBlE")
         {

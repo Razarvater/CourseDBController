@@ -4,7 +4,7 @@ using System.Windows.Forms;
 
 namespace Bd_Curs
 {
-    public partial class Form1 : Form
+    public partial class MainForm : Form
     {
         private int SelectedParIndex = 0;
         private int SelectedColumnIndex = 0;

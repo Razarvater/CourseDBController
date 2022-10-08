@@ -9,7 +9,7 @@ using System.Data.SqlClient;
 
 namespace Bd_Curs
 {
-    public partial class Form1 : Form
+    public partial class MainForm : Form
     {
         private List<string> OperationsCollectionDel = new List<string> { "=", "!=", "<", ">", ">=", "<=" };//Коллекция возможных операций для WHERE
         private List<ComboBox> ColumnNamesDel;//Боксы для выбора столбцов в условии
