@@ -8,22 +8,7 @@ using System.Linq;
 namespace Bd_Curs
 {
     //фуух это на потом
-    //SELECT T1.FK, T1.TFK, T2.PK, T2.TPK FROM(
-    //SELECT INFORMATION_SCHEMA.REFERENTIAL_CONSTRAINTS.CONSTRAINT_NAME,
-    //INFORMATION_SCHEMA.REFERENTIAL_CONSTRAINTS.UNIQUE_CONSTRAINT_NAME,
-    //INFORMATION_SCHEMA.KEY_COLUMN_USAGE.COLUMN_NAME AS FK, INFORMATION_SCHEMA.KEY_COLUMN_USAGE.TABLE_NAME AS TFK
-    //FROM INFORMATION_SCHEMA.REFERENTIAL_CONSTRAINTS
-    //JOIN INFORMATION_SCHEMA.KEY_COLUMN_USAGE
-    //ON INFORMATION_SCHEMA.KEY_COLUMN_USAGE.CONSTRAINT_NAME = INFORMATION_SCHEMA.REFERENTIAL_CONSTRAINTS.CONSTRAINT_NAME
-    //)T1,
-    //(
-    //SELECT INFORMATION_SCHEMA.REFERENTIAL_CONSTRAINTS.CONSTRAINT_NAME,
-    //INFORMATION_SCHEMA.REFERENTIAL_CONSTRAINTS.UNIQUE_CONSTRAINT_NAME,
-    //INFORMATION_SCHEMA.KEY_COLUMN_USAGE.COLUMN_NAME AS PK, INFORMATION_SCHEMA.KEY_COLUMN_USAGE.TABLE_NAME AS TPK
-    //FROM INFORMATION_SCHEMA.REFERENTIAL_CONSTRAINTS
-    //JOIN INFORMATION_SCHEMA.KEY_COLUMN_USAGE
-    //ON INFORMATION_SCHEMA.KEY_COLUMN_USAGE.CONSTRAINT_NAME = INFORMATION_SCHEMA.REFERENTIAL_CONSTRAINTS.UNIQUE_CONSTRAINT_NAME
-    //)T2 WHERE T1.CONSTRAINT_NAME = T2.CONSTRAINT_NAME
+
     public class TableSql
     {
         public string name;
@@ -42,12 +27,20 @@ namespace Bd_Curs
         public bool IsAutoIncrement;
         public SqlDbType type;
     }
+    public class SqlRef
+    {
+        public string TableNameFK;
+        public string ColumnFK;
+        public string TableNamePK;
+        public string ColumnPK;
+    }
 
     public class Database
     {
         public SqlConnection connection;//подклбючение к БД
         private SqlCommand command;//SQL команда
         public List<TableSql> Tables;
+        public List<SqlRef> Constrains;
         public List<string> TableNames;//Имена таблиц
         public DataTable TableData = new DataTable();//Выбранная таблица
 
@@ -152,8 +145,21 @@ namespace Bd_Curs
                 }
                 temp.Close();
             }
+            //Получение всех связей в таблице
+            Constrains = new List<SqlRef>();
+            command.CommandText = "SELECT T1.FK, T1.TFK, T2.PK, T2.TPK FROM(\r\n    SELECT INFORMATION_SCHEMA.REFERENTIAL_CONSTRAINTS.CONSTRAINT_NAME,\r\n    INFORMATION_SCHEMA.REFERENTIAL_CONSTRAINTS.UNIQUE_CONSTRAINT_NAME,\r\n    INFORMATION_SCHEMA.KEY_COLUMN_USAGE.COLUMN_NAME AS FK, INFORMATION_SCHEMA.KEY_COLUMN_USAGE.TABLE_NAME AS TFK\r\n    FROM INFORMATION_SCHEMA.REFERENTIAL_CONSTRAINTS\r\n    JOIN INFORMATION_SCHEMA.KEY_COLUMN_USAGE\r\n    ON INFORMATION_SCHEMA.KEY_COLUMN_USAGE.CONSTRAINT_NAME = INFORMATION_SCHEMA.REFERENTIAL_CONSTRAINTS.CONSTRAINT_NAME\r\n    )T1,\r\n    (\r\n    SELECT INFORMATION_SCHEMA.REFERENTIAL_CONSTRAINTS.CONSTRAINT_NAME,\r\n    INFORMATION_SCHEMA.REFERENTIAL_CONSTRAINTS.UNIQUE_CONSTRAINT_NAME,\r\n    INFORMATION_SCHEMA.KEY_COLUMN_USAGE.COLUMN_NAME AS PK, INFORMATION_SCHEMA.KEY_COLUMN_USAGE.TABLE_NAME AS TPK\r\n    FROM INFORMATION_SCHEMA.REFERENTIAL_CONSTRAINTS\r\n    JOIN INFORMATION_SCHEMA.KEY_COLUMN_USAGE\r\n    ON INFORMATION_SCHEMA.KEY_COLUMN_USAGE.CONSTRAINT_NAME = INFORMATION_SCHEMA.REFERENTIAL_CONSTRAINTS.UNIQUE_CONSTRAINT_NAME\r\n    )T2 WHERE T1.CONSTRAINT_NAME = T2.CONSTRAINT_NAME";
+            temp = await command.ExecuteReaderAsync();
+            while(await temp.ReadAsync())
+            {
+                Constrains.Add(new SqlRef());
+                Constrains[Constrains.Count - 1].ColumnFK = temp[0].ToString();
+                Constrains[Constrains.Count - 1].TableNameFK = temp[1].ToString();
+                Constrains[Constrains.Count - 1].ColumnPK = temp[2].ToString();
+                Constrains[Constrains.Count - 1].TableNamePK = temp[3].ToString();
+            }
+            temp.Close();
 
-            if(Array.IndexOf(TableNames.ToArray(),"Users")!=-1)//Только если есть таблица с пользователями
+            if (Array.IndexOf(TableNames.ToArray(),"Users")!=-1)//Только если есть таблица с пользователями
                 await AuthAsync(name,password);//Авторизация 
             //TableNames.Remove("Users");
         }

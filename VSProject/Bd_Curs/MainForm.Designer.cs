@@ -55,6 +55,7 @@
             this.progressBar1 = new System.Windows.Forms.ProgressBar();
             this.SelectedTable = new System.Windows.Forms.DataGridView();
             this.tabPage8 = new System.Windows.Forms.TabPage();
+            this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.tabPage2 = new System.Windows.Forms.TabPage();
@@ -88,6 +89,8 @@
             this.tabControl3.SuspendLayout();
             this.tabPage7.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.SelectedTable)).BeginInit();
+            this.tabPage8.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.tabControl1.SuspendLayout();
             this.tabPage3.SuspendLayout();
             this.tabControl2.SuspendLayout();
@@ -181,6 +184,7 @@
             this.DbName.Name = "DbName";
             this.DbName.Size = new System.Drawing.Size(183, 21);
             this.DbName.TabIndex = 2;
+            this.DbName.TabStop = false;
             // 
             // ConnectServer
             // 
@@ -189,6 +193,7 @@
             this.ConnectServer.Name = "ConnectServer";
             this.ConnectServer.Size = new System.Drawing.Size(174, 35);
             this.ConnectServer.TabIndex = 2;
+            this.ConnectServer.TabStop = false;
             this.ConnectServer.Text = "Connect To Server";
             this.ConnectServer.UseVisualStyleBackColor = true;
             this.ConnectServer.Click += new System.EventHandler(this.ConnectServer_Click);
@@ -211,6 +216,7 @@
             this.DisconnectButton.Name = "DisconnectButton";
             this.DisconnectButton.Size = new System.Drawing.Size(189, 38);
             this.DisconnectButton.TabIndex = 7;
+            this.DisconnectButton.TabStop = false;
             this.DisconnectButton.Text = "DisConnect";
             this.DisconnectButton.UseVisualStyleBackColor = false;
             this.DisconnectButton.Click += new System.EventHandler(this.Disconnect_Click);
@@ -243,6 +249,7 @@
             this.ServerName.Name = "ServerName";
             this.ServerName.Size = new System.Drawing.Size(183, 20);
             this.ServerName.TabIndex = 4;
+            this.ServerName.TabStop = false;
             this.ServerName.Text = "DESKTOP-G634C4B\\SQLEXPRESS";
             // 
             // label2
@@ -273,6 +280,7 @@
             this.NameBox.Name = "NameBox";
             this.NameBox.Size = new System.Drawing.Size(183, 20);
             this.NameBox.TabIndex = 1;
+            this.NameBox.TabStop = false;
             this.NameBox.Text = "Test";
             // 
             // PassBox
@@ -283,6 +291,7 @@
             this.PassBox.Name = "PassBox";
             this.PassBox.Size = new System.Drawing.Size(183, 20);
             this.PassBox.TabIndex = 0;
+            this.PassBox.TabStop = false;
             this.PassBox.UseSystemPasswordChar = true;
             // 
             // ConnectButton
@@ -294,6 +303,7 @@
             this.ConnectButton.Name = "ConnectButton";
             this.ConnectButton.Size = new System.Drawing.Size(189, 38);
             this.ConnectButton.TabIndex = 0;
+            this.ConnectButton.TabStop = false;
             this.ConnectButton.Text = "Connect To Database";
             this.ConnectButton.UseVisualStyleBackColor = false;
             this.ConnectButton.Click += new System.EventHandler(this.ConnectButton_Click);
@@ -382,6 +392,8 @@
             this.tabControl3.SelectedIndex = 0;
             this.tabControl3.Size = new System.Drawing.Size(810, 374);
             this.tabControl3.TabIndex = 2;
+            this.tabControl3.TabStop = false;
+            this.tabControl3.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.MainForm_PreviewKeyDown);
             // 
             // tabPage7
             // 
@@ -418,6 +430,7 @@
             this.SelectedTable.RowHeadersWidth = 100;
             this.SelectedTable.Size = new System.Drawing.Size(796, 342);
             this.SelectedTable.TabIndex = 0;
+            this.SelectedTable.TabStop = false;
             this.SelectedTable.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.SelectedTable_CellClick);
             this.SelectedTable.CellEndEdit += new System.Windows.Forms.DataGridViewCellEventHandler(this.SelectedTable_CellEndEdit);
             this.SelectedTable.DataError += new System.Windows.Forms.DataGridViewDataErrorEventHandler(this.SelectedTable_DataError);
@@ -426,6 +439,7 @@
             // tabPage8
             // 
             this.tabPage8.AutoScroll = true;
+            this.tabPage8.Controls.Add(this.pictureBox1);
             this.tabPage8.Location = new System.Drawing.Point(4, 22);
             this.tabPage8.Name = "tabPage8";
             this.tabPage8.Padding = new System.Windows.Forms.Padding(3);
@@ -433,6 +447,17 @@
             this.tabPage8.TabIndex = 1;
             this.tabPage8.Text = "DatabaseDiagram";
             this.tabPage8.UseVisualStyleBackColor = true;
+            this.tabPage8.Scroll += new System.Windows.Forms.ScrollEventHandler(this.tabPage8_Scroll);
+            // 
+            // pictureBox1
+            // 
+            this.pictureBox1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.pictureBox1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.pictureBox1.Location = new System.Drawing.Point(3, 3);
+            this.pictureBox1.Name = "pictureBox1";
+            this.pictureBox1.Size = new System.Drawing.Size(796, 342);
+            this.pictureBox1.TabIndex = 0;
+            this.pictureBox1.TabStop = false;
             // 
             // tabControl1
             // 
@@ -447,6 +472,7 @@
             this.tabControl1.SelectedIndex = 0;
             this.tabControl1.Size = new System.Drawing.Size(810, 178);
             this.tabControl1.TabIndex = 7;
+            this.tabControl1.TabStop = false;
             // 
             // tabPage1
             // 
@@ -551,6 +577,7 @@
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "DatabaseController";
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
+            this.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.MainForm_PreviewKeyDown);
             this.splitContainer1.Panel1.ResumeLayout(false);
             this.splitContainer1.Panel1.PerformLayout();
             this.splitContainer1.Panel2.ResumeLayout(false);
@@ -576,6 +603,8 @@
             this.tabControl3.ResumeLayout(false);
             this.tabPage7.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.SelectedTable)).EndInit();
+            this.tabPage8.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.tabControl1.ResumeLayout(false);
             this.tabPage3.ResumeLayout(false);
             this.tabControl2.ResumeLayout(false);
@@ -621,6 +650,7 @@
         private System.Windows.Forms.TabControl tabControl3;
         private System.Windows.Forms.TabPage tabPage7;
         private System.Windows.Forms.TabPage tabPage8;
+        private System.Windows.Forms.PictureBox pictureBox1;
     }
 }
 

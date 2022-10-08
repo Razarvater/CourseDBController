@@ -22,6 +22,7 @@ namespace Bd_Curs
         public MainForm()
         {
             InitializeComponent();
+
             tabControl1.Enabled = false;
         }
         public void Message(string mess) 
@@ -281,5 +282,7 @@ namespace Bd_Curs
             }
             progressBar2.Visible = false;
         }
+
+
     }
 }
