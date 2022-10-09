@@ -62,6 +62,7 @@ namespace Bd_Curs
                 tempo.Size = new Size(100, 13);
                 tempo.Text = $"{db.Tables[IndexSelectedTable].Columns[i].Name}";
                 tempo.Anchor = AnchorStyles.Left;
+                tempo.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
                 labels.Add(tempo);//Добавление в коллекцию 
                 tabPage2.Controls.Add(labels[labels.Count - 1]);//Добавление на страницу
 

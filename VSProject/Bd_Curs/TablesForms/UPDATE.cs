@@ -57,7 +57,7 @@ namespace Bd_Curs
                 Parameter = db.Tables[IndexSelectedTable].PrimaryKeys[j];
                 for (int i = 0; i < SelectedTable.Rows[0].Cells.Count; i++)
                 {
-                    if (SelectedTable.Columns[i].HeaderText == db.Tables[IndexSelectedTable].PrimaryKeys[j])//Вставка поля
+                    if (SelectedTable.Columns[i].HeaderText == db.Tables[IndexSelectedTable].PrimaryKeys[j]+"🔑")//Вставка поля
                     {
                         //Проверка на float(Изменение ',' на '.')
                         if (float.TryParse(SelectedParSecond.Cells[SelectedColumnIndex].Value.ToString(), out temp))
@@ -74,7 +74,6 @@ namespace Bd_Curs
                     }
                 }
             }
-
             sqlCommand.CommandText = Query;
             IsUpdate = true;
 

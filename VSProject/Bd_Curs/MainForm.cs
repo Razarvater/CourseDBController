@@ -58,10 +58,12 @@ namespace Bd_Curs
             {
                 ConnectionStatus.Text = $"Server:{ConnectedServer}          Database:{DbName.Text}";
                 SelectedTableName = db.TableNames[0];//Выбранная таблица
+                IndexSelectedTable = 0;
             }
             else return;
             //-------------Создание кнопок таблиц------------\\
             splitContainer5.Panel2.Controls.Clear();//Очистка предыдущих кнопок
+            tabControl5.TabPages.Clear();//Очистка информации о таблицах
             int tempHeight = splitContainer5.Panel2.Height - 5;//Установка высоты для кнопок
             int tempCount = 0;
             //уменьшить высоту кнопок если они не помещаются в контейнер
@@ -79,7 +81,7 @@ namespace Bd_Curs
 
                     tempr.TabStop = false;
                     splitContainer5.Panel2.Controls.Add(tempr);//Отображение кнопки
-
+                   
                     continue;//То напечатать размерами 0 на 0 и скрыть под следующей кнопкой
                 }
    
@@ -89,8 +91,9 @@ namespace Bd_Curs
                 temp.Location = new Point(ButtonsMin * tempCount, 0);//Установка следующей позиции кнопки
                 temp.Size = new Size(ButtonsMin, tempHeight);//Установка размера кнопки
                 temp.Click += new EventHandler(ChooseNewTable);//Установка события на смену отображаемой таблицы
-
                 splitContainer5.Panel2.Controls.Add(temp);//Отображение кнопки
+                tabControl5.TabPages.Add(new TabPage(db.TableNames[i]));//Отображение информации о таблицах
+                tabControl5.TabPages[tabControl5.TabCount - 1].AutoScroll = true;
                 tempCount++;  
             }
             SetSelectedtable();//Отобразить первую таблицу
@@ -101,6 +104,7 @@ namespace Bd_Curs
             splitContainer5.Panel2.Controls[IndexSelectedTable].BackColor = Color.LightGreen;
             tabControl1.Enabled = true;//Включение контроллера таблиц
             PrintShema();
+            InitTableForms();
         }
         private void SetSelectedtable(string name = "DeFaUlT_TaBlE")
         {
@@ -282,7 +286,6 @@ namespace Bd_Curs
             }
             progressBar2.Visible = false;
         }
-
 
     }
 }
