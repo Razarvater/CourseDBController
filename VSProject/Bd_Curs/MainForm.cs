@@ -105,6 +105,7 @@ namespace Bd_Curs
             tabControl1.Enabled = true;//Включение контроллера таблиц
             PrintShema();
             InitTableForms();
+            InitCreateTableForm();
         }
         private void SetSelectedtable(string name = "DeFaUlT_TaBlE")
         {

@@ -1,10 +1,15 @@
-﻿using System.Drawing;
+﻿using System;
+using System.Collections.Generic;
+using System.Data;
+using System.Drawing;
 using System.Windows.Forms;
 
 namespace Bd_Curs
 {
     public partial class MainForm : Form
     {
+        private List<FieldSQl> FieldTableForm;
+       
         private void InitTableForms()//Форма просмотра характеристик таблиц
         {
             int Y,step = 150;//Координаты
@@ -87,5 +92,283 @@ namespace Bd_Curs
             }
         }
 
+        private void InitCreateTableForm()
+        {
+            tabPage10.Controls.Clear();
+            FieldTableForm = new List<FieldSQl>();
+
+            Button CreateNewFieldButton = new Button();
+            Button CreateTableButton = new Button();
+            Label CountFields = new Label();
+            Label FieldName = new Label();
+            Label FieldType = new Label();
+            Label FieldCount = new Label();
+            Label IsPrimary = new Label();
+            Label IsNullable = new Label();
+            Label IsAutoIncrement = new Label();
+
+            CreateNewFieldButton.Location = new Point(0,25);
+            CreateNewFieldButton.Text = "CreateNewField";
+            CreateNewFieldButton.Size = new Size(100,50);
+            CreateNewFieldButton.Click += CreateNewField;
+            CreateNewFieldButton.Anchor = AnchorStyles.Left | AnchorStyles.Top;
+
+            CreateTableButton.Location = new Point(0, 75);
+            CreateTableButton.Text = "CreateTable";
+            CreateTableButton.Size = new Size(100, 50);
+            CreateTableButton.Anchor = AnchorStyles.Left | AnchorStyles.Top;
+
+            CountFields.Location = new Point(0, 0);
+            CountFields.Text = "CountOfFields: ";
+            CountFields.Size = new Size(150, 30);
+            CountFields.Font = new Font(CountFields.Font.FontFamily, 8.5F, FontStyle.Bold);
+            CountFields.TextAlign = ContentAlignment.MiddleCenter;
+            CountFields.Anchor = AnchorStyles.Left | AnchorStyles.Top;
+
+            FieldName.Location = new Point(150, 0);
+            FieldName.Text = "FieldName";
+            FieldName.Size = new Size(100, 30);
+            FieldName.Font = new Font(FieldName.Font.FontFamily, 8.5F, FontStyle.Bold);
+            FieldName.TextAlign = ContentAlignment.MiddleCenter;
+            FieldName.Anchor = AnchorStyles.Left | AnchorStyles.Top;
+
+            FieldType.Location = new Point(300, 0);
+            FieldType.Text = "FieldType";
+            FieldType.Size = new Size(100, 30);
+            FieldType.Font = new Font(FieldType.Font.FontFamily, 8.5F, FontStyle.Bold);
+            FieldType.TextAlign = ContentAlignment.MiddleCenter;
+            FieldType.Anchor = AnchorStyles.Left | AnchorStyles.Top;
+
+            FieldCount.Location = new Point(450, 0);
+            FieldCount.Text = "SymbolsCount";
+            FieldCount.Size = new Size(100, 30);
+            FieldCount.Font = new Font(CountFields.Font.FontFamily, 8.5F, FontStyle.Bold);
+            FieldCount.TextAlign = ContentAlignment.MiddleCenter;
+            FieldCount.Anchor = AnchorStyles.Left | AnchorStyles.Top;
+
+            IsPrimary.Location = new Point(600, 0);
+            IsPrimary.Text = "Primary";
+            IsPrimary.Size = new Size(100, 30);
+            IsPrimary.Font = new Font(IsPrimary.Font.FontFamily, 8.5F, FontStyle.Bold);
+            IsPrimary.TextAlign = ContentAlignment.MiddleCenter;
+            IsPrimary.Anchor = AnchorStyles.Left | AnchorStyles.Top;
+
+            IsNullable.Location = new Point(750, 0);
+            IsNullable.Text = "Nullable";
+            IsNullable.Size = new Size(100, 30);
+            IsNullable.Font = new Font(IsNullable.Font.FontFamily, 8.5F, FontStyle.Bold);
+            IsNullable.TextAlign = ContentAlignment.MiddleCenter;
+            IsNullable.Anchor = AnchorStyles.Left | AnchorStyles.Top;
+
+            IsAutoIncrement.Location = new Point(900, 0);
+            IsAutoIncrement.Text = "AutoIncrement";
+            IsAutoIncrement.Size = new Size(100, 30);
+            IsAutoIncrement.Font = new Font(CountFields.Font.FontFamily, 8.5F, FontStyle.Bold);
+            IsAutoIncrement.TextAlign = ContentAlignment.MiddleCenter;
+            IsAutoIncrement.Anchor = AnchorStyles.Left | AnchorStyles.Top;
+
+            tabPage10.Controls.Add(CreateNewFieldButton);
+            tabPage10.Controls.Add(CreateTableButton);
+            tabPage10.Controls.Add(CountFields);
+            tabPage10.Controls.Add(FieldName);
+            tabPage10.Controls.Add(FieldType);
+            tabPage10.Controls.Add(FieldCount);
+            tabPage10.Controls.Add(IsPrimary);
+            tabPage10.Controls.Add(IsNullable);
+            tabPage10.Controls.Add(IsAutoIncrement);
+        }
+
+        private void CreateNewField(object sender, EventArgs e)
+        {
+            FieldTableForm.Add(new FieldSQl());
+
+            Button DeleteFieldButton = new Button();
+            TextBox FieldNameTextBox = new TextBox();
+            ComboBox FieldTypeBox = new ComboBox();
+            TextBox FieldCountBox = new TextBox();
+
+            CheckBox IsPrimaryField = new CheckBox();
+            CheckBox IsNullableBox = new CheckBox();
+            CheckBox IsAutoIncrementedField = new CheckBox();
+
+            FieldNameTextBox.Location = new Point(150,FieldTableForm.Count * 25 + 15);
+            FieldNameTextBox.Size = new Size(100, 20);
+            FieldNameTextBox.Anchor = AnchorStyles.Left | AnchorStyles.Top;
+
+            FieldTypeBox.Location = new Point(300, FieldTableForm.Count * 25 + 15 );
+            FieldTypeBox.Size = new Size(100, 20);
+            FieldTypeBox.DropDownStyle = ComboBoxStyle.DropDownList;
+            FieldTypeBox.Anchor = AnchorStyles.Left | AnchorStyles.Top;
+            foreach (var item in Enum.GetValues(typeof(SqlDbType)))
+            {
+                FieldTypeBox.Items.Add(item);
+            }
+           
+            FieldCountBox.Location = new Point(450, FieldTableForm.Count * 25 + 15);
+            FieldCountBox.Size = new Size(100, 20);
+            FieldCountBox.Anchor = AnchorStyles.Left | AnchorStyles.Top;
+
+            IsPrimaryField.Location = new Point(642, FieldTableForm.Count * 25 + 3 + 15 );
+            IsPrimaryField.Size = new Size(15, 15);
+            IsPrimaryField.Anchor = AnchorStyles.Left | AnchorStyles.Top;
+            IsPrimaryField.CheckedChanged += PrimaryClick;
+
+            IsNullableBox.Location = new Point(788, FieldTableForm.Count * 25 + 3 + 15);
+            IsNullableBox.Size = new Size(15, 15);
+            IsNullableBox.Anchor = AnchorStyles.Left | AnchorStyles.Top;
+            
+            IsAutoIncrementedField.Location = new Point(942, FieldTableForm.Count * 25 + 3 + 15 );
+            IsAutoIncrementedField.Size = new Size(15, 15);
+            IsAutoIncrementedField.Enabled = false;
+            IsAutoIncrementedField.Anchor = AnchorStyles.Left | AnchorStyles.Top;
+
+            DeleteFieldButton.Location = new Point(1000, FieldTableForm.Count * 25 + 15);
+            DeleteFieldButton.Text = "DeleteField";
+            DeleteFieldButton.Name = $"{FieldTableForm.Count - 1}";
+            DeleteFieldButton.Size = new Size(100, 20);
+            DeleteFieldButton.Anchor = AnchorStyles.Left | AnchorStyles.Top;
+            DeleteFieldButton.Click += DeleteSetField;
+            
+            FieldTableForm[FieldTableForm.Count - 1].FieldRedactions.Add(FieldNameTextBox);
+            FieldTableForm[FieldTableForm.Count - 1].FieldRedactions.Add(FieldTypeBox);
+            FieldTableForm[FieldTableForm.Count - 1].FieldRedactions.Add(FieldCountBox);
+            FieldTableForm[FieldTableForm.Count - 1].FieldRedactions.Add(IsPrimaryField);
+            FieldTableForm[FieldTableForm.Count - 1].FieldRedactions.Add(IsNullableBox);
+            FieldTableForm[FieldTableForm.Count - 1].FieldRedactions.Add(IsAutoIncrementedField);
+            FieldTableForm[FieldTableForm.Count - 1].FieldRedactions.Add(DeleteFieldButton);
+            for (int i = 0; i < FieldTableForm[FieldTableForm.Count - 1].FieldRedactions.Count - 1; i++)
+            {
+                FieldTableForm[FieldTableForm.Count - 1].FieldRedactions[i].Name = $"{FieldTableForm.Count - 1}";
+            }
+
+            foreach (Control item in FieldTableForm[FieldTableForm.Count - 1].FieldRedactions)
+                tabPage10.Controls.Add(item);
+
+            tabPage10.Controls[2].Text = $"CountOfFields: {FieldTableForm.Count}";
+        }
+        private void PrimaryClick(object sender,EventArgs e)
+        {
+            foreach (Control item in tabPage10.Controls)
+            {
+                if(item == FieldTableForm[int.Parse(sender.GetType().GetProperty("Name").GetValue(sender).ToString())].FieldRedactions[5])
+                {
+                    if(sender.GetType().GetProperty("Checked").GetValue(sender).ToString().ToLower() == "true")
+                    {
+                        item.Enabled = true;
+                    }
+                    else
+                    {
+                        item.Enabled = false;
+                        item.GetType().GetProperty("Checked").SetValue(item, false);
+                    }
+                    break;
+                }
+                else if(item == FieldTableForm[int.Parse(sender.GetType().GetProperty("Name").GetValue(sender).ToString())].FieldRedactions[4])
+                {
+                    if (sender.GetType().GetProperty("Checked").GetValue(sender).ToString().ToLower() == "true")
+                    {
+                        item.Enabled = false;
+                        item.GetType().GetProperty("Checked").SetValue(item, false);
+                    }
+                    else
+                    {
+                        item.Enabled = true;
+                    }
+                }
+            }
+        }
+        private void DeleteSetField(object sender, EventArgs e)//Оптимизировать(возможно)
+        {
+            for (int i = 0; i < tabPage10.Controls.Count;)
+            {
+                if (tabPage10.Controls[i].Name == sender.GetType().GetProperty("Name").GetValue(sender).ToString())
+                {
+                    tabPage10.Controls.Remove(tabPage10.Controls[i]);
+                    continue;
+                }
+                i++;
+            }
+            
+            FieldTableForm.Remove(FieldTableForm[int.Parse(sender.GetType().GetProperty("Name").GetValue(sender).ToString())]);
+
+            int Counter = 1;
+            foreach (FieldSQl item in FieldTableForm)
+            {
+                if (int.Parse(item.FieldRedactions[0].Name) < int.Parse(sender.GetType().GetProperty("Name").GetValue(sender).ToString()))
+                {
+                    Counter++;
+                    continue;
+                }
+                foreach (Control itemC in tabPage10.Controls)
+                {
+                    if (itemC == item.FieldRedactions[0])
+                    {
+                        item.FieldRedactions[0].Location = new Point(150, Counter * 25 + 15 - tabPage10.VerticalScroll.Value);
+                        item.FieldRedactions[0].Name = $"{Counter - 1}";
+                        itemC.Location = new Point(150, Counter * 25 + 15 - tabPage10.VerticalScroll.Value);
+                        itemC.Name = $"{Counter - 1}";
+                        
+                    }
+                    else if(itemC == item.FieldRedactions[1])
+                    {
+                        item.FieldRedactions[1].Location = new Point(300, Counter * 25 + 15 - tabPage10.VerticalScroll.Value);
+                        item.FieldRedactions[1].Name = $"{Counter - 1}";
+                        itemC.Location = new Point(300, Counter * 25 + 15 - tabPage10.VerticalScroll.Value);
+                        itemC.Name = $"{Counter - 1}";
+                    }
+                    else if(itemC == item.FieldRedactions[2])
+                    {
+                        item.FieldRedactions[2].Location = new Point(450, Counter * 25 + 15 - tabPage10.VerticalScroll.Value);
+                        item.FieldRedactions[2].Name = $"{Counter - 1}";
+                        itemC.Location = new Point(450, Counter * 25 + 15 - tabPage10.VerticalScroll.Value);
+                        itemC.Name = $"{Counter - 1}";
+
+                    }
+                    else if (itemC == item.FieldRedactions[3])
+                    {
+                        item.FieldRedactions[3].Location = new Point(642, Counter * 25 + 3 + 15 - tabPage10.VerticalScroll.Value);
+                        item.FieldRedactions[3].Name = $"{Counter - 1}";
+                        itemC.Location = new Point(642, Counter * 25 + 3 + 15 - tabPage10.VerticalScroll.Value);
+                        itemC.Name = $"{Counter - 1}";
+
+                    }
+                    else if (itemC == item.FieldRedactions[4])
+                    {
+                        item.FieldRedactions[4].Location = new Point(788, Counter * 25 + 3 + 15 - tabPage10.VerticalScroll.Value);
+                        item.FieldRedactions[4].Name = $"{Counter - 1}";
+                        itemC.Location = new Point(788, Counter * 25 + 3 + 15 - tabPage10.VerticalScroll.Value);
+                        itemC.Name = $"{Counter - 1}";
+
+                    }
+                    else if (itemC == item.FieldRedactions[5])
+                    {
+                        item.FieldRedactions[5].Location = new Point(942, Counter * 25 + 3 + 15 - tabPage10.VerticalScroll.Value);
+                        item.FieldRedactions[5].Name = $"{Counter - 1}";
+                        itemC.Location = new Point(942, Counter * 25 + 3 + 15 - tabPage10.VerticalScroll.Value);
+                        itemC.Name = $"{Counter - 1}";
+
+                    }
+                    else if (itemC == item.FieldRedactions[6])
+                    {
+                        item.FieldRedactions[6].Location = new Point(1000, Counter * 25 + 15 - tabPage10.VerticalScroll.Value);
+                        item.FieldRedactions[6].Name = $"{Counter - 1}";
+                        itemC.Location = new Point(1000, Counter * 25 + 15 - tabPage10.VerticalScroll.Value);
+                        itemC.Name = $"{Counter - 1}";
+                    }
+                }
+                Counter++;
+            }
+            tabPage10.Controls[2].Text = $"CountOfFields: {FieldTableForm.Count}";
+        }
+    }
+    public class FieldSQl
+    {
+        /*public string FieldName;
+        public SqlDbType FieldType;
+        public int FieldCount;
+        public bool IsPrimary;
+        public bool IsNullable;
+        public bool IsAutoIncrementField;*/
+        public List<Control> FieldRedactions =  new List<Control>();
     }
 }

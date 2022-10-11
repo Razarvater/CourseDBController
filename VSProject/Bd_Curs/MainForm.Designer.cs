@@ -191,6 +191,7 @@
             this.DbName.Location = new System.Drawing.Point(2, 360);
             this.DbName.Name = "DbName";
             this.DbName.Size = new System.Drawing.Size(183, 21);
+            this.DbName.Sorted = true;
             this.DbName.TabIndex = 2;
             this.DbName.TabStop = false;
             // 
@@ -514,6 +515,7 @@
             // 
             // tabPage10
             // 
+            this.tabPage10.AutoScroll = true;
             this.tabPage10.Location = new System.Drawing.Point(4, 22);
             this.tabPage10.Margin = new System.Windows.Forms.Padding(0);
             this.tabPage10.Name = "tabPage10";
@@ -564,7 +566,7 @@
             this.tabPage3.Location = new System.Drawing.Point(4, 22);
             this.tabPage3.Name = "tabPage3";
             this.tabPage3.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage3.Size = new System.Drawing.Size(798, 120);
+            this.tabPage3.Size = new System.Drawing.Size(802, 120);
             this.tabPage3.TabIndex = 2;
             this.tabPage3.Text = "Sample form";
             this.tabPage3.UseVisualStyleBackColor = true;
@@ -577,7 +579,7 @@
             this.tabControl2.Location = new System.Drawing.Point(3, 3);
             this.tabControl2.Name = "tabControl2";
             this.tabControl2.SelectedIndex = 0;
-            this.tabControl2.Size = new System.Drawing.Size(792, 114);
+            this.tabControl2.Size = new System.Drawing.Size(796, 114);
             this.tabControl2.TabIndex = 0;
             // 
             // tabPage4
@@ -585,7 +587,7 @@
             this.tabPage4.Location = new System.Drawing.Point(4, 22);
             this.tabPage4.Name = "tabPage4";
             this.tabPage4.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage4.Size = new System.Drawing.Size(784, 88);
+            this.tabPage4.Size = new System.Drawing.Size(788, 88);
             this.tabPage4.TabIndex = 0;
             this.tabPage4.Text = "Select";
             this.tabPage4.UseVisualStyleBackColor = true;
@@ -606,7 +608,7 @@
             this.tabPage6.Location = new System.Drawing.Point(4, 22);
             this.tabPage6.Name = "tabPage6";
             this.tabPage6.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage6.Size = new System.Drawing.Size(798, 120);
+            this.tabPage6.Size = new System.Drawing.Size(802, 120);
             this.tabPage6.TabIndex = 4;
             this.tabPage6.Text = "Delete Form";
             this.tabPage6.UseVisualStyleBackColor = true;
