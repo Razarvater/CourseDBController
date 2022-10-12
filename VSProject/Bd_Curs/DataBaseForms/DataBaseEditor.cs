@@ -9,7 +9,7 @@ namespace Bd_Curs
     public partial class MainForm : Form
     {
         private List<FieldSQl> FieldTableForm;
-       
+        private int AutoIncrementCount;
         private void InitTableForms()//Форма просмотра характеристик таблиц
         {
             int Y,step = 150;//Координаты
@@ -91,9 +91,9 @@ namespace Bd_Curs
                 IndexTabControl++;//Смещение на следующую таблицу
             }
         }
-
         private void InitCreateTableForm()
         {
+            AutoIncrementCount = 0;
             tabPage10.Controls.Clear();
             FieldTableForm = new List<FieldSQl>();
 
@@ -117,6 +117,7 @@ namespace Bd_Curs
             CreateTableButton.Text = "CreateTable";
             CreateTableButton.Size = new Size(100, 50);
             CreateTableButton.Anchor = AnchorStyles.Left | AnchorStyles.Top;
+            CreateTableButton.Click += CreateTableClick;
 
             CountFields.Location = new Point(0, 0);
             CountFields.Text = "CountOfFields: ";
@@ -178,6 +179,18 @@ namespace Bd_Curs
             tabPage10.Controls.Add(IsAutoIncrement);
         }
 
+        private void AutoIncrementClick(object sender, EventArgs e)
+        {
+            if (AutoIncrementCount == 1 && sender.GetType().GetProperty("Checked").GetValue(sender).ToString().ToLower() == "false")
+                AutoIncrementCount = 0;
+            else if (AutoIncrementCount == 0)
+                AutoIncrementCount = 1;
+            else
+            {
+                sender.GetType().GetProperty("Checked").SetValue(sender, false);
+                AutoIncrementCount = 1;
+            }
+        }
         private void CreateNewField(object sender, EventArgs e)
         {
             FieldTableForm.Add(new FieldSQl());
@@ -221,6 +234,7 @@ namespace Bd_Curs
             IsAutoIncrementedField.Size = new Size(15, 15);
             IsAutoIncrementedField.Enabled = false;
             IsAutoIncrementedField.Anchor = AnchorStyles.Left | AnchorStyles.Top;
+            IsAutoIncrementedField.CheckedChanged += AutoIncrementClick;
 
             DeleteFieldButton.Location = new Point(1000, FieldTableForm.Count * 25 + 15);
             DeleteFieldButton.Text = "DeleteField";
@@ -360,15 +374,82 @@ namespace Bd_Curs
             }
             tabPage10.Controls[2].Text = $"CountOfFields: {FieldTableForm.Count}";
         }
+        private void CreateTableClick(object sender, EventArgs e)
+        {
+            int temp;
+            foreach (Control item in tabPage10.Controls)
+            {
+                if(int.TryParse(item.Name,out temp))
+                {
+                    for (int i = 0; i < FieldTableForm[temp].FieldRedactions.Count; i++)
+                    {
+                        if(item == FieldTableForm[temp].FieldRedactions[i])
+                        {
+                            try
+                            {
+                                switch (i)
+                                {
+                                    case 0:
+                                        FieldTableForm[temp].FieldName = item.Text;
+                                        break;
+                                    case 1:
+
+                                        FieldTableForm[temp].FieldType = (SqlDbType)item.GetType().GetProperty("SelectedItem").GetValue(item);
+                                        break;
+                                    case 2:
+                                        int.TryParse(item.Text, out FieldTableForm[temp].FieldCount);
+                                        break;
+                                    case 3:
+                                        FieldTableForm[temp].IsPrimary = (bool)item.GetType().GetProperty("Checked").GetValue(item);
+                                        break;
+                                    case 4:
+                                        FieldTableForm[temp].IsNullable = (bool)item.GetType().GetProperty("Checked").GetValue(item);
+                                        break;
+                                    case 5:
+                                        FieldTableForm[temp].IsAutoIncrementField = (bool)item.GetType().GetProperty("Checked").GetValue(item);
+                                        break;
+                                }
+                            }
+                            catch (Exception){}
+                        }
+                    }
+                }
+            }
+            /*string QueryMessage = string.Empty;
+            for (int i = 0; i < FieldTableForm.Count; i++)
+            {
+                QueryMessage += $"{FieldTableForm[i].FieldName}|{FieldTableForm[i].FieldType}|{FieldTableForm[i].FieldCount}|{FieldTableForm[i].IsPrimary}|{FieldTableForm[i].IsNullable}|{FieldTableForm[i].IsAutoIncrementField}\n";
+            }
+            MessageBox.Show(QueryMessage);*/
+
+            for (int i = 0; i < FieldTableForm.Count; i++)
+            {
+                if (FieldTableForm[i].FieldName == string.Empty)
+                {
+                    MessageBox.Show($"FieldName in {i + 1} field is invalid","Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+                else if (FieldTableForm[i].FieldType.ToString() == string.Empty)
+                {
+                    MessageBox.Show($"FieldType in {i + 1} field is invalid","Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+                else if (FieldTableForm[i].FieldCount <= 0)
+                {
+                    MessageBox.Show($"FieldCount in {i + 1} field is invalid","Error",MessageBoxButtons.OK,MessageBoxIcon.Error);
+                    return;
+                }
+            }
+        }
     }
     public class FieldSQl
     {
-        /*public string FieldName;
+        public string FieldName;
         public SqlDbType FieldType;
         public int FieldCount;
         public bool IsPrimary;
         public bool IsNullable;
-        public bool IsAutoIncrementField;*/
+        public bool IsAutoIncrementField;
         public List<Control> FieldRedactions =  new List<Control>();
     }
 }

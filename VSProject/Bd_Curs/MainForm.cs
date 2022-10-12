@@ -25,10 +25,10 @@ namespace Bd_Curs
 
             tabControl1.Enabled = false;
         }
-        public void Message(string mess) 
+        public void ErrorMessage(string mess) 
         {
             IsError = true;
-            MessageBox.Show(mess);//сообщение от класса Database
+            MessageBox.Show(mess, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);//сообщение от класса Database
         }
         private void Timer1_Tick(object sender, EventArgs e) => IsQueue();//Таймер проверки запроса
         private void UpdateTimer_Tick(object sender, EventArgs e) => UpdateTable();//Таймер на обновление таблицы
@@ -49,7 +49,7 @@ namespace Bd_Curs
                 db.CloseConnection();//Закрыть старое подключение
                 db = new Database(ConnectedServer, DbName.Text);//Создать новое подключение к БД
             }
-            db.Show += Message;//Подключение Message
+            db.Show += ErrorMessage;//Подключение Message
 
             await db.startConnectionAsync(NameBox.Text, PassBox.Text);//Подключение к базе данных
             db_Connected = db.Connected;//Подключена ли БД
