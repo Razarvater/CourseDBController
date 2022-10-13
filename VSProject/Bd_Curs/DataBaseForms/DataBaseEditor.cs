@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Data.SqlClient;
 using System.Drawing;
 using System.Windows.Forms;
 
@@ -98,6 +99,7 @@ namespace Bd_Curs
             FieldTableForm = new List<FieldSQl>();
 
             Button CreateNewFieldButton = new Button();
+            TextBox TableNameField = new TextBox();
             Button CreateTableButton = new Button();
             Label CountFields = new Label();
             Label FieldName = new Label();
@@ -113,11 +115,16 @@ namespace Bd_Curs
             CreateNewFieldButton.Click += CreateNewField;
             CreateNewFieldButton.Anchor = AnchorStyles.Left | AnchorStyles.Top;
 
-            CreateTableButton.Location = new Point(0, 75);
+            TableNameField.Location = new Point(0, 75);
+            TableNameField.Text = "Table_Name";
+            TableNameField.Size = new Size(100, 25);
+            TableNameField.Anchor = AnchorStyles.Left | AnchorStyles.Top;
+
+            CreateTableButton.Location = new Point(0, 95);
             CreateTableButton.Text = "CreateTable";
             CreateTableButton.Size = new Size(100, 50);
             CreateTableButton.Anchor = AnchorStyles.Left | AnchorStyles.Top;
-            CreateTableButton.Click += CreateTableClick;
+            CreateTableButton.Click += CreateTableClickAsync;
 
             CountFields.Location = new Point(0, 0);
             CountFields.Text = "CountOfFields: ";
@@ -169,6 +176,7 @@ namespace Bd_Curs
             IsAutoIncrement.Anchor = AnchorStyles.Left | AnchorStyles.Top;
 
             tabPage10.Controls.Add(CreateNewFieldButton);
+            tabPage10.Controls.Add(TableNameField);
             tabPage10.Controls.Add(CreateTableButton);
             tabPage10.Controls.Add(CountFields);
             tabPage10.Controls.Add(FieldName);
@@ -258,7 +266,7 @@ namespace Bd_Curs
             foreach (Control item in FieldTableForm[FieldTableForm.Count - 1].FieldRedactions)
                 tabPage10.Controls.Add(item);
 
-            tabPage10.Controls[2].Text = $"CountOfFields: {FieldTableForm.Count}";
+            tabPage10.Controls[3].Text = $"CountOfFields: {FieldTableForm.Count}";
         }
         private void PrimaryClick(object sender,EventArgs e)
         {
@@ -372,11 +380,12 @@ namespace Bd_Curs
                 }
                 Counter++;
             }
-            tabPage10.Controls[2].Text = $"CountOfFields: {FieldTableForm.Count}";
+            tabPage10.Controls[3].Text = $"CountOfFields: {FieldTableForm.Count}";
         }
-        private void CreateTableClick(object sender, EventArgs e)
+        private async void CreateTableClickAsync(object sender, EventArgs e)
         {
             int temp;
+            int PrimaryCount = 0;
             foreach (Control item in tabPage10.Controls)
             {
                 if(int.TryParse(item.Name,out temp))
@@ -393,14 +402,16 @@ namespace Bd_Curs
                                         FieldTableForm[temp].FieldName = item.Text;
                                         break;
                                     case 1:
-
                                         FieldTableForm[temp].FieldType = (SqlDbType)item.GetType().GetProperty("SelectedItem").GetValue(item);
                                         break;
                                     case 2:
-                                        int.TryParse(item.Text, out FieldTableForm[temp].FieldCount);
+                                        if(FieldTableForm[temp].FieldType is SqlDbType.NChar or SqlDbType.NText or SqlDbType.Text or SqlDbType.VarChar or SqlDbType.NVarChar)
+                                            int.TryParse(item.Text, out FieldTableForm[temp].FieldCount);
                                         break;
                                     case 3:
                                         FieldTableForm[temp].IsPrimary = (bool)item.GetType().GetProperty("Checked").GetValue(item);
+                                        if (FieldTableForm[temp].IsPrimary)
+                                            PrimaryCount++;
                                         break;
                                     case 4:
                                         FieldTableForm[temp].IsNullable = (bool)item.GetType().GetProperty("Checked").GetValue(item);
@@ -421,7 +432,11 @@ namespace Bd_Curs
                 QueryMessage += $"{FieldTableForm[i].FieldName}|{FieldTableForm[i].FieldType}|{FieldTableForm[i].FieldCount}|{FieldTableForm[i].IsPrimary}|{FieldTableForm[i].IsNullable}|{FieldTableForm[i].IsAutoIncrementField}\n";
             }
             MessageBox.Show(QueryMessage);*/
-
+            if (PrimaryCount < 1)
+            {
+                MessageBox.Show("U need more PrimaryKeys >=1", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
             for (int i = 0; i < FieldTableForm.Count; i++)
             {
                 if (FieldTableForm[i].FieldName == string.Empty)
@@ -434,12 +449,41 @@ namespace Bd_Curs
                     MessageBox.Show($"FieldType in {i + 1} field is invalid","Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     return;
                 }
-                else if (FieldTableForm[i].FieldCount <= 0)
+                else if (FieldTableForm[i].FieldCount <= 0 && FieldTableForm[i].FieldType is SqlDbType.NChar or SqlDbType.NText or SqlDbType.Text or SqlDbType.VarChar or SqlDbType.NVarChar)
                 {
-                    MessageBox.Show($"FieldCount in {i + 1} field is invalid","Error",MessageBoxButtons.OK,MessageBoxIcon.Error);
+                    MessageBox.Show($"FieldCount ({FieldTableForm[i].FieldCount}) in {i + 1} field is invalid","Error",MessageBoxButtons.OK,MessageBoxIcon.Error);
                     return;
                 }
             }
+            SqlCommand command = new SqlCommand("", db.connection);
+            
+            string Query = $"CREATE TABLE {tabPage10.Controls[1].Text} (";
+            string After = string.Empty;
+
+            for (int i = 0; i < FieldTableForm.Count; i++)
+            {
+                Query += $" {FieldTableForm[i].FieldName} {FieldTableForm[i].FieldType} ";
+                if (FieldTableForm[i].FieldCount != 0)
+                    Query += $"( {FieldTableForm[i].FieldCount} )";
+                if(!FieldTableForm[i].IsNullable)
+                    Query += $" NOT NULL ";
+                if(FieldTableForm[i].IsAutoIncrementField)
+                    Query += $" IDENTITY(1,1)";
+
+                if (FieldTableForm[i].IsPrimary)
+                {
+                    if (After == string.Empty)
+                        After += $" PRIMARY KEY( {FieldTableForm[i].FieldName}";
+                    else
+                        After += $", {FieldTableForm[i].FieldName} ";
+                }
+                Query += ",\n";
+            }
+            After += ")";
+            Query += After + " )";
+            command.CommandText = Query;
+            await db.CreateQueryAsync(command);
+            ConnectButton_Click(new object(), EventArgs.Empty);
         }
     }
     public class FieldSQl

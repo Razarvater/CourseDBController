@@ -217,7 +217,11 @@ namespace Bd_Curs
                 
                 Show.Invoke($"An SQL exception occurred, please check the correctness of the entered query: [{e.Message}]");
             }
-        }     
+        }
+        public async Task CreateQueryAsync(SqlCommand sqlCommand)
+        { 
+            await sqlCommand.ExecuteNonQueryAsync();
+        }
         public void SetQueryAsync(string Query, SqlCommand sqlCommand)//Выполнение запроса
         {
             try
