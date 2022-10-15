@@ -32,6 +32,9 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.ConnectionStatus = new System.Windows.Forms.Label();
+            this.menuStrip1 = new System.Windows.Forms.MenuStrip();
+            this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.dropToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.splitContainer2 = new System.Windows.Forms.SplitContainer();
             this.progressBar2 = new System.Windows.Forms.ProgressBar();
             this.DbName = new System.Windows.Forms.ComboBox();
@@ -76,6 +79,7 @@
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();
+            this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer2)).BeginInit();
             this.splitContainer2.Panel1.SuspendLayout();
             this.splitContainer2.Panel2.SuspendLayout();
@@ -117,6 +121,7 @@
             // splitContainer1.Panel1
             // 
             this.splitContainer1.Panel1.Controls.Add(this.ConnectionStatus);
+            this.splitContainer1.Panel1.Controls.Add(this.menuStrip1);
             this.splitContainer1.Panel1.Cursor = System.Windows.Forms.Cursors.Default;
             // 
             // splitContainer1.Panel2
@@ -136,6 +141,30 @@
             this.ConnectionStatus.Size = new System.Drawing.Size(95, 13);
             this.ConnectionStatus.TabIndex = 0;
             this.ConnectionStatus.Text = "Wasn\'t Connected";
+            // 
+            // menuStrip1
+            // 
+            this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripMenuItem1});
+            this.menuStrip1.Location = new System.Drawing.Point(0, 0);
+            this.menuStrip1.Name = "menuStrip1";
+            this.menuStrip1.Size = new System.Drawing.Size(1004, 24);
+            this.menuStrip1.TabIndex = 1;
+            this.menuStrip1.Text = "menuStrip1";
+            // 
+            // toolStripMenuItem1
+            // 
+            this.toolStripMenuItem1.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.dropToolStripMenuItem});
+            this.toolStripMenuItem1.Name = "toolStripMenuItem1";
+            this.toolStripMenuItem1.Size = new System.Drawing.Size(101, 20);
+            this.toolStripMenuItem1.Text = "TestMenuPunct";
+            // 
+            // dropToolStripMenuItem
+            // 
+            this.dropToolStripMenuItem.Name = "dropToolStripMenuItem";
+            this.dropToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.dropToolStripMenuItem.Text = "drop";
             // 
             // splitContainer2
             // 
@@ -474,7 +503,7 @@
             this.tabPage9.Location = new System.Drawing.Point(4, 22);
             this.tabPage9.Margin = new System.Windows.Forms.Padding(0);
             this.tabPage9.Name = "tabPage9";
-            this.tabPage9.Size = new System.Drawing.Size(802, 380);
+            this.tabPage9.Size = new System.Drawing.Size(798, 376);
             this.tabPage9.TabIndex = 2;
             this.tabPage9.Text = "DbConstructor";
             this.tabPage9.UseVisualStyleBackColor = true;
@@ -488,7 +517,7 @@
             this.tabControl4.Location = new System.Drawing.Point(0, 0);
             this.tabControl4.Name = "tabControl4";
             this.tabControl4.SelectedIndex = 0;
-            this.tabControl4.Size = new System.Drawing.Size(802, 380);
+            this.tabControl4.Size = new System.Drawing.Size(798, 376);
             this.tabControl4.TabIndex = 0;
             // 
             // tabPage1
@@ -497,7 +526,7 @@
             this.tabPage1.Location = new System.Drawing.Point(4, 22);
             this.tabPage1.Margin = new System.Windows.Forms.Padding(0);
             this.tabPage1.Name = "tabPage1";
-            this.tabPage1.Size = new System.Drawing.Size(794, 354);
+            this.tabPage1.Size = new System.Drawing.Size(790, 350);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "TableINFO";
             this.tabPage1.UseVisualStyleBackColor = true;
@@ -510,7 +539,7 @@
             this.tabControl5.Name = "tabControl5";
             this.tabControl5.Padding = new System.Drawing.Point(0, 0);
             this.tabControl5.SelectedIndex = 0;
-            this.tabControl5.Size = new System.Drawing.Size(794, 354);
+            this.tabControl5.Size = new System.Drawing.Size(790, 350);
             this.tabControl5.TabIndex = 0;
             // 
             // tabPage10
@@ -566,7 +595,7 @@
             this.tabPage3.Location = new System.Drawing.Point(4, 22);
             this.tabPage3.Name = "tabPage3";
             this.tabPage3.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage3.Size = new System.Drawing.Size(802, 120);
+            this.tabPage3.Size = new System.Drawing.Size(798, 120);
             this.tabPage3.TabIndex = 2;
             this.tabPage3.Text = "Sample form";
             this.tabPage3.UseVisualStyleBackColor = true;
@@ -579,7 +608,7 @@
             this.tabControl2.Location = new System.Drawing.Point(3, 3);
             this.tabControl2.Name = "tabControl2";
             this.tabControl2.SelectedIndex = 0;
-            this.tabControl2.Size = new System.Drawing.Size(796, 114);
+            this.tabControl2.Size = new System.Drawing.Size(792, 114);
             this.tabControl2.TabIndex = 0;
             // 
             // tabPage4
@@ -587,7 +616,7 @@
             this.tabPage4.Location = new System.Drawing.Point(4, 22);
             this.tabPage4.Name = "tabPage4";
             this.tabPage4.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage4.Size = new System.Drawing.Size(788, 88);
+            this.tabPage4.Size = new System.Drawing.Size(784, 88);
             this.tabPage4.TabIndex = 0;
             this.tabPage4.Text = "Select";
             this.tabPage4.UseVisualStyleBackColor = true;
@@ -608,7 +637,7 @@
             this.tabPage6.Location = new System.Drawing.Point(4, 22);
             this.tabPage6.Name = "tabPage6";
             this.tabPage6.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage6.Size = new System.Drawing.Size(802, 120);
+            this.tabPage6.Size = new System.Drawing.Size(798, 120);
             this.tabPage6.TabIndex = 4;
             this.tabPage6.Text = "Delete Form";
             this.tabPage6.UseVisualStyleBackColor = true;
@@ -636,6 +665,7 @@
             this.ClientSize = new System.Drawing.Size(1008, 681);
             this.Controls.Add(this.splitContainer1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.MainMenuStrip = this.menuStrip1;
             this.MinimumSize = new System.Drawing.Size(1023, 675);
             this.Name = "MainForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
@@ -647,6 +677,8 @@
             this.splitContainer1.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
             this.splitContainer1.ResumeLayout(false);
+            this.menuStrip1.ResumeLayout(false);
+            this.menuStrip1.PerformLayout();
             this.splitContainer2.Panel1.ResumeLayout(false);
             this.splitContainer2.Panel1.PerformLayout();
             this.splitContainer2.Panel2.ResumeLayout(false);
@@ -723,6 +755,9 @@
         private System.Windows.Forms.TabPage tabPage5;
         private System.Windows.Forms.TabPage tabPage6;
         private System.Windows.Forms.TabControl tabControl5;
+        private System.Windows.Forms.MenuStrip menuStrip1;
+        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem1;
+        private System.Windows.Forms.ToolStripMenuItem dropToolStripMenuItem;
     }
 }
 

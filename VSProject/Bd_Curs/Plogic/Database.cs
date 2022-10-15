@@ -218,11 +218,7 @@ namespace Bd_Curs
                 Show.Invoke($"An SQL exception occurred, please check the correctness of the entered query: [{e.Message}]");
             }
         }
-        public async Task CreateQueryAsync(SqlCommand sqlCommand)
-        { 
-            await sqlCommand.ExecuteNonQueryAsync();
-        }
-        public void SetQueryAsync(string Query, SqlCommand sqlCommand)//Выполнение запроса
+        public void SetQuery(string Query, SqlCommand sqlCommand)//Выполнение запроса
         {
             try
             { 
@@ -248,7 +244,7 @@ namespace Bd_Curs
                         if (tempstr == "UPDATE" || tempstr == "FROM" || tempstr == "INTO" || tempstr == "CREATE")
                             IsTableName = true;//После этих операторов следует имя таблицы
 
-                        if (tempstr == "DROP")//Запрет на DROP баз данных и таблиц(сделать тоже самое схемами)
+                        if (tempstr == "DROP")//Запрет на DROP баз данных и таблиц
                         {
                             IsQueryCompleted = true;//Запрос завершён
                             Show.Invoke("Don't DROP");
@@ -291,6 +287,11 @@ namespace Bd_Curs
                 
                 Show.Invoke($"An SQL exception occurred, please check the correctness of the entered query: [{ex.Number}|{ex.Message}]");
             }
+        }
+        public void DropTable(string TableName)
+        {
+            SqlCommand command = new SqlCommand($"DROP TABLE {TableName}", connection);
+            command.ExecuteNonQuery();
         }
         public int GetAutoIndex(string NameTable)//Получение следующего автоинкремента у таблицы
         {

@@ -168,7 +168,7 @@ namespace Bd_Curs
             }
 
             command.CommandText = DeleteQuery;
-            Thread UpdateThread = new Thread(() => db.SetQueryAsync(DeleteQuery, command));//Создание потока с запросом
+            Thread UpdateThread = new Thread(() => db.SetQuery(DeleteQuery, command));//Создание потока с запросом
             UpdateThread.Start();//Старт потока
             QueueTimer.Start();//Старт таймера на проверку завершения потока
             RunCounter();//Старт Счётчиков

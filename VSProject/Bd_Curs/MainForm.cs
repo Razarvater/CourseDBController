@@ -38,8 +38,6 @@ namespace Bd_Curs
             
             tabControl1.SelectedTab = tabPage1;//Выбрана первая форма редактирования
 
-
-
             if (!db_Connected)//Если БД не подключена то
             {
                 db = new Database(ConnectedServer, DbName.Text);//Создать новое подключение к БД
@@ -77,7 +75,6 @@ namespace Bd_Curs
                     tempr.Text = db.TableNames[i].ToString();//Установка текста кнопки
                     tempr.Location = new Point(ButtonsMin * tempCount, 0);//Установка следующей позиции кнопки
                     tempr.Size = new Size(0, 0);//Установка размера кнопки
-                    tempr.Click += new EventHandler(ChooseNewTable);//Установка события на смену отображаемой таблицы
 
                     tempr.TabStop = false;
                     splitContainer5.Panel2.Controls.Add(tempr);//Отображение кнопки
@@ -90,7 +87,9 @@ namespace Bd_Curs
                 temp.Text = db.TableNames[i].ToString();//Установка текста кнопки
                 temp.Location = new Point(ButtonsMin * tempCount, 0);//Установка следующей позиции кнопки
                 temp.Size = new Size(ButtonsMin, tempHeight);//Установка размера кнопки
-                temp.Click += new EventHandler(ChooseNewTable);//Установка события на смену отображаемой таблицы
+                temp.Click += ChooseNewTable;//Установка события на смену отображаемой таблицы
+                temp.KeyDown += DropTable;
+                temp.MouseEnter += new EventHandler((object sender,EventArgs e)=>((Control)sender).Focus());
                 splitContainer5.Panel2.Controls.Add(temp);//Отображение кнопки
                 tabControl5.TabPages.Add(new TabPage(db.TableNames[i]));//Отображение информации о таблицах
                 tabControl5.TabPages[tabControl5.TabCount - 1].AutoScroll = true;
@@ -287,6 +286,5 @@ namespace Bd_Curs
             }
             progressBar2.Visible = false;
         }
-
     }
 }

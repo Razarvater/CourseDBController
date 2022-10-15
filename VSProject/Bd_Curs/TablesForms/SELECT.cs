@@ -218,7 +218,7 @@ namespace Bd_Curs
             }
             command.CommandText = SelectQuery;
 
-            Thread UpdateThread = new Thread(() => db.SetQueryAsync(SelectQuery,command));//Создание потока с запросом
+            Thread UpdateThread = new Thread(() => db.SetQuery(SelectQuery,command));//Создание потока с запросом
             UpdateThread.Start();//Старт потока
             QueueTimer.Start();//Старт таймера на проверку завершения потока
             RunCounter();//Старт Счётчиков

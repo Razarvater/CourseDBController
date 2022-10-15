@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Data;
 using System.Data.SqlClient;
 using System.Drawing;
+using System.Threading;
 using System.Windows.Forms;
 
 namespace Bd_Curs
@@ -382,7 +384,7 @@ namespace Bd_Curs
             }
             tabPage10.Controls[3].Text = $"CountOfFields: {FieldTableForm.Count}";
         }
-        private async void CreateTableClickAsync(object sender, EventArgs e)
+        private void CreateTableClickAsync(object sender, EventArgs e)
         {
             int temp;
             int PrimaryCount = 0;
@@ -426,12 +428,6 @@ namespace Bd_Curs
                     }
                 }
             }
-            /*string QueryMessage = string.Empty;
-            for (int i = 0; i < FieldTableForm.Count; i++)
-            {
-                QueryMessage += $"{FieldTableForm[i].FieldName}|{FieldTableForm[i].FieldType}|{FieldTableForm[i].FieldCount}|{FieldTableForm[i].IsPrimary}|{FieldTableForm[i].IsNullable}|{FieldTableForm[i].IsAutoIncrementField}\n";
-            }
-            MessageBox.Show(QueryMessage);*/
             if (PrimaryCount < 1)
             {
                 MessageBox.Show("U need more PrimaryKeys >=1", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -482,8 +478,18 @@ namespace Bd_Curs
             After += ")";
             Query += After + " )";
             command.CommandText = Query;
-            await db.CreateQueryAsync(command);
+            db.SetQuery(Query, command);
             ConnectButton_Click(new object(), EventArgs.Empty);
+        }
+        public void DropTable(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode != Keys.Back) return;
+            DialogResult resultMessage = MessageBox.Show("U really wont delete this table?","Drop Table",MessageBoxButtons.YesNo,MessageBoxIcon.Question);
+            if(resultMessage == DialogResult.Yes)
+            {
+                db.DropTable(sender.GetType().GetProperty("Text").GetValue(sender).ToString());
+                ConnectButton_Click(new object(), EventArgs.Empty);
+            }
         }
     }
     public class FieldSQl

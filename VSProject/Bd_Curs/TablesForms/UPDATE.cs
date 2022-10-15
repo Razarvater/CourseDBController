@@ -77,7 +77,7 @@ namespace Bd_Curs
             sqlCommand.CommandText = Query;
             IsUpdate = true;
 
-            Thread UpdateThread = new Thread(() => db.SetQueryAsync(Query,sqlCommand));//Создание потока с запросом
+            Thread UpdateThread = new Thread(() => db.SetQuery(Query,sqlCommand));//Создание потока с запросом
             UpdateThread.Start();//Старт потока
             QueueTimer.Start();//Старт таймера на проверку завершения потока
             RunCounter();//Старт Счётчиков
