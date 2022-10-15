@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
 using System.Data.SqlClient;
 using System.Drawing;
-using System.Threading;
 using System.Windows.Forms;
 
 namespace Bd_Curs
@@ -490,6 +488,67 @@ namespace Bd_Curs
                 db.DropTable(sender.GetType().GetProperty("Text").GetValue(sender).ToString());
                 ConnectButton_Click(new object(), EventArgs.Empty);
             }
+        }
+        
+        private void InitTableRelation()
+        {
+            comboTable1.Items.Clear();
+            comboColumn1.Items.Clear();
+            comboTable2.Items.Clear();
+            comboColumn2.Items.Clear();
+            comboColumn2.Enabled = false;
+            comboColumn1.Enabled = false;
+            foreach (string item in db.TableNames)
+            {
+                if (item == "Users") continue;
+                comboTable1.Items.Add(item);
+                comboTable2.Items.Add(item);
+            }
+        }
+        private void comboTable1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            comboColumn1.Enabled = true;
+            comboColumn1.Items.Clear();
+            for (int i = 0; i < db.Tables[Array.IndexOf(db.TableNames.ToArray(), comboTable1.SelectedItem)].ColumnsNames.Count; i++)
+                if (db.Tables[Array.IndexOf(db.TableNames.ToArray(), comboTable1.SelectedItem)].Columns[i].IsPrimaryKey)
+                    comboColumn1.Items.Add(db.Tables[Array.IndexOf(db.TableNames.ToArray(), comboTable1.SelectedItem)].ColumnsNames[i]);
+        }
+        private void comboColumn1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (comboColumn1.SelectedIndex == -1) return;
+            comboColumn2.Enabled = true;
+            comboColumn2.Items.Clear();
+
+            for (int i = 0; i < db.Tables[Array.IndexOf(db.TableNames.ToArray(), comboTable2.SelectedItem)].ColumnsNames.Count; i++)
+            {
+                if (db.Tables[Array.IndexOf(db.TableNames.ToArray(), comboTable2.SelectedItem)].Columns[i].type != db.Tables[Array.IndexOf(db.TableNames.ToArray(), comboTable1.SelectedItem)].Columns[comboColumn1.SelectedIndex].type)
+                    continue;
+                comboColumn2.Items.Add(db.Tables[Array.IndexOf(db.TableNames.ToArray(), comboTable2.SelectedItem)].ColumnsNames[i]);
+            }
+        }
+        private void comboTable2_SelectedIndexChanged(object sender, EventArgs e)=>
+            comboColumn1_SelectedIndexChanged(new object(), EventArgs.Empty);
+        private void CreateRelation(object sender, EventArgs e)
+        {
+            if (comboColumn1.Text == string.Empty || comboColumn2.Text == string.Empty || comboTable1.Text == string.Empty || comboTable2.Text == string.Empty)
+            {
+                MessageBox.Show("Fill in all the fields", "Error",MessageBoxButtons.OK ,MessageBoxIcon.Error);
+                return;
+            }
+            if (comboTable1.Text == comboTable2.Text)
+            {
+                MessageBox.Show("Tables must be different", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+            string Query = $"ALTER TABLE {comboTable2.Text} ADD CONSTRAINT FK_{comboColumn1.Text}_{comboColumn2.Text}" +
+                $" FOREIGN KEY ({comboColumn2.Text}) REFERENCES {comboTable1.Text} ({comboColumn1.Text})";
+
+            if (checkCascade.Checked)
+                Query += " ON DELETE CASCADE ON UPDATE CASCADE";
+
+            db.SetQuery(Query,new SqlCommand(Query,db.connection));
+            ConnectButton_Click(new object(), EventArgs.Empty);
         }
     }
     public class FieldSQl

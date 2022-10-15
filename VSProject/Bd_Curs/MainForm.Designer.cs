@@ -36,6 +36,8 @@
             this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.dropToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.splitContainer2 = new System.Windows.Forms.SplitContainer();
+            this.CreateDBName = new System.Windows.Forms.TextBox();
+            this.CreateDBButton = new System.Windows.Forms.Button();
             this.progressBar2 = new System.Windows.Forms.ProgressBar();
             this.DbName = new System.Windows.Forms.ComboBox();
             this.ConnectServer = new System.Windows.Forms.Button();
@@ -65,6 +67,17 @@
             this.tabControl5 = new System.Windows.Forms.TabControl();
             this.tabPage10 = new System.Windows.Forms.TabPage();
             this.tabPage11 = new System.Windows.Forms.TabPage();
+            this.checkCascade = new System.Windows.Forms.CheckBox();
+            this.button1 = new System.Windows.Forms.Button();
+            this.label10 = new System.Windows.Forms.Label();
+            this.label9 = new System.Windows.Forms.Label();
+            this.label8 = new System.Windows.Forms.Label();
+            this.label7 = new System.Windows.Forms.Label();
+            this.label6 = new System.Windows.Forms.Label();
+            this.comboColumn2 = new System.Windows.Forms.ComboBox();
+            this.comboColumn1 = new System.Windows.Forms.ComboBox();
+            this.comboTable2 = new System.Windows.Forms.ComboBox();
+            this.comboTable1 = new System.Windows.Forms.ComboBox();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.tabPage3 = new System.Windows.Forms.TabPage();
@@ -103,6 +116,7 @@
             this.tabPage9.SuspendLayout();
             this.tabControl4.SuspendLayout();
             this.tabPage1.SuspendLayout();
+            this.tabPage11.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.tabPage3.SuspendLayout();
             this.tabControl2.SuspendLayout();
@@ -163,7 +177,7 @@
             // dropToolStripMenuItem
             // 
             this.dropToolStripMenuItem.Name = "dropToolStripMenuItem";
-            this.dropToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.dropToolStripMenuItem.Size = new System.Drawing.Size(99, 22);
             this.dropToolStripMenuItem.Text = "drop";
             // 
             // splitContainer2
@@ -177,6 +191,8 @@
             // 
             // splitContainer2.Panel1
             // 
+            this.splitContainer2.Panel1.Controls.Add(this.CreateDBName);
+            this.splitContainer2.Panel1.Controls.Add(this.CreateDBButton);
             this.splitContainer2.Panel1.Controls.Add(this.progressBar2);
             this.splitContainer2.Panel1.Controls.Add(this.DbName);
             this.splitContainer2.Panel1.Controls.Add(this.ConnectServer);
@@ -199,6 +215,31 @@
             this.splitContainer2.SplitterWidth = 1;
             this.splitContainer2.TabIndex = 0;
             this.splitContainer2.TabStop = false;
+            // 
+            // CreateDBName
+            // 
+            this.CreateDBName.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.CreateDBName.Location = new System.Drawing.Point(9, 407);
+            this.CreateDBName.Name = "CreateDBName";
+            this.CreateDBName.Size = new System.Drawing.Size(170, 20);
+            this.CreateDBName.TabIndex = 9;
+            this.CreateDBName.Text = "Enter DataBase Name";
+            this.CreateDBName.Visible = false;
+            this.CreateDBName.KeyDown += new System.Windows.Forms.KeyEventHandler(this.CreateDBName_KeyDown);
+            // 
+            // CreateDBButton
+            // 
+            this.CreateDBButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.CreateDBButton.BackColor = System.Drawing.Color.Transparent;
+            this.CreateDBButton.Enabled = false;
+            this.CreateDBButton.Location = new System.Drawing.Point(0, 397);
+            this.CreateDBButton.Name = "CreateDBButton";
+            this.CreateDBButton.Size = new System.Drawing.Size(189, 38);
+            this.CreateDBButton.TabIndex = 8;
+            this.CreateDBButton.TabStop = false;
+            this.CreateDBButton.Text = "Create Database";
+            this.CreateDBButton.UseVisualStyleBackColor = false;
+            this.CreateDBButton.Click += new System.EventHandler(this.CreateDatabase);
             // 
             // progressBar2
             // 
@@ -555,6 +596,17 @@
             // 
             // tabPage11
             // 
+            this.tabPage11.Controls.Add(this.checkCascade);
+            this.tabPage11.Controls.Add(this.button1);
+            this.tabPage11.Controls.Add(this.label10);
+            this.tabPage11.Controls.Add(this.label9);
+            this.tabPage11.Controls.Add(this.label8);
+            this.tabPage11.Controls.Add(this.label7);
+            this.tabPage11.Controls.Add(this.label6);
+            this.tabPage11.Controls.Add(this.comboColumn2);
+            this.tabPage11.Controls.Add(this.comboColumn1);
+            this.tabPage11.Controls.Add(this.comboTable2);
+            this.tabPage11.Controls.Add(this.comboTable1);
             this.tabPage11.Location = new System.Drawing.Point(4, 22);
             this.tabPage11.Margin = new System.Windows.Forms.Padding(0);
             this.tabPage11.Name = "tabPage11";
@@ -562,6 +614,110 @@
             this.tabPage11.TabIndex = 2;
             this.tabPage11.Text = "Create Constraint";
             this.tabPage11.UseVisualStyleBackColor = true;
+            // 
+            // checkCascade
+            // 
+            this.checkCascade.AutoSize = true;
+            this.checkCascade.Location = new System.Drawing.Point(170, 147);
+            this.checkCascade.Name = "checkCascade";
+            this.checkCascade.Size = new System.Drawing.Size(141, 17);
+            this.checkCascade.TabIndex = 10;
+            this.checkCascade.Text = "Cascade Update Tables";
+            this.checkCascade.UseVisualStyleBackColor = true;
+            // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(18, 131);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(126, 46);
+            this.button1.TabIndex = 9;
+            this.button1.Text = "CreateRelation";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.CreateRelation);
+            // 
+            // label10
+            // 
+            this.label10.AutoSize = true;
+            this.label10.Location = new System.Drawing.Point(198, 58);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(46, 13);
+            this.label10.TabIndex = 8;
+            this.label10.Text = "Relation";
+            // 
+            // label9
+            // 
+            this.label9.AutoSize = true;
+            this.label9.Location = new System.Drawing.Point(307, 70);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(42, 13);
+            this.label9.TabIndex = 7;
+            this.label9.Text = "Column";
+            // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Location = new System.Drawing.Point(307, 9);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(34, 13);
+            this.label8.TabIndex = 6;
+            this.label8.Text = "Table";
+            // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Location = new System.Drawing.Point(24, 70);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(42, 13);
+            this.label7.TabIndex = 5;
+            this.label7.Text = "Column";
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(24, 9);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(34, 13);
+            this.label6.TabIndex = 4;
+            this.label6.Text = "Table";
+            // 
+            // comboColumn2
+            // 
+            this.comboColumn2.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboColumn2.FormattingEnabled = true;
+            this.comboColumn2.Location = new System.Drawing.Point(310, 86);
+            this.comboColumn2.Name = "comboColumn2";
+            this.comboColumn2.Size = new System.Drawing.Size(107, 21);
+            this.comboColumn2.TabIndex = 3;
+            // 
+            // comboColumn1
+            // 
+            this.comboColumn1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboColumn1.FormattingEnabled = true;
+            this.comboColumn1.Location = new System.Drawing.Point(27, 86);
+            this.comboColumn1.Name = "comboColumn1";
+            this.comboColumn1.Size = new System.Drawing.Size(107, 21);
+            this.comboColumn1.TabIndex = 2;
+            this.comboColumn1.SelectedIndexChanged += new System.EventHandler(this.comboColumn1_SelectedIndexChanged);
+            // 
+            // comboTable2
+            // 
+            this.comboTable2.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboTable2.FormattingEnabled = true;
+            this.comboTable2.Location = new System.Drawing.Point(310, 25);
+            this.comboTable2.Name = "comboTable2";
+            this.comboTable2.Size = new System.Drawing.Size(107, 21);
+            this.comboTable2.TabIndex = 1;
+            this.comboTable2.SelectedIndexChanged += new System.EventHandler(this.comboTable2_SelectedIndexChanged);
+            // 
+            // comboTable1
+            // 
+            this.comboTable1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboTable1.FormattingEnabled = true;
+            this.comboTable1.Location = new System.Drawing.Point(27, 25);
+            this.comboTable1.Name = "comboTable1";
+            this.comboTable1.Size = new System.Drawing.Size(107, 21);
+            this.comboTable1.TabIndex = 0;
+            this.comboTable1.SelectedIndexChanged += new System.EventHandler(this.comboTable1_SelectedIndexChanged);
             // 
             // tabControl1
             // 
@@ -704,6 +860,8 @@
             this.tabPage9.ResumeLayout(false);
             this.tabControl4.ResumeLayout(false);
             this.tabPage1.ResumeLayout(false);
+            this.tabPage11.ResumeLayout(false);
+            this.tabPage11.PerformLayout();
             this.tabControl1.ResumeLayout(false);
             this.tabPage3.ResumeLayout(false);
             this.tabControl2.ResumeLayout(false);
@@ -758,6 +916,19 @@
         private System.Windows.Forms.MenuStrip menuStrip1;
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem1;
         private System.Windows.Forms.ToolStripMenuItem dropToolStripMenuItem;
+        private System.Windows.Forms.Label label9;
+        private System.Windows.Forms.Label label8;
+        private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.ComboBox comboColumn2;
+        private System.Windows.Forms.ComboBox comboColumn1;
+        private System.Windows.Forms.ComboBox comboTable2;
+        private System.Windows.Forms.ComboBox comboTable1;
+        private System.Windows.Forms.Label label10;
+        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.CheckBox checkCascade;
+        private System.Windows.Forms.Button CreateDBButton;
+        private System.Windows.Forms.TextBox CreateDBName;
     }
 }
 

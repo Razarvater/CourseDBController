@@ -35,7 +35,7 @@ namespace Bd_Curs
         private async void ConnectButton_Click(object sender, EventArgs e)//Подключение к БД
         {
             if (DbName.Text == string.Empty) return;
-            
+
             tabControl1.SelectedTab = tabPage1;//Выбрана первая форма редактирования
 
             if (!db_Connected)//Если БД не подключена то
@@ -52,59 +52,66 @@ namespace Bd_Curs
             await db.startConnectionAsync(NameBox.Text, PassBox.Text);//Подключение к базе данных
             db_Connected = db.Connected;//Подключена ли БД
 
-            if (db_Connected)//Изменение сообщения о подключении
+            if (db_Connected && db.TableNames.Count != 0)
             {
                 ConnectionStatus.Text = $"Server:{ConnectedServer}          Database:{DbName.Text}";
                 SelectedTableName = db.TableNames[0];//Выбранная таблица
                 IndexSelectedTable = 0;
-            }
-            else return;
-            //-------------Создание кнопок таблиц------------\\
-            splitContainer5.Panel2.Controls.Clear();//Очистка предыдущих кнопок
-            tabControl5.TabPages.Clear();//Очистка информации о таблицах
-            int tempHeight = splitContainer5.Panel2.Height - 5;//Установка высоты для кнопок
-            int tempCount = 0;
-            //уменьшить высоту кнопок если они не помещаются в контейнер
-            if (ButtonsMin * db.TableNames.Count > splitContainer5.Panel2.Width) tempHeight -= 16;
-            for (int i = 0; i < db.TableNames.Count; i++)//Создание кнопок для всех таблиц
-            {
-                if (db.TableNames[i] == "Users")//Если таблица Users
+
+                //-------------Создание кнопок таблиц------------\\
+                splitContainer5.Panel2.Controls.Clear();//Очистка предыдущих кнопок
+                tabControl5.TabPages.Clear();//Очистка информации о таблицах
+                int tempHeight = splitContainer5.Panel2.Height - 5;//Установка высоты для кнопок
+                int tempCount = 0;
+                //уменьшить высоту кнопок если они не помещаются в контейнер
+                if (ButtonsMin * db.TableNames.Count > splitContainer5.Panel2.Width) tempHeight -= 16;
+                for (int i = 0; i < db.TableNames.Count; i++)//Создание кнопок для всех таблиц
                 {
-                    Button tempr = new Button();
+                    if (db.TableNames[i] == "Users")//Если таблица Users
+                    {
+                        Button tempr = new Button();
 
-                    tempr.Text = db.TableNames[i].ToString();//Установка текста кнопки
-                    tempr.Location = new Point(ButtonsMin * tempCount, 0);//Установка следующей позиции кнопки
-                    tempr.Size = new Size(0, 0);//Установка размера кнопки
+                        tempr.Text = db.TableNames[i].ToString();//Установка текста кнопки
+                        tempr.Location = new Point(ButtonsMin * tempCount, 0);//Установка следующей позиции кнопки
+                        tempr.Size = new Size(0, 0);//Установка размера кнопки
 
-                    tempr.TabStop = false;
-                    splitContainer5.Panel2.Controls.Add(tempr);//Отображение кнопки
-                   
-                    continue;//То напечатать размерами 0 на 0 и скрыть под следующей кнопкой
+                        tempr.TabStop = false;
+                        splitContainer5.Panel2.Controls.Add(tempr);//Отображение кнопки
+
+                        continue;//То напечатать размерами 0 на 0 и скрыть под следующей кнопкой
+                    }
+
+                    Button temp = new Button();
+
+                    temp.Text = db.TableNames[i].ToString();//Установка текста кнопки
+                    temp.Location = new Point(ButtonsMin * tempCount, 0);//Установка следующей позиции кнопки
+                    temp.Size = new Size(ButtonsMin, tempHeight);//Установка размера кнопки
+                    temp.Click += ChooseNewTable;//Установка события на смену отображаемой таблицы
+                    temp.KeyDown += DropTable;
+                    temp.MouseEnter += new EventHandler((object sender, EventArgs e) => ((Control)sender).Focus());
+                    splitContainer5.Panel2.Controls.Add(temp);//Отображение кнопки
+                    tabControl5.TabPages.Add(new TabPage(db.TableNames[i]));//Отображение информации о таблицах
+                    tabControl5.TabPages[tabControl5.TabCount - 1].AutoScroll = true;
+                    tempCount++;
                 }
-   
-                Button temp = new Button();
+                SetSelectedtable();//Отобразить первую таблицу
 
-                temp.Text = db.TableNames[i].ToString();//Установка текста кнопки
-                temp.Location = new Point(ButtonsMin * tempCount, 0);//Установка следующей позиции кнопки
-                temp.Size = new Size(ButtonsMin, tempHeight);//Установка размера кнопки
-                temp.Click += ChooseNewTable;//Установка события на смену отображаемой таблицы
-                temp.KeyDown += DropTable;
-                temp.MouseEnter += new EventHandler((object sender,EventArgs e)=>((Control)sender).Focus());
-                splitContainer5.Panel2.Controls.Add(temp);//Отображение кнопки
-                tabControl5.TabPages.Add(new TabPage(db.TableNames[i]));//Отображение информации о таблицах
-                tabControl5.TabPages[tabControl5.TabCount - 1].AutoScroll = true;
-                tempCount++;  
+                if (splitContainer5.Panel2.Controls.Count > IndexSelectedTable)
+                    splitContainer5.Panel2.Controls[IndexSelectedTable].BackColor = Color.Transparent;
+                IndexSelectedTable = 0;//Индекс выбранной таблицы
+                splitContainer5.Panel2.Controls[IndexSelectedTable].BackColor = Color.LightGreen;
+
+                PrintShema();  
             }
-            SetSelectedtable();//Отобразить первую таблицу
-            DisconnectButton.Enabled = true;//Включение кнопки для дисконекта от БД
-            if (splitContainer5.Panel2.Controls.Count > IndexSelectedTable)
-                splitContainer5.Panel2.Controls[IndexSelectedTable].BackColor = Color.Transparent;
-            IndexSelectedTable = 0;//Индекс выбранной таблицы
-            splitContainer5.Panel2.Controls[IndexSelectedTable].BackColor = Color.LightGreen;
-            tabControl1.Enabled = true;//Включение контроллера таблиц
-            PrintShema();
+            if (db_Connected)//Изменение сообщения о подключении
+            {
+                ConnectionStatus.Text = $"Server:{ConnectedServer}          Database:{DbName.Text}";
+            }
             InitTableForms();
             InitCreateTableForm();
+            InitTableRelation();
+            DisconnectButton.Enabled = true;//Включение кнопки для дисконекта от БД
+            tabControl1.Enabled = true;//Включение контроллера таблиц
         }
         private void SetSelectedtable(string name = "DeFaUlT_TaBlE")
         {
@@ -262,6 +269,7 @@ namespace Bd_Curs
 
             ConnectedServer = ServerName.Text;//Изменение подключенного сервера
             ServerConnection serv = new ServerConnection(ServerName.Text);//Подключение к серверу
+            serv.Show += ErrorMessage;
             DbName.Items.Clear();//Очистка списка баз данных
             await serv.GetDatabases();
             foreach (var item in serv.Databases)//Получение списка всех Баз данных на данном сервере
@@ -271,6 +279,7 @@ namespace Bd_Curs
             if (DbName.Items.Count > 0)//Включение/отключение возможности подключится к БД
             {
                 ConnectButton.Enabled = true;
+                CreateDBButton.Enabled = true;
                 DbName.Enabled = true;
                 NameBox.Enabled = true;
                 PassBox.Enabled = true;
@@ -279,12 +288,34 @@ namespace Bd_Curs
             else
             {
                 ConnectButton.Enabled = false;
+                CreateDBButton.Enabled = false;
                 DbName.Enabled = false;
                 NameBox.Enabled = false;
                 PassBox.Enabled = false;
                 ConnectionStatus.Text = "Wasn't connected";
             }
             progressBar2.Visible = false;
+        }
+        private void CreateDatabase(object sender, EventArgs e)
+        {
+            DialogResult d =  MessageBox.Show("You want to create Database?", "DatabaseCreate",MessageBoxButtons.YesNo,MessageBoxIcon.Question);
+            if (d == DialogResult.Yes)
+            {
+                CreateDBButton.Enabled = false;
+                CreateDBName.Visible = true;
+                CreateDBName.Text = "Enter DataBase Name";
+            }
+        }
+        private async void CreateDBName_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode != Keys.Enter) return;
+
+            CreateDBName.Visible = false;
+            ServerConnection serv = new ServerConnection(ConnectedServer);
+            serv.Show += ErrorMessage;
+            await serv.CreateDataBase(CreateDBName.Text);
+
+            ConnectServer_Click(new object(), EventArgs.Empty);
         }
     }
 }
