@@ -50,10 +50,16 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DataBaseForms\DataBaseEditor.cs">
+    <Compile Include="DataBaseForms\TableCreateForm.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="DataBaseForms\DiagramCreator.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="DataBaseForms\DBEditorDesigner.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="DataBaseForms\RelationForm.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="TablesForms\Delete.cs">

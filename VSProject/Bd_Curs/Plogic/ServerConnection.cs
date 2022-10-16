@@ -31,25 +31,25 @@ namespace Bd_Curs
                     Databases.Add(item[0].ToString());
                 }
             }
-            catch (SqlException ex){ Show.Invoke($"Don't connected|{ex.Number}|{ex.Message}");} 
+            catch (SqlException ex){ Show.Invoke($"Don't connected|{ex.Number}|{ex.Message}"); }//ошибка об исключении
         }
-        public async Task CreateDataBase(string name)
+        public async Task CreateDataBase(string name)//Создание БД
         {
             try
             {
                 await connection.OpenAsync();//открытие подключения
-                foreach (var item in name)
-                {
-                    if (item == ' ')
+                foreach (char item in name)//Так как параметризированных запросов для CREATE нет 
+                {                         //то проверка на наличие пробелов/переносов так как без них нельзя создать SQL инъекцию
+                    if (item == ' ' || item == '\n' || item == '\\' || item == '*')
                     {
                         Show.Invoke("Database name must not contain spaces!");
                         return;
                     }
                 }
-                SqlCommand command = new SqlCommand($"CREATE DATABASE {name}", connection);
-                await command.ExecuteNonQueryAsync();
+                SqlCommand command = new SqlCommand($"CREATE DATABASE {name}", connection);//Создание команды
+                await command.ExecuteNonQueryAsync();//выполнение команды
             }
-            catch (SqlException ex) { Show.Invoke($"Don't connected|{ex.Number}|{ex.Message}");}
+            catch (SqlException ex) { Show.Invoke($"Don't connected|{ex.Number}|{ex.Message}");}//ошибка об исключении
         }
     }
 }

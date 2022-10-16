@@ -40,13 +40,13 @@ namespace Bd_Curs
             {
                 Parameter = SelectedTable.Columns[SelectedColumnIndex].HeaderText;
                 Query += $" {SelectedTable.Columns[SelectedColumnIndex].HeaderText} = @{Parameter}1 WHERE ";//Создание условий для изменения записи 
-                sqlCommand.Parameters.AddWithValue($"@{Parameter}1", SelectedParSecond.Cells[SelectedColumnIndex].Value.ToString().Replace(',', '.'));
+                sqlCommand.Parameters.Add(new SqlParameter($"@{Parameter}1", SelectedParSecond.Cells[SelectedColumnIndex].Value.ToString().Replace(',', '.')));
             }
             else
             {
                 Parameter = SelectedTable.Columns[SelectedColumnIndex].HeaderText;
                 Query += $" {SelectedTable.Columns[SelectedColumnIndex].HeaderText} = @{Parameter}1 WHERE ";//Создание условий для изменения записи
-                sqlCommand.Parameters.AddWithValue($"@{Parameter}1", SelectedParSecond.Cells[SelectedColumnIndex].Value);
+                sqlCommand.Parameters.Add(new SqlParameter($"@{Parameter}1", SelectedParSecond.Cells[SelectedColumnIndex].Value));
             }
             
             //Вставка в запрос всех уникальных полей параметризированно

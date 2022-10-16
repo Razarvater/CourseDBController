@@ -7,17 +7,16 @@ using System.Linq;
 
 namespace Bd_Curs
 {
-    //фуух это на потом
-
-    public class TableSql
+    public class TableSql//Таблица
     {
         public string name;
         public List<Column> Columns;
         public List<string> ColumnsNames;
         public List<string> PrimaryKeys;
+        public List<string> ForeignKeys;
         public bool isAutoIncremented = false;
     }
-    public class Column
+    public class Column//Столбец
     {
         public string TableName;
         public string Name { get; set; }
@@ -27,20 +26,19 @@ namespace Bd_Curs
         public bool IsAutoIncrement;
         public SqlDbType type;
     }
-    public class SqlRef
+    public class SqlRef//Связь в БД
     {
         public string TableNameFK;
         public string ColumnFK;
         public string TableNamePK;
         public string ColumnPK;
     }
-
     public class Database
     {
-        public SqlConnection connection;//подклбючение к БД
+        public SqlConnection connection;//подключение к БД
         private SqlCommand command;//SQL команда
-        public List<TableSql> Tables;
-        public List<SqlRef> Constrains;
+        public List<TableSql> Tables;//Таблицы
+        public List<SqlRef> Constrains;//Связи
         public List<string> TableNames;//Имена таблиц
         public DataTable TableData = new DataTable();//Выбранная таблица
 
@@ -85,11 +83,28 @@ namespace Bd_Curs
                 try
                 {
                     Tables[i].PrimaryKeys = new List<string>();
-                    command = new SqlCommand($"SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.KEY_COLUMN_USAGE WHERE TABLE_NAME = '{TableNames[i]}'", connection);
+                    command = new SqlCommand($"SELECT INFORMATION_SCHEMA.KEY_COLUMN_USAGE.COLUMN_NAME FROM INFORMATION_SCHEMA.KEY_COLUMN_USAGE\r\nJOIN INFORMATION_SCHEMA.TABLE_CONSTRAINTS\r\nON INFORMATION_SCHEMA.KEY_COLUMN_USAGE.CONSTRAINT_NAME = INFORMATION_SCHEMA.TABLE_CONSTRAINTS.CONSTRAINT_NAME\r\nWHERE INFORMATION_SCHEMA.TABLE_CONSTRAINTS.CONSTRAINT_TYPE = 'PRIMARY KEY' AND INFORMATION_SCHEMA.KEY_COLUMN_USAGE.TABLE_NAME = '{TableNames[i]}'", connection);
                     SqlDataReader tempo = await command.ExecuteReaderAsync();
                     while (await tempo.ReadAsync())
                     {
                         Tables[i].PrimaryKeys.Add(tempo[0].ToString());
+                    }
+                    tempo.Close();
+                }
+                catch (InvalidOperationException) { }
+            }
+
+            //Получение всех Внешних ключей
+            for (int i = 0; i < TableNames.Count; i++)
+            {
+                try
+                {
+                    Tables[i].ForeignKeys = new List<string>();
+                    command = new SqlCommand($"SELECT INFORMATION_SCHEMA.KEY_COLUMN_USAGE.COLUMN_NAME FROM INFORMATION_SCHEMA.KEY_COLUMN_USAGE\r\nJOIN INFORMATION_SCHEMA.TABLE_CONSTRAINTS\r\nON INFORMATION_SCHEMA.KEY_COLUMN_USAGE.CONSTRAINT_NAME = INFORMATION_SCHEMA.TABLE_CONSTRAINTS.CONSTRAINT_NAME\r\nWHERE INFORMATION_SCHEMA.TABLE_CONSTRAINTS.CONSTRAINT_TYPE = 'FOREIGN KEY' AND INFORMATION_SCHEMA.KEY_COLUMN_USAGE.TABLE_NAME = '{TableNames[i]}'", connection);
+                    SqlDataReader tempo = await command.ExecuteReaderAsync();
+                    while (await tempo.ReadAsync())
+                    {
+                        Tables[i].ForeignKeys.Add(tempo[0].ToString());
                     }
                     tempo.Close();
                 }
@@ -161,13 +176,12 @@ namespace Bd_Curs
 
             if (Array.IndexOf(TableNames.ToArray(),"Users")!=-1)//Только если есть таблица с пользователями
                 await AuthAsync(name,password);//Авторизация 
-            //TableNames.Remove("Users");
         }
         public async Task AuthAsync(string name, string password)//Авторизация в базе данных
         {
             try
             { 
-                //Параметризированный запрос для защиты от SQL инъекций
+                //Запрос для определения права этого пользователя заходить в БД
                 command = new SqlCommand($"SELECT * FROM Users WHERE name = @name AND pass = @password", connection);
                 command.Parameters.Add(new SqlParameter("@name", name));
                 command.Parameters.Add(new SqlParameter("@password", password));
@@ -252,7 +266,7 @@ namespace Bd_Curs
                             return;
                         }
 
-                        if (tempstr == "Alter")
+                        if (tempstr == "ALTER")
                         {
                             IsAlter = true;
                             break;
@@ -262,7 +276,7 @@ namespace Bd_Curs
                         if (tempstr == "DELETE")//Если запрос на удаление то выбрать повторно
                             IsDelete = true;
 
-                        tempstr = String.Empty;//Очистка предыдущего слова
+                        tempstr = string.Empty;//Очистка предыдущего слова
                     }
                     else
                         tempstr += item;
@@ -294,7 +308,7 @@ namespace Bd_Curs
                 Show.Invoke($"An SQL exception occurred, please check the correctness of the entered query: [{ex.Number}|{ex.Message}]");
             }
         }
-        public void DropTable(string TableName)
+        public void DropTable(string TableName)//Удаление таблицы из БД
         {
             SqlCommand command = new SqlCommand($"DROP TABLE {TableName}", connection);
             command.ExecuteNonQuery();
@@ -306,7 +320,7 @@ namespace Bd_Curs
 
             //Получение значения
             temp.ReadAsync();
-                int Result = int.Parse(temp[0].ToString()) + 1;
+                int Result = int.Parse(temp[0].ToString());
             temp.Close();
 
             return Result;

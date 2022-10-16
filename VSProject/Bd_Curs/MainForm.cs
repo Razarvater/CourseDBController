@@ -4,7 +4,6 @@ using System.Drawing;
 using System.Threading;
 using System.Windows.Forms;
 using System.Diagnostics;
-using System.Threading.Tasks;
 
 namespace Bd_Curs
 {
@@ -22,10 +21,10 @@ namespace Bd_Curs
         public MainForm()
         {
             InitializeComponent();
-
             tabControl1.Enabled = false;
+            tabControl3.Enabled = false;
         }
-        public void ErrorMessage(string mess) 
+        public void ErrorMessage(string mess)//Сообщение об ошибке
         {
             IsError = true;
             MessageBox.Show(mess, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);//сообщение от класса Database
@@ -34,6 +33,8 @@ namespace Bd_Curs
         private void UpdateTimer_Tick(object sender, EventArgs e) => UpdateTable();//Таймер на обновление таблицы
         private async void ConnectButton_Click(object sender, EventArgs e)//Подключение к БД
         {
+            tabControl1.Enabled = false;//Отключение контроллера таблиц
+            SelectedTable.DataSource = null;
             if (DbName.Text == string.Empty) return;
 
             tabControl1.SelectedTab = tabPage1;//Выбрана первая форма редактирования
@@ -57,61 +58,70 @@ namespace Bd_Curs
                 ConnectionStatus.Text = $"Server:{ConnectedServer}          Database:{DbName.Text}";
                 SelectedTableName = db.TableNames[0];//Выбранная таблица
                 IndexSelectedTable = 0;
-
+            }
+            tabPage8.Controls.Clear();//Очистка от предыдущей диаграммы
                 //-------------Создание кнопок таблиц------------\\
                 splitContainer5.Panel2.Controls.Clear();//Очистка предыдущих кнопок
                 tabControl5.TabPages.Clear();//Очистка информации о таблицах
-                int tempHeight = splitContainer5.Panel2.Height - 5;//Установка высоты для кнопок
-                int tempCount = 0;
-                //уменьшить высоту кнопок если они не помещаются в контейнер
-                if (ButtonsMin * db.TableNames.Count > splitContainer5.Panel2.Width) tempHeight -= 16;
-                for (int i = 0; i < db.TableNames.Count; i++)//Создание кнопок для всех таблиц
+                if (db_Connected && db.TableNames.Count != 0)
                 {
-                    if (db.TableNames[i] == "Users")//Если таблица Users
+                    int tempHeight = splitContainer5.Panel2.Height - 5;//Установка высоты для кнопок
+                    int tempCount = 0;
+                    //уменьшить высоту кнопок если они не помещаются в контейнер
+                    if (ButtonsMin * db.TableNames.Count > splitContainer5.Panel2.Width) tempHeight -= 16;
+                    for (int i = 0; i < db.TableNames.Count; i++)//Создание кнопок для всех таблиц
                     {
-                        Button tempr = new Button();
+                        if (db.TableNames[i] == "Users")//Если таблица Users
+                        {
+                            Button tempr = new Button();
 
-                        tempr.Text = db.TableNames[i].ToString();//Установка текста кнопки
-                        tempr.Location = new Point(ButtonsMin * tempCount, 0);//Установка следующей позиции кнопки
-                        tempr.Size = new Size(0, 0);//Установка размера кнопки
+                            tempr.Text = db.TableNames[i].ToString();//Установка текста кнопки
+                            tempr.Location = new Point(ButtonsMin * tempCount, 0);//Установка следующей позиции кнопки
+                            tempr.Size = new Size(0, 0);//Установка размера кнопки
 
-                        tempr.TabStop = false;
-                        splitContainer5.Panel2.Controls.Add(tempr);//Отображение кнопки
+                            tempr.TabStop = false;
+                            splitContainer5.Panel2.Controls.Add(tempr);//Отображение кнопки
 
-                        continue;//То напечатать размерами 0 на 0 и скрыть под следующей кнопкой
+                            continue;//То напечатать размерами 0 на 0 и скрыть под следующей кнопкой
+                        }
+
+                        Button temp = new Button();
+
+                        temp.Text = db.TableNames[i].ToString();//Установка текста кнопки
+                        temp.Location = new Point(ButtonsMin * tempCount, 0);//Установка следующей позиции кнопки
+                        temp.Size = new Size(ButtonsMin, tempHeight);//Установка размера кнопки
+                        temp.Click += ChooseNewTable;//Установка события на смену отображаемой таблицы
+                        temp.KeyDown += DropTable;
+                        temp.MouseEnter += new EventHandler((object sender, EventArgs e) => ((Control)sender).Focus());
+                        splitContainer5.Panel2.Controls.Add(temp);//Отображение кнопки
+                        tabControl5.TabPages.Add(new TabPage(db.TableNames[i]));//Отображение информации о таблицах
+                        tabControl5.TabPages[tabControl5.TabCount - 1].AutoScroll = true;
+                        tempCount++;
                     }
+                    SetSelectedtable();//Отобразить первую таблицу
 
-                    Button temp = new Button();
+                    //Установить цвет выбранных кнопок
+                    if (splitContainer5.Panel2.Controls.Count > IndexSelectedTable)
+                        splitContainer5.Panel2.Controls[IndexSelectedTable].BackColor = Color.Transparent;
+                    IndexSelectedTable = 0;//Индекс выбранной таблицы
+                    splitContainer5.Panel2.Controls[IndexSelectedTable].BackColor = Color.LightGreen;
 
-                    temp.Text = db.TableNames[i].ToString();//Установка текста кнопки
-                    temp.Location = new Point(ButtonsMin * tempCount, 0);//Установка следующей позиции кнопки
-                    temp.Size = new Size(ButtonsMin, tempHeight);//Установка размера кнопки
-                    temp.Click += ChooseNewTable;//Установка события на смену отображаемой таблицы
-                    temp.KeyDown += DropTable;
-                    temp.MouseEnter += new EventHandler((object sender, EventArgs e) => ((Control)sender).Focus());
-                    splitContainer5.Panel2.Controls.Add(temp);//Отображение кнопки
-                    tabControl5.TabPages.Add(new TabPage(db.TableNames[i]));//Отображение информации о таблицах
-                    tabControl5.TabPages[tabControl5.TabCount - 1].AutoScroll = true;
-                    tempCount++;
+                    PrintShema();//напечатать схему бд
+                    //Инициализация вкладок
+                    InitTableForms();
                 }
-                SetSelectedtable();//Отобразить первую таблицу
-
-                if (splitContainer5.Panel2.Controls.Count > IndexSelectedTable)
-                    splitContainer5.Panel2.Controls[IndexSelectedTable].BackColor = Color.Transparent;
-                IndexSelectedTable = 0;//Индекс выбранной таблицы
-                splitContainer5.Panel2.Controls[IndexSelectedTable].BackColor = Color.LightGreen;
-
-                PrintShema();  
-            }
             if (db_Connected)//Изменение сообщения о подключении
             {
                 ConnectionStatus.Text = $"Server:{ConnectedServer}          Database:{DbName.Text}";
+                //Инициализация вкладок
+                InitCreateTableForm();
+                InitTableRelation();
+
+                DisconnectButton.Enabled = true;//Включение кнопки для дисконекта от БД
+                if (db.TableNames.Count != 0)
+                    tabControl1.Enabled = true;//Включение контроллера таблиц
+                tabControl3.Enabled = true;//Включение контроллера таблиц
             }
-            InitTableForms();
-            InitCreateTableForm();
-            InitTableRelation();
-            DisconnectButton.Enabled = true;//Включение кнопки для дисконекта от БД
-            tabControl1.Enabled = true;//Включение контроллера таблиц
         }
         private void SetSelectedtable(string name = "DeFaUlT_TaBlE")
         {
@@ -167,7 +177,7 @@ namespace Bd_Curs
                     //Переинициализация форм
                     InitConditions(1, EventArgs.Empty);
                     InitConditionsDel(1,EventArgs.Empty);
-                    PrintPrimaryKeys();
+                    PrintKeys();
                 }
                 if (IsInsert && !IsError)//Создание новой строки
                 {
@@ -178,7 +188,7 @@ namespace Bd_Curs
             IsInsert = false;
             Query_IsWorking = false;//запрос не выполняется
         }
-        private void PrintPrimaryKeys()//Отображение первичных ключей
+        private void PrintKeys()//Отображение первичных ключей
         {
             int CountSearchedPK = 0;//Количество найденных первичных ключей
             for (int i = 0; i < SelectedTable.Columns.Count; i++)//Проход по всем колонкам
@@ -193,6 +203,23 @@ namespace Bd_Curs
                         CountSearchedPK++;
                         break;
                     }
+                    
+                }
+            }
+            CountSearchedPK = 0;//Количество найденных внешних ключей
+            for (int i = 0; i < SelectedTable.Columns.Count; i++)//Проход по всем колонкам
+            {
+                if (CountSearchedPK == db.Tables[IndexSelectedTable].ForeignKeys.Count)//Если найдены все ключи
+                    break;
+                for (int j = 0; j < db.Tables[IndexSelectedTable].ForeignKeys.Count; j++)//Проход по всем внешним ключам таблицы
+                {
+                    if (db.Tables[IndexSelectedTable].ForeignKeys[j] == SelectedTable.Columns[i].HeaderText)
+                    {
+                        SelectedTable.Columns[i].HeaderText = $"{SelectedTable.Columns[i].HeaderText}🔗";
+                        CountSearchedPK++;
+                        break;
+                    }
+
                 }
             }
         }
@@ -227,7 +254,7 @@ namespace Bd_Curs
 
         }
         private void UpdateTimeTimer_Tick(object sender, EventArgs e)=>
-            CounterOfConnection.Text = $"Time of query: {(decimal)Query_Time.ElapsedMilliseconds/(decimal)1000}";//Обновление счётчика
+            CounterOfConnection.Text = $"Time of query: {Query_Time.ElapsedMilliseconds/1000}";//Обновление счётчика
         private void RunCounter()
         {
             progressBar1.Visible = true;

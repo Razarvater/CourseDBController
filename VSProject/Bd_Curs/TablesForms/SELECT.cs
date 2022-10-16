@@ -150,7 +150,7 @@ namespace Bd_Curs
                 temp.Location = new Point(X, Y);//Его местоположение и новое имя
                 temp.Size = new Size(100, 20);
                 temp.Name = $"{db.Tables[IndexSelectedTable].Columns[i].Name}SELECT";
-                temp.Anchor = AnchorStyles.Left;
+                temp.Anchor = AnchorStyles.Left | AnchorStyles.Top;
                 temp.CheckedChanged += CheckClick;
                 CheckClick(temp, EventArgs.Empty);
                 if (db.Tables[IndexSelectedTable].Columns[i].IsPrimaryKey)
@@ -166,7 +166,7 @@ namespace Bd_Curs
                 tempo.Location = new Point(X - 100, Y + 3);
                 tempo.Size = new Size(100, 13);
                 tempo.Text = $"{db.Tables[IndexSelectedTable].Columns[i].Name}";
-                tempo.Anchor = AnchorStyles.Left;
+                tempo.Anchor = AnchorStyles.Left | AnchorStyles.Top;
                 tempo.TextAlign = ContentAlignment.MiddleRight;
                 SelectLabels.Add(tempo);//Добавление в коллекцию 
                 tabPage4.Controls.Add(SelectLabels[SelectLabels.Count - 1]);//Добавление на страницу
@@ -183,7 +183,7 @@ namespace Bd_Curs
             button.Location = new Point(10, Y + 30);
             button.Size = new Size(100, 40);
             button.Text = $"Select";
-            button.Anchor = AnchorStyles.Left;
+            button.Anchor = AnchorStyles.Left | AnchorStyles.Top;
             button.Click += button3_Click;
             tabPage4.Controls.Add(button);//Добавление на страницу
             InitConditions(1, EventArgs.Empty);

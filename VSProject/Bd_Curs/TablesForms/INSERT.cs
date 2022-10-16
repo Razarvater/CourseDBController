@@ -5,7 +5,6 @@ using System.Data.SqlClient;
 using System;
 using System.Drawing;
 using System.Collections.Generic;
-using System.Windows.Forms.VisualStyles;
 
 namespace Bd_Curs
 {
@@ -14,7 +13,6 @@ namespace Bd_Curs
         private List<Control> InsertBoxes;//Боксы для значений
         private List<Label> labels;//Названия столбцов
         private bool IsInsert = false;
-
         private void CreateInsertForm()
         {
             //Создание координат для генерируемых элементов интерфейса
@@ -128,11 +126,11 @@ namespace Bd_Curs
 
             int tempINdex = 0;
 
-            for (int i = 0; i < SelectedTable.Rows[0].Cells.Count; i++)//Установка значений в строку
+            for (int i = 0; i < SelectedTable.Rows[SelectedTable.Rows.Count - 1].Cells.Count; i++)//Установка значений в строку
             {
                 foreach (var item2 in InsertBoxes)
                 {
-                    if (SelectedTable.Columns[i].HeaderText == item2.Name)
+                    if (SelectedTable.Columns[i].HeaderText == item2.Name || SelectedTable.Columns[i].HeaderText == $"{item2.Name}🔑" || SelectedTable.Columns[i].HeaderText == $"{item2.Name}🔗")
                     {
                         SelectedTable.Rows[0].Cells[tempINdex].Value = item2.Text;
                         break;
@@ -140,7 +138,7 @@ namespace Bd_Curs
                 }
                 tempINdex++;
             }
-            for (int i = 0; i < SelectedTable.Rows[0].Cells.Count; i++)//Установка автоинкрементых значений в строку
+            for (int i = 0; i < SelectedTable.Rows[SelectedTable.Rows.Count - 1].Cells.Count; i++)//Установка автоинкрементых значений в строку
             {
                 foreach (var item in db.Tables[IndexSelectedTable].Columns)
                 {
