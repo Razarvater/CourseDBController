@@ -33,6 +33,7 @@ namespace Bd_Curs
         private void UpdateTimer_Tick(object sender, EventArgs e) => UpdateTable();//Таймер на обновление таблицы
         private async void ConnectButton_Click(object sender, EventArgs e)//Подключение к БД
         {
+            ConnectButton.Enabled = false;//Выключение кнопки подключения
             tabControl1.Enabled = false;//Отключение контроллера таблиц
             SelectedTable.DataSource = null;
             if (DbName.Text == string.Empty) return;
@@ -183,6 +184,8 @@ namespace Bd_Curs
                 {
                     NewRow();
                 }
+            if (IsError && IsUpdate)
+                SetSelectedtable(SelectedTableName);
             IsError = false;
             IsUpdate = false;
             IsInsert = false;
@@ -251,7 +254,7 @@ namespace Bd_Curs
             tabControl1.SelectedTab = tabPage1;//Выбор первой формы редактирования
             tabControl1.Enabled = false;//Отключение контроллера форм
             CounterOfConnection.Text = string.Empty;//Обнуление счётчика
-
+            ConnectButton.Enabled = true;//Включение кнопки подключения
         }
         private void UpdateTimeTimer_Tick(object sender, EventArgs e)=>
             CounterOfConnection.Text = $"Time of query: {Query_Time.ElapsedMilliseconds/1000}";//Обновление счётчика

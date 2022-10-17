@@ -34,18 +34,18 @@ namespace Bd_Curs
 
             //Создание параметризированного запроса
             SqlCommand sqlCommand = new SqlCommand(Query,db.connection);
-            object Parameter = null;
+            string Parameter = SelectedTable.Columns[SelectedColumnIndex].HeaderText;
+            if (Parameter.IndexOf("🔑") != -1 || Parameter.IndexOf("🔗") != -1)
+                Parameter = Parameter.Remove(Parameter.Length - 2);
             //Проверка на float(Изменение ',' на '.')
             if (float.TryParse(SelectedParSecond.Cells[SelectedColumnIndex].Value.ToString(), out temp))
             {
-                Parameter = SelectedTable.Columns[SelectedColumnIndex].HeaderText;
-                Query += $" {SelectedTable.Columns[SelectedColumnIndex].HeaderText} = @{Parameter}1 WHERE ";//Создание условий для изменения записи 
+                Query += $" {Parameter} = @{Parameter}1 WHERE ";//Создание условий для изменения записи 
                 sqlCommand.Parameters.Add(new SqlParameter($"@{Parameter}1", SelectedParSecond.Cells[SelectedColumnIndex].Value.ToString().Replace(',', '.')));
             }
             else
             {
-                Parameter = SelectedTable.Columns[SelectedColumnIndex].HeaderText;
-                Query += $" {SelectedTable.Columns[SelectedColumnIndex].HeaderText} = @{Parameter}1 WHERE ";//Создание условий для изменения записи
+                Query += $" {Parameter} = @{Parameter}1 WHERE ";//Создание условий для изменения записи
                 sqlCommand.Parameters.Add(new SqlParameter($"@{Parameter}1", SelectedParSecond.Cells[SelectedColumnIndex].Value));
             }
             
@@ -63,12 +63,12 @@ namespace Bd_Curs
                         if (float.TryParse(SelectedParSecond.Cells[SelectedColumnIndex].Value.ToString(), out temp))
                         {
                             Query += $"@{Parameter}2";
-                            sqlCommand.Parameters.AddWithValue($"@{Parameter}2", SelectedParSecond.Cells[i].Value.ToString().Replace(',', '.'));
+                            sqlCommand.Parameters.Add(new SqlParameter($"@{Parameter}2", SelectedParLast.Cells[i].Value.ToString().Replace(',', '.')));
                         }
                         else
                         {
                             Query += $"@{Parameter}2";
-                            sqlCommand.Parameters.AddWithValue($"@{Parameter}2", SelectedParSecond.Cells[i].Value);
+                            sqlCommand.Parameters.Add(new SqlParameter($"@{Parameter}2", SelectedParLast.Cells[i].Value));
                         }
                         break;
                     }
