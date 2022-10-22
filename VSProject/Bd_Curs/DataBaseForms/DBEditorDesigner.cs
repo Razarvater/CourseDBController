@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Data.SqlClient;
 using System.Drawing;
 using System.Windows.Forms;
 
@@ -9,6 +8,35 @@ namespace Bd_Curs
 {
     public partial class MainForm : Form
     {
+        private void CreateTableFormLocalize()//Локализация
+        {
+            if (tabPage10.Controls.Count != 0)
+            {
+                tabPage10.Controls[0].Text = Localize.GetString("CreateNewField");
+                tabPage10.Controls[1].Text = Localize.GetString("Table_Name_Default");
+                tabPage10.Controls[2].Text = Localize.GetString("CreateTable");
+                tabPage10.Controls[3].Text = $"{Localize.GetString("CountOfFields")}: {FieldTableForm.Count}";
+                tabPage10.Controls[4].Text = Localize.GetString("FieldName");
+                tabPage10.Controls[5].Text = Localize.GetString("FieldType");
+                tabPage10.Controls[6].Text = Localize.GetString("SymbolsCount");
+                tabPage10.Controls[7].Text = Localize.GetString("Primary");
+                tabPage10.Controls[8].Text = Localize.GetString("Nullable");
+                tabPage10.Controls[9].Text = Localize.GetString("AutoIncrement");
+
+                for (int i = 16; i < tabPage10.Controls.Count; i+=7)
+                    tabPage10.Controls[i].Text = Localize.GetString("DeleteField");
+            }
+        }
+        private void TableFormsLocalization()//Локализация
+        {
+            for (int i = 0; i < tabControl5.TabPages.Count; i++)
+            {
+                tabControl5.TabPages[i].Controls[0].Text = Localize.GetString("FieldName");
+                tabControl5.TabPages[i].Controls[1].Text = Localize.GetString("TypeOfData");
+                tabControl5.TabPages[i].Controls[2].Text = Localize.GetString("Primary");
+                tabControl5.TabPages[i].Controls[3].Text = Localize.GetString("Nullable");
+            }
+        }
         private void InitTableForms()//Форма просмотра характеристик таблиц
         {
             int Y, step = 150;//Координаты
@@ -24,7 +52,7 @@ namespace Bd_Curs
                 Y = 0;
                 //Создание названий колонок
                 Label ColumnNameZ = new Label();
-                ColumnNameZ.Text = "ColumnName";
+                ColumnNameZ.Text = Localize.GetString("FieldName");
                 ColumnNameZ.Location = new Point(0, 0);
                 ColumnNameZ.Width = step;
                 ColumnNameZ.TextAlign = ContentAlignment.MiddleCenter;
@@ -32,7 +60,7 @@ namespace Bd_Curs
                 tabControl5.TabPages[IndexTabControl].Controls.Add(ColumnNameZ);
 
                 Label ColumnTypeZ = new Label();
-                ColumnTypeZ.Text = "TypeOfData";
+                ColumnTypeZ.Text = Localize.GetString("TypeOfData");
                 ColumnTypeZ.Location = new Point(step, 0);
                 ColumnTypeZ.Width = step;
                 ColumnTypeZ.TextAlign = ContentAlignment.MiddleCenter;
@@ -40,7 +68,7 @@ namespace Bd_Curs
                 tabControl5.TabPages[IndexTabControl].Controls.Add(ColumnTypeZ);
 
                 Label ColumnPKZ = new Label();
-                ColumnPKZ.Text = "IsPrimaryKey";
+                ColumnPKZ.Text = Localize.GetString("Primary");
                 ColumnPKZ.Location = new Point(step * 2, 0);
                 ColumnPKZ.Width = step;
                 ColumnPKZ.TextAlign = ContentAlignment.MiddleCenter;
@@ -48,7 +76,7 @@ namespace Bd_Curs
                 tabControl5.TabPages[IndexTabControl].Controls.Add(ColumnPKZ);
 
                 Label ColumnNullZ = new Label();
-                ColumnNullZ.Text = "IsNullable";
+                ColumnNullZ.Text = Localize.GetString("Nullable");
                 ColumnNullZ.Location = new Point(step * 3, 0);
                 ColumnNullZ.Width = step;
                 ColumnNullZ.TextAlign = ContentAlignment.MiddleCenter;
@@ -89,7 +117,7 @@ namespace Bd_Curs
                 }
                 IndexTabControl++;//Смещение на следующую таблицу
             }
-        }
+        } 
         private void InitCreateTableForm()//Форма для создания таблиц
         {
             AutoIncrementCount = 0;//Сброс количества актоинкрементных столбцов
@@ -111,20 +139,20 @@ namespace Bd_Curs
 
             //Кнопка для создания нового поля
             CreateNewFieldButton.Location = new Point(0, 25);
-            CreateNewFieldButton.Text = "CreateNewField";
+            CreateNewFieldButton.Text = Localize.GetString("CreateNewField");
             CreateNewFieldButton.Size = new Size(100, 50);
             CreateNewFieldButton.Click += CreateNewField;
             CreateNewFieldButton.Anchor = AnchorStyles.Left | AnchorStyles.Top;
 
             //Имя таблицы
             TableNameField.Location = new Point(0, 75);
-            TableNameField.Text = "Table_Name";
+            TableNameField.Text = Localize.GetString("Table_Name_Default");
             TableNameField.Size = new Size(100, 25);
             TableNameField.Anchor = AnchorStyles.Left | AnchorStyles.Top;
 
             //Кнопка для создания таблицы
             CreateTableButton.Location = new Point(0, 95);
-            CreateTableButton.Text = "CreateTable";
+            CreateTableButton.Text = Localize.GetString("CreateTable");
             CreateTableButton.Size = new Size(100, 50);
             CreateTableButton.Anchor = AnchorStyles.Left | AnchorStyles.Top;
             CreateTableButton.Click += CreateTableClick;
@@ -132,7 +160,7 @@ namespace Bd_Curs
             //Названия столбцов
                 //Информация об общем количестве полей
                 CountFields.Location = new Point(0, 0);
-                CountFields.Text = "CountOfFields: 0";
+                CountFields.Text = $"{Localize.GetString("CountOfFields")}: 0";
                 CountFields.Size = new Size(150, 30);
                 CountFields.Font = new Font(CountFields.Font.FontFamily, 8.5F, FontStyle.Bold);
                 CountFields.TextAlign = ContentAlignment.MiddleCenter;
@@ -140,7 +168,7 @@ namespace Bd_Curs
 
                 //Имя поля таблицы
                 FieldName.Location = new Point(150, 0);
-                FieldName.Text = "FieldName";
+                FieldName.Text = Localize.GetString("FieldName");
                 FieldName.Size = new Size(100, 30);
                 FieldName.Font = new Font(FieldName.Font.FontFamily, 8.5F, FontStyle.Bold);
                 FieldName.TextAlign = ContentAlignment.MiddleCenter;
@@ -148,7 +176,7 @@ namespace Bd_Curs
 
                 //Тип поля
                 FieldType.Location = new Point(300, 0);
-                FieldType.Text = "FieldType";
+                FieldType.Text = Localize.GetString("FieldType");
                 FieldType.Size = new Size(100, 30);
                 FieldType.Font = new Font(FieldType.Font.FontFamily, 8.5F, FontStyle.Bold);
                 FieldType.TextAlign = ContentAlignment.MiddleCenter;
@@ -156,7 +184,7 @@ namespace Bd_Curs
 
                 //Ограничение размера поля (для char varchar и т.д.)
                 FieldCount.Location = new Point(450, 0);
-                FieldCount.Text = "SymbolsCount";
+                FieldCount.Text = Localize.GetString("SymbolsCount");
                 FieldCount.Size = new Size(100, 30);
                 FieldCount.Font = new Font(CountFields.Font.FontFamily, 8.5F, FontStyle.Bold);
                 FieldCount.TextAlign = ContentAlignment.MiddleCenter;
@@ -164,7 +192,7 @@ namespace Bd_Curs
 
                 //Первичный ли ключ это поле
                 IsPrimary.Location = new Point(600, 0);
-                IsPrimary.Text = "Primary";
+                IsPrimary.Text = Localize.GetString("Primary");
                 IsPrimary.Size = new Size(100, 30);
                 IsPrimary.Font = new Font(IsPrimary.Font.FontFamily, 8.5F, FontStyle.Bold);
                 IsPrimary.TextAlign = ContentAlignment.MiddleCenter;
@@ -172,7 +200,7 @@ namespace Bd_Curs
 
                 //Допускает ли NULL значение это поле
                 IsNullable.Location = new Point(750, 0);
-                IsNullable.Text = "Nullable";
+                IsNullable.Text = Localize.GetString("Nullable");
                 IsNullable.Size = new Size(100, 30);
                 IsNullable.Font = new Font(IsNullable.Font.FontFamily, 8.5F, FontStyle.Bold);
                 IsNullable.TextAlign = ContentAlignment.MiddleCenter;
@@ -180,8 +208,8 @@ namespace Bd_Curs
 
                 //Автоинкрементно ли оно
                 IsAutoIncrement.Location = new Point(900, 0);
-                IsAutoIncrement.Text = "AutoIncrement";
-                IsAutoIncrement.Size = new Size(100, 30);
+                IsAutoIncrement.Text = Localize.GetString("AutoIncrement");
+                IsAutoIncrement.Size = new Size(120, 30);
                 IsAutoIncrement.Font = new Font(CountFields.Font.FontFamily, 8.5F, FontStyle.Bold);
                 IsAutoIncrement.TextAlign = ContentAlignment.MiddleCenter;
                 IsAutoIncrement.Anchor = AnchorStyles.Left | AnchorStyles.Top;
@@ -252,7 +280,7 @@ namespace Bd_Curs
 
             //Кнопка для удаления поля
             DeleteFieldButton.Location = new Point(1000, FieldTableForm.Count * 25 + 15 - tabPage10.VerticalScroll.Value);
-            DeleteFieldButton.Text = "DeleteField";
+            DeleteFieldButton.Text = Localize.GetString("DeleteField");
             DeleteFieldButton.Name = $"{FieldTableForm.Count - 1}";
             DeleteFieldButton.Size = new Size(100, 20);
             DeleteFieldButton.Anchor = AnchorStyles.Left | AnchorStyles.Top;

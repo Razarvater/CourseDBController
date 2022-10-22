@@ -19,6 +19,15 @@ namespace Bd_Curs
         private List<ComboBox> AndOR;//Боксы для выбора AND OR в условиях
         private int x = 5;//x координата генерируемого элемента
         private int y = 5;//y координата генерируемого элемента
+        private void SelectLocalize()//Локализация формы
+        {
+            if (tabPage5.Controls.Count != 0)
+            {
+                tabPage5.Controls[0].Text = Localize.GetString("NewCondition");
+                tabPage5.Controls[1].Text = Localize.GetString("RemoveAllConditions");
+                tabPage4.Controls[db.Tables[IndexSelectedTable].Columns.Count * 2].Text = Localize.GetString("Select");
+            }
+        }
         private void InitConditions(object sender, EventArgs e)//Инициализация условий формы
         {
             //Сброс сгенерированного интерфейса
@@ -30,7 +39,7 @@ namespace Bd_Curs
             Button button = new Button();
             button.Location = new Point(x, y);
             button.Size = new Size(100, 40);
-            button.Text = $"New Condition";
+            button.Text = Localize.GetString("NewCondition");
             button.Click += AddNewCondition;
             button.Anchor = AnchorStyles.Left | AnchorStyles.Top;
             tabPage5.Controls.Add(button);//Добавление на страницу
@@ -38,7 +47,7 @@ namespace Bd_Curs
             Button button2 = new Button();
             button2.Location = new Point(x + 110, y);
             button2.Size = new Size(100, 40);
-            button2.Text = $"RemoveAllConditions";
+            button2.Text = Localize.GetString("RemoveAllConditions");
             button2.Click += InitConditions;
             button2.Anchor = AnchorStyles.Left | AnchorStyles.Top;
             tabPage5.Controls.Add(button2);//Добавление на страницу
@@ -182,7 +191,7 @@ namespace Bd_Curs
             Button button = new Button();
             button.Location = new Point(10, Y + 30);
             button.Size = new Size(100, 40);
-            button.Text = $"Select";
+            button.Text = Localize.GetString("Select");
             button.Anchor = AnchorStyles.Left | AnchorStyles.Top;
             button.Click += button3_Click;
             tabPage4.Controls.Add(button);//Добавление на страницу

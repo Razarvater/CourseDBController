@@ -13,6 +13,26 @@ namespace Bd_Curs
         private List<Control> InsertBoxes;//Боксы для значений
         private List<Label> labels;//Названия столбцов
         private bool IsInsert = false;
+        private void InsertLocalize()
+        {
+            if (tabPage2.Controls.Count != 0)
+            {
+                tabPage2.Controls[tabPage2.Controls.Count - 1].Text = Localize.GetString("Insert");
+                int Counter = 0;
+                //Проход по всем столбцам
+                for (int i = 0; i < db.Tables[IndexSelectedTable].Columns.Count; i++)
+                {
+                    if (db.Tables[IndexSelectedTable].Columns[i].IsAutoIncrement || db.Tables[IndexSelectedTable].Columns[i].type == SqlDbType.Image) continue;
+
+                    if (db.Tables[IndexSelectedTable].Columns[i].type != SqlDbType.Bit)//Если не логическое значение
+                    {
+                        if (!db.Tables[IndexSelectedTable].Columns[i].IsNullable)
+                            tabPage2.Controls[Counter].Text = Localize.GetString("NotNullMessage");
+                    }
+                    Counter += 2;
+                }
+            }
+        }
         private void CreateInsertForm()
         {
             //Создание координат для генерируемых элементов интерфейса
@@ -36,7 +56,7 @@ namespace Bd_Curs
                     temp.Size = new Size(200, 20);
                     temp.Name = $"{db.Tables[IndexSelectedTable].Columns[i].Name}";
                     if (!db.Tables[IndexSelectedTable].Columns[i].IsNullable)
-                        temp.Text = "NOT NULL please fill in the field";
+                        temp.Text = Localize.GetString("NotNullMessage");
                     temp.Anchor = AnchorStyles.Left;
                     InsertBoxes.Add(temp);//Добавление в коллекцию 
                     tabPage2.Controls.Add(InsertBoxes[InsertBoxes.Count - 1]);//Добавление на страницу
@@ -60,7 +80,7 @@ namespace Bd_Curs
                 tempo.Size = new Size(100, 13);
                 tempo.Text = $"{db.Tables[IndexSelectedTable].Columns[i].Name}";
                 tempo.Anchor = AnchorStyles.Left;
-                tempo.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+                tempo.TextAlign = ContentAlignment.MiddleRight;
                 labels.Add(tempo);//Добавление в коллекцию 
                 tabPage2.Controls.Add(labels[labels.Count - 1]);//Добавление на страницу
 
@@ -76,7 +96,7 @@ namespace Bd_Curs
             Button button = new Button();
             button.Location = new Point(10, Y + 30);
             button.Size = new Size(100, 40);
-            button.Text = $"Insert";
+            button.Text = Localize.GetString("Insert");
             button.Anchor = AnchorStyles.Left;
             button.Click += button1_Click;
             tabPage2.Controls.Add(button);//Добавление на страницу
@@ -150,7 +170,6 @@ namespace Bd_Curs
                     }
                 }
             }
-
         }
     }
 }

@@ -62,6 +62,19 @@
     <Compile Include="DataBaseForms\RelationForm.cs">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="Localization\Language.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Language.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Localization\Language.ru.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Language.ru.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Localization\Localization.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="TablesForms\Delete.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -84,6 +97,14 @@
     <Compile Include="TablesForms\SELECT.cs">
       <SubType>Form</SubType>
     </Compile>
+    <EmbeddedResource Include="Localization\Language.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Language.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Localization\Language.ru.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Language.ru.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
     <EmbeddedResource Include="MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
     </EmbeddedResource>

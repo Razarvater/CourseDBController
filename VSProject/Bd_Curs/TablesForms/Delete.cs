@@ -1,9 +1,7 @@
 ﻿using System;
-using System.ComponentModel;
 using System.Drawing;
 using System.Threading;
 using System.Windows.Forms;
-using System.Diagnostics;
 using System.Collections.Generic;
 using System.Data.SqlClient;
 
@@ -19,6 +17,15 @@ namespace Bd_Curs
         private int xDel = 5;//x координата генерируемого элемента
         private int yDel = 5;//y координата генерируемого элемента
         private string DeleteQuery;//Текст запроса
+        private void DeleteLocalize()
+        {
+            if(tabPage6.Controls.Count != 0)
+            {
+                tabPage6.Controls[0].Text = Localize.GetString("NewCondition");
+                tabPage6.Controls[1].Text = Localize.GetString("RemoveAllConditions");
+                tabPage6.Controls[2].Text = Localize.GetString("Delete");
+            }
+        }
         private void InitConditionsDel(object sender, EventArgs e)//Инициализация Формы
         {
             //Сброс сгенерированного интерфейса
@@ -30,7 +37,7 @@ namespace Bd_Curs
             Button button = new Button();
             button.Location = new Point(xDel, yDel);
             button.Size = new Size(100, 40);
-            button.Text = $"New Condition";
+            button.Text = Localize.GetString("NewCondition");
             button.Click += AddNewConditionDel;
             button.Anchor = AnchorStyles.Left | AnchorStyles.Top;
             tabPage6.Controls.Add(button);//Добавление на страницу
@@ -38,7 +45,7 @@ namespace Bd_Curs
             Button button2 = new Button();
             button2.Location = new Point(xDel + 110, yDel);
             button2.Size = new Size(100, 40);
-            button2.Text = $"RemoveAllConditions";
+            button2.Text = Localize.GetString("RemoveAllConditions");
             button2.Click += InitConditionsDel;
             button2.Anchor = AnchorStyles.Left | AnchorStyles.Top;
             tabPage6.Controls.Add(button2);//Добавление на страницу
@@ -47,7 +54,7 @@ namespace Bd_Curs
             Button buttonr = new Button();
             buttonr.Location = new Point(xDel + 220, yDel);
             buttonr.Size = new Size(100, 40);
-            buttonr.Text = $"Delete";
+            buttonr.Text = Localize.GetString("Delete");
             buttonr.Click += DeleteFields;
             buttonr.Anchor = AnchorStyles.Left | AnchorStyles.Top;
             tabPage6.Controls.Add(buttonr);//Добавление на страницу

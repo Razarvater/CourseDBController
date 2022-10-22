@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Resources;
 using System.ComponentModel;
 using System.Drawing;
 using System.Threading;
@@ -18,16 +19,24 @@ namespace Bd_Curs
         private string SelectedTableName;//Имя выбранной таблицы
         private int IndexSelectedTable = 0;//Индекс выбраной таблицы
         private Stopwatch Query_Time = new Stopwatch();//Время выполнения запроса
+        private ResourceManager Localize;
         public MainForm()
         {
             InitializeComponent();
             tabControl1.Enabled = false;
             tabControl3.Enabled = false;
+
+            Localize = new ResourceManager("Bd_Curs.Localization.Language", typeof(MainForm).Assembly);
+            LocalizeControls();
+        }
+        private void MainForm_Load(object sender, EventArgs e)
+        {
+            toolTip1.SetToolTip(ServerName, Localize.GetString("TooltipServerName"));
         }
         public void ErrorMessage(string mess)//Сообщение об ошибке
         {
             IsError = true;
-            MessageBox.Show(mess, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);//сообщение от класса Database
+            MessageBox.Show(mess, Localize.GetString("DefaultErrorMessageUpper"), MessageBoxButtons.OK, MessageBoxIcon.Error);//сообщение от класса Database
         }
         private void Timer1_Tick(object sender, EventArgs e) => IsQueue();//Таймер проверки запроса
         private void UpdateTimer_Tick(object sender, EventArgs e) => UpdateTable();//Таймер на обновление таблицы
@@ -56,7 +65,7 @@ namespace Bd_Curs
 
             if (db_Connected && db.TableNames.Count != 0)
             {
-                ConnectionStatus.Text = $"Server:{ConnectedServer}          Database:{DbName.Text}";
+                ConnectionStatus.Text = $"{Localize.GetString("ConnectionStatusServer")}:{ConnectedServer}          {Localize.GetString("ConnectionStatusDB")}:{DbName.Text}";
                 SelectedTableName = db.TableNames[0];//Выбранная таблица
                 IndexSelectedTable = 0;
             }
@@ -113,7 +122,7 @@ namespace Bd_Curs
                 }
             if (db_Connected)//Изменение сообщения о подключении
             {
-                ConnectionStatus.Text = $"Server:{ConnectedServer}          Database:{DbName.Text}";
+                ConnectionStatus.Text = $"{Localize.GetString("ConnectionStatusServer")}:{ConnectedServer}          {Localize.GetString("ConnectionStatusDB")}:{DbName.Text}";
                 //Инициализация вкладок
                 InitCreateTableForm();
                 InitTableRelation();
@@ -248,7 +257,7 @@ namespace Bd_Curs
 
             db_Connected = db.Connected;//Подключена ли БД
 
-            ConnectionStatus.Text = "Wasn't Connected";//Изменение строки подключения
+            ConnectionStatus.Text = Localize.GetString("ConnectionStatusDis");//Изменение строки подключения
 
             DisconnectButton.Enabled = false;//Выключение кнопки дисконнекта
             tabControl1.SelectedTab = tabPage1;//Выбор первой формы редактирования
@@ -257,7 +266,7 @@ namespace Bd_Curs
             ConnectButton.Enabled = true;//Включение кнопки подключения
         }
         private void UpdateTimeTimer_Tick(object sender, EventArgs e)=>
-            CounterOfConnection.Text = $"Time of query: {Query_Time.ElapsedMilliseconds/1000}";//Обновление счётчика
+            CounterOfConnection.Text = $"{Localize.GetString("TimeOfQuerylabel")}: {Query_Time.ElapsedMilliseconds/1000.0}";//Обновление счётчика
         private void RunCounter()
         {
             progressBar1.Visible = true;
@@ -275,7 +284,7 @@ namespace Bd_Curs
             //Сообщение если пользователь нажал на кнопку, но предыдущий запрос ещё не выполнился
             if (Query_IsWorking)
             {
-                MessageBox.Show("Query already in progress please wait");//Сообщение если пользователь нажал на кнопку, но предыдущий запрос ещё не выполнился
+                ErrorMessage(Localize.GetString("QueryInProgress"));//Сообщение если пользователь нажал на кнопку, но предыдущий запрос ещё не выполнился
                 return true;
             }
             else
@@ -289,10 +298,10 @@ namespace Bd_Curs
             if (header == null || !header.Equals(indexStr))
                 SelectedTable.Rows[Index].HeaderCell.Value = indexStr;
         }
-        //Заглушка для отсутствия ошибки о слишком длинных полях
-        private void SelectedTable_DataError(object sender, DataGridViewDataErrorEventArgs e) { }
+        private void SelectedTable_DataError(object sender, DataGridViewDataErrorEventArgs e) { }//Заглушка для отсутствия ошибки о слишком длинных полях
         private async void ConnectServer_Click(object sender, EventArgs e)//Подключение к серверу и получение списка Баз данных
         {
+            if (ServerName.Text == string.Empty) return;
             progressBar2.Visible = true;
             if (DisconnectButton.Enabled)
                 Disconnect_Click(this,EventArgs.Empty);//Отключится от Базы данных если уже подключены к БД
@@ -313,7 +322,7 @@ namespace Bd_Curs
                 DbName.Enabled = true;
                 NameBox.Enabled = true;
                 PassBox.Enabled = true;
-                ConnectionStatus.Text = $"Server:{ConnectedServer}";
+                ConnectionStatus.Text = $"{Localize.GetString("ConnectionStatusServer")}:{ConnectedServer}";
             }
             else
             {
@@ -322,18 +331,18 @@ namespace Bd_Curs
                 DbName.Enabled = false;
                 NameBox.Enabled = false;
                 PassBox.Enabled = false;
-                ConnectionStatus.Text = "Wasn't connected";
+                ConnectionStatus.Text = Localize.GetString("ConnectionStatusDis");
             }
             progressBar2.Visible = false;
         }
         private void CreateDatabase(object sender, EventArgs e)
         {
-            DialogResult d =  MessageBox.Show("You want to create Database?", "DatabaseCreate",MessageBoxButtons.YesNo,MessageBoxIcon.Question);
+            DialogResult d =  MessageBox.Show(Localize.GetString("CreateDbQue"), Localize.GetString("DbcreateUpper"),MessageBoxButtons.YesNo,MessageBoxIcon.Question);
             if (d == DialogResult.Yes)
             {
                 CreateDBButton.Enabled = false;
                 CreateDBName.Visible = true;
-                CreateDBName.Text = "Enter DataBase Name";
+                CreateDBName.Text = Localize.GetString("EnterDBname");
             }
         }
         private async void CreateDBName_KeyDown(object sender, KeyEventArgs e)
