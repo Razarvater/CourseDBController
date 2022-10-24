@@ -117,6 +117,9 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="AuthorizationError" xml:space="preserve">
+    <value>Неправильный логин или пароль</value>
+  </data>
   <data name="AutoIncrement" xml:space="preserve">
     <value>Автоинкремент</value>
   </data>
@@ -195,6 +198,9 @@
   <data name="DisConnectButtonText" xml:space="preserve">
     <value>Отключиться от базы данных</value>
   </data>
+  <data name="DontConnected" xml:space="preserve">
+    <value>Не подключено</value>
+  </data>
   <data name="EnterDBname" xml:space="preserve">
     <value>Введите имя БД</value>
   </data>
@@ -216,8 +222,17 @@
   <data name="NewCondition" xml:space="preserve">
     <value>Новое условие</value>
   </data>
+  <data name="NotConnectToDB" xml:space="preserve">
+    <value>Невозможно подключиться к БД</value>
+  </data>
+  <data name="NotDisconnectFromDB" xml:space="preserve">
+    <value>Невозможно отключиться от БД</value>
+  </data>
   <data name="NotNullMessage" xml:space="preserve">
     <value>Поле не допускает NULL заполните его</value>
+  </data>
+  <data name="NotSpaces" xml:space="preserve">
+    <value>Имя базы данных не должно содержать пробелов и иных сторонних символов!</value>
   </data>
   <data name="Nullable" xml:space="preserve">
     <value>Допустим ли NULL</value>
@@ -227,6 +242,9 @@
   </data>
   <data name="Primary" xml:space="preserve">
     <value>Первичный ключ</value>
+  </data>
+  <data name="QueryException" xml:space="preserve">
+    <value>Возникла ошибка при выполнении запроса</value>
   </data>
   <data name="QueryInProgress" xml:space="preserve">
     <value>Запрос выполняется пожалуйста подождите</value>
@@ -261,11 +279,17 @@
   <data name="TableLabel" xml:space="preserve">
     <value>Таблица</value>
   </data>
+  <data name="TableSqlException" xml:space="preserve">
+    <value>Возникла ошибка при отображении таблицы</value>
+  </data>
   <data name="Table_Name_Default" xml:space="preserve">
     <value>Введите имя таблицы</value>
   </data>
   <data name="TimeOfQuerylabel" xml:space="preserve">
     <value>Время запроса</value>
+  </data>
+  <data name="TooltipDbName" xml:space="preserve">
+    <value>Выберите базу данных</value>
   </data>
   <data name="TooltipServerName" xml:space="preserve">
     <value>Введите адрес сервера</value>

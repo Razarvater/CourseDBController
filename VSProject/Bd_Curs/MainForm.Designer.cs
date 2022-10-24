@@ -86,7 +86,8 @@
             this.QueueTimer = new System.Windows.Forms.Timer(this.components);
             this.UpdateTimer = new System.Windows.Forms.Timer(this.components);
             this.UpdateTimeTimer = new System.Windows.Forms.Timer(this.components);
-            this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
+            this.ServerToolTip = new System.Windows.Forms.ToolTip(this.components);
+            this.DbNameTooltip = new System.Windows.Forms.ToolTip(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer3)).BeginInit();
             this.splitContainer3.Panel1.SuspendLayout();
             this.splitContainer3.Panel2.SuspendLayout();
@@ -578,6 +579,18 @@
             this.UpdateTimeTimer.Interval = 2;
             this.UpdateTimeTimer.Tick += new System.EventHandler(this.UpdateTimeTimer_Tick);
             // 
+            // ServerToolTip
+            // 
+            this.ServerToolTip.AutoPopDelay = 5000;
+            this.ServerToolTip.InitialDelay = 100;
+            this.ServerToolTip.ReshowDelay = 100;
+            // 
+            // DbNameTooltip
+            // 
+            this.DbNameTooltip.AutoPopDelay = 5000;
+            this.DbNameTooltip.InitialDelay = 100;
+            this.DbNameTooltip.ReshowDelay = 100;
+            // 
             // MainForm
             // 
             resources.ApplyResources(this, "$this");
@@ -586,7 +599,6 @@
             this.Controls.Add(this.splitContainer1);
             this.Name = "MainForm";
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
-            this.Load += new System.EventHandler(this.MainForm_Load);
             this.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.MainForm_PreviewKeyDown);
             this.splitContainer3.Panel1.ResumeLayout(false);
             this.splitContainer3.Panel2.ResumeLayout(false);
@@ -684,8 +696,9 @@
         private System.Windows.Forms.CheckBox checkCascade;
         private System.Windows.Forms.Button CreateDBButton;
         private System.Windows.Forms.TextBox CreateDBName;
-        private System.Windows.Forms.ToolTip toolTip1;
+        private System.Windows.Forms.ToolTip ServerToolTip;
         private System.Windows.Forms.Button button2;
+        private System.Windows.Forms.ToolTip DbNameTooltip;
     }
 }
 

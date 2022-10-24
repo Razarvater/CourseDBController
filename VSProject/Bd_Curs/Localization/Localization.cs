@@ -34,12 +34,14 @@ namespace Bd_Curs
             DisconnectButton.Text = Localize.GetString("DisConnectButtonText");
             CounterOfConnection.Text = $"{Localize.GetString("TimeOfQuerylabel")}: {Query_Time.ElapsedMilliseconds / 1000}";
             //-----------LeftMenu-----------//
+
             //----------ConnectMessage----------//
             if (db_Connected)
                 ConnectionStatus.Text = $"{Localize.GetString("ConnectionStatusServer")}:{ConnectedServer}          {Localize.GetString("ConnectionStatusDB")}:{DbName.Text}";
             else
                 ConnectionStatus.Text = Localize.GetString("ConnectionStatusDis");
             //----------ConnectMessage----------//
+
             //----------TableLabel----------//
             label5.Text = Localize.GetString("Table");
             if (Properties.Settings.Default.Language == "ru")
@@ -47,6 +49,7 @@ namespace Bd_Curs
             else
                 label5.Location = new Point(5, label5.Location.Y);
             //----------TableLabel----------//
+
             //----------LittleForms----------//
             tabControl1.TabPages[0].Text = Localize.GetString("InsertFormName");
                 InsertLocalize();
@@ -58,6 +61,7 @@ namespace Bd_Curs
             tabControl1.TabPages[2].Text = Localize.GetString("DeleteFormName");
                 DeleteLocalize();
             //----------LittleForms----------//
+
             //----------BigForms----------//
             tabControl3.TabPages[0].Text = Localize.GetString("Selectedtable");
             tabControl3.TabPages[1].Text = Localize.GetString("DbDiagram");
@@ -75,6 +79,11 @@ namespace Bd_Curs
                     checkCascade.Text = Localize.GetString("CascadeCheckBox");
                     button1.Text = Localize.GetString("CreateRelationButton");
             //----------BigForms----------//
+
+            //----------ToolTips----------//
+            ServerToolTip.SetToolTip(ServerName, Localize.GetString("TooltipServerName"));
+            DbNameTooltip.SetToolTip(DbName, Localize.GetString("TooltipDbName"));
+            //----------ToolTips----------//
         }
     }
 }

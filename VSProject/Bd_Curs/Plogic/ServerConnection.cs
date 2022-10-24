@@ -22,7 +22,7 @@ namespace Bd_Curs
             {
                 await connection.OpenAsync();//открытие подключения
                 //Создание адаптера и заполнение таблицы
-                SqlDataAdapter adapter =new SqlDataAdapter( new SqlCommand("SELECT name FROM sys.databases WHERE name!='master' AND name!='tempdb' AND name!='model' AND name!='msdb'", connection));
+                SqlDataAdapter adapter =new SqlDataAdapter(new SqlCommand("SELECT name FROM sys.databases WHERE name!='master' AND name!='tempdb' AND name!='model' AND name!='msdb'", connection));
                 DataTable temp = new DataTable();
                 adapter.Fill(temp);
                 
@@ -31,7 +31,7 @@ namespace Bd_Curs
                     Databases.Add(item[0].ToString());
                 }
             }
-            catch (SqlException ex){ Show.Invoke($"Don't connected|{ex.Number}|{ex.Message}"); }//ошибка об исключении
+            catch (SqlException ex){ Show.Invoke($"{LocalizatorResource.Localize.GetString("DontConnected")}: {ex.Number}\n\n{ex.Message}"); }//сообщение об исключении
         }
         public async Task CreateDataBase(string name)//Создание БД
         {
@@ -42,14 +42,14 @@ namespace Bd_Curs
                 {                         //то проверка на наличие пробелов/переносов так как без них нельзя создать SQL инъекцию
                     if (item == ' ' || item == '\n' || item == '\\' || item == '*')
                     {
-                        Show.Invoke("Database name must not contain spaces!");
+                        Show.Invoke(LocalizatorResource.Localize.GetString("NotSpaces"));
                         return;
                     }
                 }
                 SqlCommand command = new SqlCommand($"CREATE DATABASE {name}", connection);//Создание команды
                 await command.ExecuteNonQueryAsync();//выполнение команды
             }
-            catch (SqlException ex) { Show.Invoke($"Don't connected|{ex.Number}|{ex.Message}");}//ошибка об исключении
+            catch (SqlException ex) { Show.Invoke($"{LocalizatorResource.Localize.GetString("DontConnected")}: {ex.Number}\n\n{ex.Message}"); }//сообщение об исключении
         }
     }
 }

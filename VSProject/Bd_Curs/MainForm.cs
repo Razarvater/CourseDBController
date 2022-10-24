@@ -5,6 +5,7 @@ using System.Drawing;
 using System.Threading;
 using System.Windows.Forms;
 using System.Diagnostics;
+using System.Globalization;
 
 namespace Bd_Curs
 {
@@ -25,13 +26,11 @@ namespace Bd_Curs
             InitializeComponent();
             tabControl1.Enabled = false;
             tabControl3.Enabled = false;
-
-            Localize = new ResourceManager("Bd_Curs.Localization.Language", typeof(MainForm).Assembly);
+            LocalizatorResource.INIT(typeof(MainForm).Assembly);
+            Localize = LocalizatorResource.Localize;
+            Properties.Settings.Default.Language = "en";
+            Thread.CurrentThread.CurrentUICulture = new CultureInfo(Properties.Settings.Default.Language);
             LocalizeControls();
-        }
-        private void MainForm_Load(object sender, EventArgs e)
-        {
-            toolTip1.SetToolTip(ServerName, Localize.GetString("TooltipServerName"));
         }
         public void ErrorMessage(string mess)//Сообщение об ошибке
         {
@@ -42,10 +41,12 @@ namespace Bd_Curs
         private void UpdateTimer_Tick(object sender, EventArgs e) => UpdateTable();//Таймер на обновление таблицы
         private async void ConnectButton_Click(object sender, EventArgs e)//Подключение к БД
         {
+            if (DbName.Text == string.Empty) return;
             ConnectButton.Enabled = false;//Выключение кнопки подключения
             tabControl1.Enabled = false;//Отключение контроллера таблиц
+            CreateDBButton.Enabled = false;
+            CreateDBName.Visible = false;
             SelectedTable.DataSource = null;
-            if (DbName.Text == string.Empty) return;
 
             tabControl1.SelectedTab = tabPage1;//Выбрана первая форма редактирования
 
@@ -248,7 +249,6 @@ namespace Bd_Curs
         }
         private void Disconnect_Click(object sender, EventArgs e)//Дисконнект
         {
-
             db.CloseConnection();//Закрытие подключения
             splitContainer5.Panel2.Controls[IndexSelectedTable].BackColor = Color.Transparent;
             IndexSelectedTable = 0;
@@ -259,9 +259,14 @@ namespace Bd_Curs
 
             ConnectionStatus.Text = Localize.GetString("ConnectionStatusDis");//Изменение строки подключения
 
+            CreateDBButton.Enabled = true;
             DisconnectButton.Enabled = false;//Выключение кнопки дисконнекта
             tabControl1.SelectedTab = tabPage1;//Выбор первой формы редактирования
             tabControl1.Enabled = false;//Отключение контроллера форм
+            tabControl4.SelectedIndex = -1;
+            tabControl3.SelectedIndex = 0;
+            tabControl2.SelectedIndex = -1; 
+            tabControl1.SelectedIndex = -1;
             CounterOfConnection.Text = string.Empty;//Обнуление счётчика
             ConnectButton.Enabled = true;//Включение кнопки подключения
         }
@@ -348,6 +353,8 @@ namespace Bd_Curs
         private async void CreateDBName_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.KeyCode != Keys.Enter) return;
+
+            if (CreateDBName.Text == Localize.GetString("CreateDBNameText")) return;
 
             CreateDBName.Visible = false;
             ServerConnection serv = new ServerConnection(ConnectedServer);

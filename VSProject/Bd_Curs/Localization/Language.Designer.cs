@@ -61,6 +61,15 @@ namespace Bd_Curs.Localization {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Wrong login or password.
+        /// </summary>
+        public static string AuthorizationError {
+            get {
+                return ResourceManager.GetString("AuthorizationError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Auto increment.
         /// </summary>
         public static string AutoIncrement {
@@ -295,6 +304,15 @@ namespace Bd_Curs.Localization {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Don&apos;t connected.
+        /// </summary>
+        public static string DontConnected {
+            get {
+                return ResourceManager.GetString("DontConnected", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Enter DataBase Name.
         /// </summary>
         public static string EnterDBname {
@@ -358,11 +376,38 @@ namespace Bd_Curs.Localization {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Unable to connect to database.
+        /// </summary>
+        public static string NotConnectToDB {
+            get {
+                return ResourceManager.GetString("NotConnectToDB", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Unable to disconnect from database.
+        /// </summary>
+        public static string NotDisconnectFromDB {
+            get {
+                return ResourceManager.GetString("NotDisconnectFromDB", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на NOT NULL please fill in the field.
         /// </summary>
         public static string NotNullMessage {
             get {
                 return ResourceManager.GetString("NotNullMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Database name must not contain spaces!.
+        /// </summary>
+        public static string NotSpaces {
+            get {
+                return ResourceManager.GetString("NotSpaces", resourceCulture);
             }
         }
         
@@ -390,6 +435,15 @@ namespace Bd_Curs.Localization {
         public static string Primary {
             get {
                 return ResourceManager.GetString("Primary", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на An error occurred while executing the request.
+        /// </summary>
+        public static string QueryException {
+            get {
+                return ResourceManager.GetString("QueryException", resourceCulture);
             }
         }
         
@@ -502,11 +556,29 @@ namespace Bd_Curs.Localization {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на An error occurred while displaying the table.
+        /// </summary>
+        public static string TableSqlException {
+            get {
+                return ResourceManager.GetString("TableSqlException", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Time of query.
         /// </summary>
         public static string TimeOfQuerylabel {
             get {
                 return ResourceManager.GetString("TimeOfQuerylabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Choose a database.
+        /// </summary>
+        public static string TooltipDbName {
+            get {
+                return ResourceManager.GetString("TooltipDbName", resourceCulture);
             }
         }
         

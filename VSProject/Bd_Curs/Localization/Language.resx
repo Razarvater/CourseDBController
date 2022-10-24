@@ -117,6 +117,9 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="AuthorizationError" xml:space="preserve">
+    <value>Wrong login or password</value>
+  </data>
   <data name="AutoIncrement" xml:space="preserve">
     <value>Auto increment</value>
   </data>
@@ -195,6 +198,9 @@
   <data name="DisConnectButtonText" xml:space="preserve">
     <value>Disconnect from database</value>
   </data>
+  <data name="DontConnected" xml:space="preserve">
+    <value>Don't connected</value>
+  </data>
   <data name="EnterDBname" xml:space="preserve">
     <value>Enter DataBase Name</value>
   </data>
@@ -216,8 +222,17 @@
   <data name="NewCondition" xml:space="preserve">
     <value>New сondition</value>
   </data>
+  <data name="NotConnectToDB" xml:space="preserve">
+    <value>Unable to connect to database</value>
+  </data>
+  <data name="NotDisconnectFromDB" xml:space="preserve">
+    <value>Unable to disconnect from database</value>
+  </data>
   <data name="NotNullMessage" xml:space="preserve">
     <value>NOT NULL please fill in the field</value>
+  </data>
+  <data name="NotSpaces" xml:space="preserve">
+    <value>Database name must not contain spaces!</value>
   </data>
   <data name="Nullable" xml:space="preserve">
     <value>Nullable</value>
@@ -227,6 +242,9 @@
   </data>
   <data name="Primary" xml:space="preserve">
     <value>Primary key</value>
+  </data>
+  <data name="QueryException" xml:space="preserve">
+    <value>An error occurred while executing the request</value>
   </data>
   <data name="QueryInProgress" xml:space="preserve">
     <value>Query already in progress please wait</value>
@@ -261,11 +279,17 @@
   <data name="TableLabel" xml:space="preserve">
     <value>Table</value>
   </data>
+  <data name="TableSqlException" xml:space="preserve">
+    <value>An error occurred while displaying the table</value>
+  </data>
   <data name="Table_Name_Default" xml:space="preserve">
     <value>Enter table name</value>
   </data>
   <data name="TimeOfQuerylabel" xml:space="preserve">
     <value>Time of query</value>
+  </data>
+  <data name="TooltipDbName" xml:space="preserve">
+    <value>Choose a database</value>
   </data>
   <data name="TooltipServerName" xml:space="preserve">
     <value>Enter your server adress</value>

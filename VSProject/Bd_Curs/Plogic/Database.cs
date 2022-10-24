@@ -59,7 +59,7 @@ namespace Bd_Curs
             }
             catch (SqlException ex) 
             {
-                Show.Invoke($"An SQL exception occurred, Unable to connect to database:[{ex.Number}|{ex.Message}]");
+                Show.Invoke($"{LocalizatorResource.Localize.GetString("}NotConnectToDB")}: {ex.Number}\n\n{ex.Message}]");
                 return; 
             }
 
@@ -195,11 +195,7 @@ namespace Bd_Curs
             }
             catch (SqlException ex)
             {
-                if(ex.Number != 134)
-                    Show.Invoke($"An SQL exception occurred, Unable to connect to Table Users:[{ex.Number}|{ex.Message}]");
-                else
-                    Show.Invoke($"An SQL exception occurred, Unable to connect to Table Users, (name is not full or password)/ u tried make SQL Injection");
-
+                Show.Invoke($"{LocalizatorResource.Localize.GetString("AuthorizationError")}");
                 CloseConnection();//Закрытие подключения
             }
         }
@@ -210,9 +206,9 @@ namespace Bd_Curs
                 connection.Close();//Закрытие подключения
                 Connected = false;//Не подключено
             }
-            catch (SqlException ex )
+            catch (SqlException ex)
             {
-                Show.Invoke($"An SQL exception occurred, Unable to disconnect from database:[{ex.Number}|{ex.Message}]");
+                Show.Invoke($"{LocalizatorResource.Localize.GetString("NotDisconnectFromDB")}: {ex.Number}\n\n{ex.Message}");
             }
         }
         public void GetSelectedTable(string table)
@@ -225,11 +221,10 @@ namespace Bd_Curs
                 adapter.Fill(TableData);//Новое заполение
                 IsQueryCompleted = true;//Запрос завершён
             }
-            catch (SqlException e)
+            catch (SqlException ex)
             {
                 IsQueryCompleted = true;//Запрос завершён
-                
-                Show.Invoke($"An SQL exception occurred, please check the correctness of the entered query: [{e.Message}]");
+                Show.Invoke($"{LocalizatorResource.Localize.GetString("TableSqlException")}:{ex.Number} \n\n{ex.Message}");
             }
         }
         public void SetQuery(string Query, SqlCommand sqlCommand)//Выполнение запроса
@@ -305,7 +300,7 @@ namespace Bd_Curs
             {
                 IsQueryCompleted = true;//Запрос завершён
                 
-                Show.Invoke($"An SQL exception occurred, please check the correctness of the entered query: [{ex.Number}|{ex.Message}]");
+                Show.Invoke($"{LocalizatorResource.Localize.GetString("QueryException")}: {ex.Number}\n\n{ex.Message}");
             }
         }
         public void DropTable(string TableName)//Удаление таблицы из БД
