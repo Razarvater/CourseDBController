@@ -66,7 +66,6 @@ namespace Bd_Curs
             }
             PrintConstraint(new object(), EventArgs.Empty);//Отображение связей
         }
-
         private void PrintConstraint(object sender, EventArgs e)
         {
             //Новый Bitmap для PictureBox

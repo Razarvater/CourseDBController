@@ -19,7 +19,7 @@ namespace Bd_Curs
     public class Column//Столбец
     {
         public string TableName;
-        public string Name { get; set; }
+        public string Name;
         public object DefaultValue;
         public bool IsNullable;
         public bool IsPrimaryKey;
@@ -59,7 +59,7 @@ namespace Bd_Curs
             }
             catch (SqlException ex) 
             {
-                Show.Invoke($"{LocalizatorResource.Localize.GetString("}NotConnectToDB")}: {ex.Number}\n\n{ex.Message}]");
+                Show.Invoke($"{LocalizatorResource.Localize.GetString("NotConnectToDB")}: {ex.Number}\n\n{ex.Message}]");
                 return; 
             }
 
@@ -193,7 +193,7 @@ namespace Bd_Curs
                 }
                 CloseConnection();//Закрытие подключения
             }
-            catch (SqlException ex)
+            catch (SqlException)
             {
                 Show.Invoke($"{LocalizatorResource.Localize.GetString("AuthorizationError")}");
                 CloseConnection();//Закрытие подключения

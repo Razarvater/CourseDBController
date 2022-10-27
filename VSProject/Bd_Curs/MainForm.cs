@@ -23,6 +23,7 @@ namespace Bd_Curs
         private ResourceManager Localize;
         public MainForm()
         {
+
             InitializeComponent();
             tabControl1.Enabled = false;
             tabControl3.Enabled = false;
@@ -267,6 +268,7 @@ namespace Bd_Curs
             tabControl3.SelectedIndex = 0;
             tabControl2.SelectedIndex = -1; 
             tabControl1.SelectedIndex = -1;
+            tabControl3.Enabled = false;
             CounterOfConnection.Text = string.Empty;//Обнуление счётчика
             ConnectButton.Enabled = true;//Включение кнопки подключения
         }
