@@ -1,24 +1,19 @@
-﻿using System;
-using System.Drawing;
+﻿using System.Drawing;
 using System.Globalization;
 using System.Threading;
 using System.Windows.Forms;
+using Bd_Curs.Properties;
 
 namespace Bd_Curs
 {
     public partial class MainForm : Form
     {
-        private void button2_Click(object sender, EventArgs e)//Debug смена локализации
+        public void LocalizeButton_Click()// смена локализации
         {
-            if (Properties.Settings.Default.Language == "en")
-                Properties.Settings.Default.Language = "ru";
-            else
-                Properties.Settings.Default.Language = "en";
-            Properties.Settings.Default.Save();
-            Thread.CurrentThread.CurrentUICulture = new CultureInfo(Properties.Settings.Default.Language);
+            Thread.CurrentThread.CurrentUICulture = new CultureInfo(Settings.Default.Language);
             LocalizeControls();
         }
-        private void LocalizeControls()//Локализация
+        public void LocalizeControls()//Локализация
         {
             //-----------Left Menu-----------//
             label3.Text = Localize.GetString("ServerNamelabel");
@@ -33,6 +28,7 @@ namespace Bd_Curs
             ConnectButton.Text = Localize.GetString("ConnectButtonText");
             DisconnectButton.Text = Localize.GetString("DisConnectButtonText");
             CounterOfConnection.Text = $"{Localize.GetString("TimeOfQuerylabel")}: {Query_Time.ElapsedMilliseconds / 1000}";
+            SettingButton.Text = Localize.GetString("Settings");
             //-----------LeftMenu-----------//
 
             //----------ConnectMessage----------//

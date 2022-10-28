@@ -1122,6 +1122,33 @@
   <data name="splitContainer1.Orientation" type="System.Windows.Forms.Orientation, System.Windows.Forms">
     <value>Horizontal</value>
   </data>
+  <data name="SettingButton.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Left</value>
+  </data>
+  <data name="SettingButton.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 0</value>
+  </data>
+  <data name="SettingButton.Size" type="System.Drawing.Size, System.Drawing">
+    <value>70, 21</value>
+  </data>
+  <data name="SettingButton.TabIndex" type="System.Int32, mscorlib">
+    <value>1</value>
+  </data>
+  <data name="SettingButton.Text" xml:space="preserve">
+    <value>Settings</value>
+  </data>
+  <data name="&gt;&gt;SettingButton.Name" xml:space="preserve">
+    <value>SettingButton</value>
+  </data>
+  <data name="&gt;&gt;SettingButton.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;SettingButton.Parent" xml:space="preserve">
+    <value>splitContainer1.Panel1</value>
+  </data>
+  <data name="&gt;&gt;SettingButton.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
   <data name="ConnectionStatus.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
@@ -1147,7 +1174,7 @@
     <value>splitContainer1.Panel1</value>
   </data>
   <data name="&gt;&gt;ConnectionStatus.ZOrder" xml:space="preserve">
-    <value>0</value>
+    <value>1</value>
   </data>
   <data name="&gt;&gt;splitContainer1.Panel1.Name" xml:space="preserve">
     <value>splitContainer1.Panel1</value>
@@ -1169,30 +1196,6 @@
   </data>
   <data name="splitContainer2.Location" type="System.Drawing.Point, System.Drawing">
     <value>0, 0</value>
-  </data>
-  <data name="button2.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 28</value>
-  </data>
-  <data name="button2.Size" type="System.Drawing.Size, System.Drawing">
-    <value>98, 27</value>
-  </data>
-  <data name="button2.TabIndex" type="System.Int32, mscorlib">
-    <value>1</value>
-  </data>
-  <data name="button2.Text" xml:space="preserve">
-    <value>Debug: ru/en</value>
-  </data>
-  <data name="&gt;&gt;button2.Name" xml:space="preserve">
-    <value>button2</value>
-  </data>
-  <data name="&gt;&gt;button2.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;button2.Parent" xml:space="preserve">
-    <value>splitContainer2.Panel1</value>
-  </data>
-  <data name="&gt;&gt;button2.ZOrder" xml:space="preserve">
-    <value>0</value>
   </data>
   <data name="CreateDBName.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Bottom, Left</value>
@@ -1222,7 +1225,7 @@
     <value>splitContainer2.Panel1</value>
   </data>
   <data name="&gt;&gt;CreateDBName.ZOrder" xml:space="preserve">
-    <value>1</value>
+    <value>0</value>
   </data>
   <data name="CreateDBButton.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Bottom, Left</value>
@@ -1252,7 +1255,7 @@
     <value>splitContainer2.Panel1</value>
   </data>
   <data name="&gt;&gt;CreateDBButton.ZOrder" xml:space="preserve">
-    <value>2</value>
+    <value>1</value>
   </data>
   <data name="progressBar2.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Bottom, Left</value>
@@ -1279,7 +1282,7 @@
     <value>splitContainer2.Panel1</value>
   </data>
   <data name="&gt;&gt;progressBar2.ZOrder" xml:space="preserve">
-    <value>3</value>
+    <value>2</value>
   </data>
   <data name="DbName.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Bottom, Left</value>
@@ -1306,7 +1309,7 @@
     <value>splitContainer2.Panel1</value>
   </data>
   <data name="&gt;&gt;DbName.ZOrder" xml:space="preserve">
-    <value>4</value>
+    <value>3</value>
   </data>
   <data name="ConnectServer.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Bottom, Left</value>
@@ -1333,7 +1336,7 @@
     <value>splitContainer2.Panel1</value>
   </data>
   <data name="&gt;&gt;ConnectServer.ZOrder" xml:space="preserve">
-    <value>5</value>
+    <value>4</value>
   </data>
   <data name="CounterOfConnection.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -1357,7 +1360,7 @@
     <value>splitContainer2.Panel1</value>
   </data>
   <data name="&gt;&gt;CounterOfConnection.ZOrder" xml:space="preserve">
-    <value>6</value>
+    <value>5</value>
   </data>
   <data name="DisconnectButton.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Bottom, Left</value>
@@ -1387,7 +1390,7 @@
     <value>splitContainer2.Panel1</value>
   </data>
   <data name="&gt;&gt;DisconnectButton.ZOrder" xml:space="preserve">
-    <value>7</value>
+    <value>6</value>
   </data>
   <data name="label4.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Bottom, Left</value>
@@ -1417,7 +1420,7 @@
     <value>splitContainer2.Panel1</value>
   </data>
   <data name="&gt;&gt;label4.ZOrder" xml:space="preserve">
-    <value>8</value>
+    <value>7</value>
   </data>
   <data name="label3.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Bottom, Left</value>
@@ -1447,7 +1450,7 @@
     <value>splitContainer2.Panel1</value>
   </data>
   <data name="&gt;&gt;label3.ZOrder" xml:space="preserve">
-    <value>9</value>
+    <value>8</value>
   </data>
   <data name="ServerName.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Bottom, Left</value>
@@ -1461,9 +1464,6 @@
   <data name="ServerName.TabIndex" type="System.Int32, mscorlib">
     <value>4</value>
   </data>
-  <data name="ServerName.Text" xml:space="preserve">
-    <value>DESKTOP-G634C4B\SQLEXPRESS</value>
-  </data>
   <data name="&gt;&gt;ServerName.Name" xml:space="preserve">
     <value>ServerName</value>
   </data>
@@ -1474,7 +1474,7 @@
     <value>splitContainer2.Panel1</value>
   </data>
   <data name="&gt;&gt;ServerName.ZOrder" xml:space="preserve">
-    <value>10</value>
+    <value>9</value>
   </data>
   <data name="label2.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Bottom, Left</value>
@@ -1504,7 +1504,7 @@
     <value>splitContainer2.Panel1</value>
   </data>
   <data name="&gt;&gt;label2.ZOrder" xml:space="preserve">
-    <value>11</value>
+    <value>10</value>
   </data>
   <data name="label1.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Bottom, Left</value>
@@ -1534,7 +1534,7 @@
     <value>splitContainer2.Panel1</value>
   </data>
   <data name="&gt;&gt;label1.ZOrder" xml:space="preserve">
-    <value>12</value>
+    <value>11</value>
   </data>
   <data name="NameBox.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Bottom, Left</value>
@@ -1551,9 +1551,6 @@
   <data name="NameBox.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
   </data>
-  <data name="NameBox.Text" xml:space="preserve">
-    <value>Test</value>
-  </data>
   <data name="&gt;&gt;NameBox.Name" xml:space="preserve">
     <value>NameBox</value>
   </data>
@@ -1564,7 +1561,7 @@
     <value>splitContainer2.Panel1</value>
   </data>
   <data name="&gt;&gt;NameBox.ZOrder" xml:space="preserve">
-    <value>13</value>
+    <value>12</value>
   </data>
   <data name="PassBox.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Bottom, Left</value>
@@ -1591,7 +1588,7 @@
     <value>splitContainer2.Panel1</value>
   </data>
   <data name="&gt;&gt;PassBox.ZOrder" xml:space="preserve">
-    <value>14</value>
+    <value>13</value>
   </data>
   <data name="ConnectButton.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Bottom, Left</value>
@@ -1621,7 +1618,7 @@
     <value>splitContainer2.Panel1</value>
   </data>
   <data name="&gt;&gt;ConnectButton.ZOrder" xml:space="preserve">
-    <value>15</value>
+    <value>14</value>
   </data>
   <data name="&gt;&gt;splitContainer2.Panel1.Name" xml:space="preserve">
     <value>splitContainer2.Panel1</value>

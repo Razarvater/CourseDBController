@@ -6,32 +6,46 @@ using System.Threading;
 using System.Windows.Forms;
 using System.Diagnostics;
 using System.Globalization;
+using Bd_Curs.Properties;
 
 namespace Bd_Curs
 {
     public partial class MainForm : Form
     {
         private Database db;//Переменная базы данных
-        private string ConnectedServer;//Имя поключенного сервера
+        private string ConnectedServer;//Имя подключенного сервера
+
+        private int ButtonsMin = 100;//Размер кнопок таблиц в горизонтали
+
+        private string SelectedTableName;//Имя выбранной таблицы
+        private int IndexSelectedTable = 0;//Индекс выбраной таблицы
+
+        private bool SettingsOpened = false;//Открыты ли настройки
         private bool db_Connected = false;//Подключена ли БД
         private bool Query_IsWorking = false;//Статус выполнения запроса
         private bool IsError = false;//Возникла ли ошибка
-        private int ButtonsMin = 100;//Кнопки таблиц
-        private string SelectedTableName;//Имя выбранной таблицы
-        private int IndexSelectedTable = 0;//Индекс выбраной таблицы
-        private Stopwatch Query_Time = new Stopwatch();//Время выполнения запроса
-        private ResourceManager Localize;
-        public MainForm()
-        {
 
-            InitializeComponent();
+        private Stopwatch Query_Time = new Stopwatch();//Время выполнения запроса
+        private ResourceManager Localize;//Ресурс указывающий на файлы с локализацией
+        public MainForm() => InitializeComponent();
+        private void MainForm_Load(object sender, EventArgs e)
+        {
             tabControl1.Enabled = false;
             tabControl3.Enabled = false;
-            LocalizatorResource.INIT(typeof(MainForm).Assembly);
+            LocalizatorResource.INIT(typeof(MainForm).Assembly);//Инициализация локализатора
             Localize = LocalizatorResource.Localize;
-            Properties.Settings.Default.Language = "en";
-            Thread.CurrentThread.CurrentUICulture = new CultureInfo(Properties.Settings.Default.Language);
-            LocalizeControls();
+
+            //Смена языка
+            Thread.CurrentThread.CurrentUICulture = new CultureInfo(Settings.Default.Language);
+            LocalizeControls();//Локализация элементов
+
+            //Подгрузка дефолтных значений в поля
+            ServerName.Text = Settings.Default.ServerName;
+            if (Settings.Default.AutoLogin)//Только если включена функция авто запомненного пароля
+            {
+                NameBox.Text = Settings.Default.DefaultLogin;
+                PassBox.Text = Settings.Default.DefaultPassword;
+            }
         }
         public void ErrorMessage(string mess)//Сообщение об ошибке
         {
@@ -344,7 +358,8 @@ namespace Bd_Curs
         }
         private void CreateDatabase(object sender, EventArgs e)
         {
-            DialogResult d =  MessageBox.Show(Localize.GetString("CreateDbQue"), Localize.GetString("DbcreateUpper"),MessageBoxButtons.YesNo,MessageBoxIcon.Question);
+            //Вопрос пользователю будем ли мы создавать БД
+            DialogResult d = MessageBox.Show(Localize.GetString("CreateDbQue"), Localize.GetString("DbcreateUpper"),MessageBoxButtons.YesNo,MessageBoxIcon.Question);
             if (d == DialogResult.Yes)
             {
                 CreateDBButton.Enabled = false;
@@ -354,6 +369,7 @@ namespace Bd_Curs
         }
         private async void CreateDBName_KeyDown(object sender, KeyEventArgs e)
         {
+            //Создание БД после нажатия на Enter
             if (e.KeyCode != Keys.Enter) return;
 
             if (CreateDBName.Text == Localize.GetString("CreateDBNameText")) return;
@@ -364,6 +380,23 @@ namespace Bd_Curs
             await serv.CreateDataBase(CreateDBName.Text);
 
             ConnectServer_Click(new object(), EventArgs.Empty);
+        }
+
+        private void SettingButton_Click(object sender, EventArgs e)
+        {
+            if (SettingsOpened)//Если настройки уже открыты
+            {
+                Program.sett.Focus();//Установка фокуса на форму с настройками
+                return;//Выйти из метода
+            }
+            SettingsOpened = true;//Настройки открыты
+            //Открытие настроек
+            Program.sett = new SettingForm();
+            //Делегаты для локализации и закрытия
+            Program.sett.localizationButton += LocalizeButton_Click;
+            Program.sett.disable += () => SettingsOpened = false;
+            Program.sett.Show();
+            
         }
     }
 }

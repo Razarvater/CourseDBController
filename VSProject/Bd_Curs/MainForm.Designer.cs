@@ -65,9 +65,9 @@
             this.tabPage5 = new System.Windows.Forms.TabPage();
             this.tabPage6 = new System.Windows.Forms.TabPage();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
+            this.SettingButton = new System.Windows.Forms.Button();
             this.ConnectionStatus = new System.Windows.Forms.Label();
             this.splitContainer2 = new System.Windows.Forms.SplitContainer();
-            this.button2 = new System.Windows.Forms.Button();
             this.CreateDBName = new System.Windows.Forms.TextBox();
             this.CreateDBButton = new System.Windows.Forms.Button();
             this.progressBar2 = new System.Windows.Forms.ProgressBar();
@@ -408,6 +408,7 @@
             // 
             // splitContainer1.Panel1
             // 
+            this.splitContainer1.Panel1.Controls.Add(this.SettingButton);
             this.splitContainer1.Panel1.Controls.Add(this.ConnectionStatus);
             this.splitContainer1.Panel1.Cursor = System.Windows.Forms.Cursors.WaitCursor;
             this.splitContainer1.Panel1.UseWaitCursor = true;
@@ -416,6 +417,14 @@
             // 
             this.splitContainer1.Panel2.Controls.Add(this.splitContainer2);
             this.splitContainer1.TabStop = false;
+            // 
+            // SettingButton
+            // 
+            resources.ApplyResources(this.SettingButton, "SettingButton");
+            this.SettingButton.Name = "SettingButton";
+            this.SettingButton.UseVisualStyleBackColor = true;
+            this.SettingButton.UseWaitCursor = true;
+            this.SettingButton.Click += new System.EventHandler(this.SettingButton_Click);
             // 
             // ConnectionStatus
             // 
@@ -432,7 +441,6 @@
             // 
             // splitContainer2.Panel1
             // 
-            this.splitContainer2.Panel1.Controls.Add(this.button2);
             this.splitContainer2.Panel1.Controls.Add(this.CreateDBName);
             this.splitContainer2.Panel1.Controls.Add(this.CreateDBButton);
             this.splitContainer2.Panel1.Controls.Add(this.progressBar2);
@@ -453,13 +461,6 @@
             // 
             this.splitContainer2.Panel2.Controls.Add(this.splitContainer3);
             this.splitContainer2.TabStop = false;
-            // 
-            // button2
-            // 
-            resources.ApplyResources(this.button2, "button2");
-            this.button2.Name = "button2";
-            this.button2.UseVisualStyleBackColor = true;
-            this.button2.Click += new System.EventHandler(this.button2_Click);
             // 
             // CreateDBName
             // 
@@ -599,6 +600,7 @@
             this.Controls.Add(this.splitContainer1);
             this.Name = "MainForm";
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
+            this.Load += new System.EventHandler(this.MainForm_Load);
             this.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.MainForm_PreviewKeyDown);
             this.splitContainer3.Panel1.ResumeLayout(false);
             this.splitContainer3.Panel2.ResumeLayout(false);
@@ -697,8 +699,8 @@
         private System.Windows.Forms.Button CreateDBButton;
         private System.Windows.Forms.TextBox CreateDBName;
         private System.Windows.Forms.ToolTip ServerToolTip;
-        private System.Windows.Forms.Button button2;
         private System.Windows.Forms.ToolTip DbNameTooltip;
+        private System.Windows.Forms.Button SettingButton;
     }
 }
 

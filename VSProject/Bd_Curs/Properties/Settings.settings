@@ -5,5 +5,24 @@
     <Setting Name="Language" Type="System.String" Scope="User">
       <Value Profile="(Default)">ru</Value>
     </Setting>
+    <Setting Name="ServerName" Type="System.String" Scope="User">
+      <Value Profile="(Default)">DESKTOP-G634C4B\SQLEXPRESS</Value>
+    </Setting>
+    <Setting Name="DefaultLogin" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Test</Value>
+    </Setting>
+    <Setting Name="DefaultPassword" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="AutoLogin" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">True</Value>
+    </Setting>
+    <Setting Name="Languages" Type="System.Collections.Specialized.StringCollection" Scope="User">
+      <Value Profile="(Default)">&lt;?xml version="1.0" encoding="utf-16"?&gt;
+&lt;ArrayOfString xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"&gt;
+  &lt;string&gt;ru&lt;/string&gt;
+  &lt;string&gt;en&lt;/string&gt;
+&lt;/ArrayOfString&gt;</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

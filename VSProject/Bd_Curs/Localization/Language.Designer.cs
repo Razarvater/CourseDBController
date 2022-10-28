@@ -61,6 +61,24 @@ namespace Bd_Curs.Localization {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Apply.
+        /// </summary>
+        public static string Apply {
+            get {
+                return ResourceManager.GetString("Apply", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Авторизация.
+        /// </summary>
+        public static string Authorization {
+            get {
+                return ResourceManager.GetString("Authorization", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Wrong login or password.
         /// </summary>
         public static string AuthorizationError {
@@ -75,6 +93,15 @@ namespace Bd_Curs.Localization {
         public static string AutoIncrement {
             get {
                 return ResourceManager.GetString("AutoIncrement", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Auto login.
+        /// </summary>
+        public static string AutoLogin {
+            get {
+                return ResourceManager.GetString("AutoLogin", resourceCulture);
             }
         }
         
@@ -268,6 +295,33 @@ namespace Bd_Curs.Localization {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Default login.
+        /// </summary>
+        public static string DefaultLogin {
+            get {
+                return ResourceManager.GetString("DefaultLogin", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Default password.
+        /// </summary>
+        public static string DefaultPass {
+            get {
+                return ResourceManager.GetString("DefaultPass", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Default server name.
+        /// </summary>
+        public static string DefaultSN {
+            get {
+                return ResourceManager.GetString("DefaultSN", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Delete.
         /// </summary>
         public static string Delete {
@@ -354,6 +408,15 @@ namespace Bd_Curs.Localization {
         public static string InsertFormName {
             get {
                 return ResourceManager.GetString("InsertFormName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Language.
+        /// </summary>
+        public static string Languagelabel {
+            get {
+                return ResourceManager.GetString("Languagelabel", resourceCulture);
             }
         }
         
@@ -507,6 +570,15 @@ namespace Bd_Curs.Localization {
         public static string ServerNamelabel {
             get {
                 return ResourceManager.GetString("ServerNamelabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Settings.
+        /// </summary>
+        public static string Settings {
+            get {
+                return ResourceManager.GetString("Settings", resourceCulture);
             }
         }
         
