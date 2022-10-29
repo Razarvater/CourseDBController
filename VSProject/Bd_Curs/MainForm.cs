@@ -7,13 +7,15 @@ using System.Windows.Forms;
 using System.Diagnostics;
 using System.Globalization;
 using Bd_Curs.Properties;
+using Bd_Curs.Plogic;
 
 namespace Bd_Curs
 {
     public partial class MainForm : Form
     {
         private Database db;//Переменная базы данных
-        private string ConnectedServer;//Имя подключенного сервера
+        private string ConnectedServer = string.Empty;//Имя подключенного сервера
+        private string FilePath = string.Empty;
 
         private int ButtonsMin = 100;//Размер кнопок таблиц в горизонтали
 
@@ -30,8 +32,8 @@ namespace Bd_Curs
         public MainForm() => InitializeComponent();
         private void MainForm_Load(object sender, EventArgs e)
         {
-            tabControl1.Enabled = false;
-            tabControl3.Enabled = false;
+            LittleFormTabControl.Enabled = false;
+            BigFormTabControl.Enabled = false;
             LocalizatorResource.INIT(typeof(MainForm).Assembly);//Инициализация локализатора
             Localize = LocalizatorResource.Localize;
 
@@ -57,24 +59,28 @@ namespace Bd_Curs
         private async void ConnectButton_Click(object sender, EventArgs e)//Подключение к БД
         {
             if (DbName.Text == string.Empty) return;
+            ProgressBarMainQuery.Visible = true;
             ConnectButton.Enabled = false;//Выключение кнопки подключения
-            tabControl1.Enabled = false;//Отключение контроллера таблиц
+            FromFileButton.Enabled = false;
+            DisconnectServer.Enabled = false;
+            LittleFormTabControl.Enabled = false;//Отключение контроллера таблиц
             CreateDBButton.Enabled = false;
             CreateDBName.Visible = false;
             SelectedTable.DataSource = null;
+            ConnectServer.Enabled = false;
 
-            tabControl1.SelectedTab = tabPage1;//Выбрана первая форма редактирования
-
+            LittleFormTabControl.SelectedTab = tabPage1;//Выбрана первая форма редактирования
+            
             if (!db_Connected)//Если БД не подключена то
             {
-                db = new Database(ConnectedServer, DbName.Text);//Создать новое подключение к БД
+                db = new DatabaseMSSQL(ConnectedServer, DbName.Text, string.Empty);//Создать новое подключение к БД
             }
             else
             {
                 db.CloseConnection();//Закрыть старое подключение
-                db = new Database(ConnectedServer, DbName.Text);//Создать новое подключение к БД
+                db = new DatabaseMSSQL(ConnectedServer, DbName.Text, string.Empty);//Создать новое подключение к БД
             }
-            db.Show += ErrorMessage;//Подключение Message
+            db.SetShow(ErrorMessage);//Подключение Message
 
             await db.startConnectionAsync(NameBox.Text, PassBox.Text);//Подключение к базе данных
             db_Connected = db.Connected;//Подключена ли БД
@@ -88,7 +94,7 @@ namespace Bd_Curs
             tabPage8.Controls.Clear();//Очистка от предыдущей диаграммы
                 //-------------Создание кнопок таблиц------------\\
                 splitContainer5.Panel2.Controls.Clear();//Очистка предыдущих кнопок
-                tabControl5.TabPages.Clear();//Очистка информации о таблицах
+                TableInfoTabControl.TabPages.Clear();//Очистка информации о таблицах
                 if (db_Connected && db.TableNames.Count != 0)
                 {
                     int tempHeight = splitContainer5.Panel2.Height - 5;//Установка высоты для кнопок
@@ -120,8 +126,8 @@ namespace Bd_Curs
                         temp.KeyDown += DropTable;
                         temp.MouseEnter += new EventHandler((object sender, EventArgs e) => ((Control)sender).Focus());
                         splitContainer5.Panel2.Controls.Add(temp);//Отображение кнопки
-                        tabControl5.TabPages.Add(new TabPage(db.TableNames[i]));//Отображение информации о таблицах
-                        tabControl5.TabPages[tabControl5.TabCount - 1].AutoScroll = true;
+                        TableInfoTabControl.TabPages.Add(new TabPage(db.TableNames[i]));//Отображение информации о таблицах
+                        TableInfoTabControl.TabPages[TableInfoTabControl.TabCount - 1].AutoScroll = true;
                         tempCount++;
                     }
                     SetSelectedtable();//Отобразить первую таблицу
@@ -138,20 +144,31 @@ namespace Bd_Curs
                 }
             if (db_Connected)//Изменение сообщения о подключении
             {
-                ConnectionStatus.Text = $"{Localize.GetString("ConnectionStatusServer")}:{ConnectedServer}          {Localize.GetString("ConnectionStatusDB")}:{DbName.Text}";
                 //Инициализация вкладок
                 InitCreateTableForm();
                 InitTableRelation();
 
                 DisconnectButton.Enabled = true;//Включение кнопки для дисконекта от БД
                 if (db.TableNames.Count != 0)
-                    tabControl1.Enabled = true;//Включение контроллера таблиц
-                tabControl3.Enabled = true;//Включение контроллера таблиц
+                    LittleFormTabControl.Enabled = true;//Включение контроллера таблиц
+                BigFormTabControl.Enabled = true;//Включение контроллера таблиц
             }
+            else
+            {
+                ConnectButton.Enabled = true;//Выключение кнопки подключения
+                FromFileButton.Enabled = true;
+                LittleFormTabControl.Enabled = false;//Отключение контроллера таблиц
+                CreateDBButton.Enabled = true;
+                CreateDBName.Visible = false;
+                DisconnectServer.Enabled = true;
+                SelectedTable.DataSource = null;
+                ConnectServer.Enabled = true;
+            }
+            ProgressBarMainQuery.Visible = false;
         }
         private void SetSelectedtable(string name = "DeFaUlT_TaBlE")
         {
-            tabControl1.SelectedTab = tabPage1;
+            LittleFormTabControl.SelectedTab = tabPage1;
             //Создание формы редактирования
             CreateInsertForm();
             //Создание формы отображения
@@ -274,29 +291,33 @@ namespace Bd_Curs
 
             ConnectionStatus.Text = Localize.GetString("ConnectionStatusDis");//Изменение строки подключения
 
-            CreateDBButton.Enabled = true;
+            FromFileButton.Enabled = true;
             DisconnectButton.Enabled = false;//Выключение кнопки дисконнекта
-            tabControl1.SelectedTab = tabPage1;//Выбор первой формы редактирования
-            tabControl1.Enabled = false;//Отключение контроллера форм
-            tabControl4.SelectedIndex = -1;
-            tabControl3.SelectedIndex = 0;
-            tabControl2.SelectedIndex = -1; 
-            tabControl1.SelectedIndex = -1;
-            tabControl3.Enabled = false;
+            LittleFormTabControl.SelectedTab = tabPage1;//Выбор первой формы редактирования
+            LittleFormTabControl.Enabled = false;//Отключение контроллера форм
+            DbConstructorFormTabControl.SelectedIndex = -1;
+            BigFormTabControl.SelectedIndex = 0;
+            SelectFormTabControl.SelectedIndex = -1;
+            LittleFormTabControl.SelectedIndex = -1;
+            BigFormTabControl.Enabled = false;
             CounterOfConnection.Text = string.Empty;//Обнуление счётчика
+            DisconnectServer.Enabled = true;
+
+            if (ConnectedServer == string.Empty) return;
+            CreateDBButton.Enabled = true;
             ConnectButton.Enabled = true;//Включение кнопки подключения
         }
         private void UpdateTimeTimer_Tick(object sender, EventArgs e)=>
             CounterOfConnection.Text = $"{Localize.GetString("TimeOfQuerylabel")}: {Query_Time.ElapsedMilliseconds/1000.0}";//Обновление счётчика
         private void RunCounter()
         {
-            progressBar1.Visible = true;
+            ProgressBarMainQuery.Visible = true;
             Query_Time.Restart();//Рестарт счётчика времени
             UpdateTimeTimer.Start();//Старт таймера для отображения времени
         }
         private void StopCounter()
         {
-            progressBar1.Visible = false;
+            ProgressBarMainQuery.Visible = false;
             Query_Time.Stop();//Остановка счётчика времени
             UpdateTimeTimer.Stop();//Остановка таймера для отображения времени
         }
@@ -323,11 +344,10 @@ namespace Bd_Curs
         private async void ConnectServer_Click(object sender, EventArgs e)//Подключение к серверу и получение списка Баз данных
         {
             if (ServerName.Text == string.Empty) return;
-            progressBar2.Visible = true;
+            ProgressBarServerConnection.Visible = true;
             if (DisconnectButton.Enabled)
                 Disconnect_Click(this,EventArgs.Empty);//Отключится от Базы данных если уже подключены к БД
-
-            ConnectedServer = ServerName.Text;//Изменение подключенного сервера
+            ConnectedServer = ServerName.Text;
             ServerConnection serv = new ServerConnection(ServerName.Text);//Подключение к серверу
             serv.Show += ErrorMessage;
             DbName.Items.Clear();//Очистка списка баз данных
@@ -343,6 +363,9 @@ namespace Bd_Curs
                 DbName.Enabled = true;
                 NameBox.Enabled = true;
                 PassBox.Enabled = true;
+                DisconnectServer.Enabled = true;
+                FromFileButton.Enabled = false;
+                ConnectServer.Enabled = false;
                 ConnectionStatus.Text = $"{Localize.GetString("ConnectionStatusServer")}:{ConnectedServer}";
             }
             else
@@ -352,9 +375,24 @@ namespace Bd_Curs
                 DbName.Enabled = false;
                 NameBox.Enabled = false;
                 PassBox.Enabled = false;
+                FromFileButton.Enabled = true;
+                ConnectServer.Enabled = true;
                 ConnectionStatus.Text = Localize.GetString("ConnectionStatusDis");
             }
-            progressBar2.Visible = false;
+            ProgressBarServerConnection.Visible = false;
+        }
+        private void DisconnectServer_Click(object sender, EventArgs e)
+        {
+            ConnectedServer = string.Empty;
+            ConnectButton.Enabled = false;
+            CreateDBButton.Enabled = false;
+            DbName.Enabled = false;
+            NameBox.Enabled = false;
+            PassBox.Enabled = false;
+            DisconnectServer.Enabled = false;
+            ConnectServer.Enabled = true;
+            FromFileButton.Enabled = true;
+            ConnectionStatus.Text = Localize.GetString("ConnectionStatusDis");
         }
         private void CreateDatabase(object sender, EventArgs e)
         {
@@ -381,7 +419,6 @@ namespace Bd_Curs
 
             ConnectServer_Click(new object(), EventArgs.Empty);
         }
-
         private void SettingButton_Click(object sender, EventArgs e)
         {
             if (SettingsOpened)//Если настройки уже открыты
@@ -396,7 +433,119 @@ namespace Bd_Curs
             Program.sett.localizationButton += LocalizeButton_Click;
             Program.sett.disable += () => SettingsOpened = false;
             Program.sett.Show();
-            
+        }
+        private void button2_Click(object sender, EventArgs e)
+        {
+            if (OpenDbfile.ShowDialog() == DialogResult.OK)
+            {
+                FileConnect(OpenDbfile.FileName);
+            }
+        }
+        private async void FileConnect(string FilePath)//Подключение к БД
+        {
+            if (FilePath == string.Empty) return;
+            ProgressBarMainQuery.Visible = true;
+            ConnectButton.Enabled = false;//Выключение кнопки подключения
+            FromFileButton.Enabled = false;
+            LittleFormTabControl.Enabled = false;//Отключение контроллера таблиц
+            CreateDBButton.Enabled = false;
+            CreateDBName.Visible = false;
+            ConnectServer.Enabled = false;
+            SelectedTable.DataSource = null;
+
+            LittleFormTabControl.SelectedTab = tabPage1;//Выбрана первая форма редактирования
+
+            if (!db_Connected)//Если БД не подключена то
+            {
+                db = new DatabaseMSSQL(ConnectedServer, DbName.Text, FilePath);//Создать новое подключение к БД
+            }
+            else
+            {
+                db.CloseConnection();//Закрыть старое подключение
+                db = new DatabaseMSSQL(ConnectedServer, DbName.Text, FilePath);//Создать новое подключение к БД
+            }
+            db.SetShow(ErrorMessage);//Подключение Message
+
+            await db.startConnectionAsync(NameBox.Text, PassBox.Text);//Подключение к базе данных
+            db_Connected = db.Connected;//Подключена ли БД
+
+            if (db_Connected && db.TableNames.Count != 0)
+            {
+                ConnectionStatus.Text = $"{Localize.GetString("ConnectionStatusServer")}:{FilePath}";
+                SelectedTableName = db.TableNames[0];//Выбранная таблица
+                IndexSelectedTable = 0;
+            }
+            tabPage8.Controls.Clear();//Очистка от предыдущей диаграммы
+                                      //-------------Создание кнопок таблиц------------\\
+            splitContainer5.Panel2.Controls.Clear();//Очистка предыдущих кнопок
+            TableInfoTabControl.TabPages.Clear();//Очистка информации о таблицах
+            if (db_Connected && db.TableNames.Count != 0)
+            {
+                int tempHeight = splitContainer5.Panel2.Height - 5;//Установка высоты для кнопок
+                int tempCount = 0;
+                //уменьшить высоту кнопок если они не помещаются в контейнер
+                if (ButtonsMin * db.TableNames.Count > splitContainer5.Panel2.Width) tempHeight -= 16;
+                for (int i = 0; i < db.TableNames.Count; i++)//Создание кнопок для всех таблиц
+                {
+                    if (db.TableNames[i] == "Users")//Если таблица Users
+                    {
+                        Button tempr = new Button();
+
+                        tempr.Text = db.TableNames[i].ToString();//Установка текста кнопки
+                        tempr.Location = new Point(ButtonsMin * tempCount, 0);//Установка следующей позиции кнопки
+                        tempr.Size = new Size(0, 0);//Установка размера кнопки
+
+                        tempr.TabStop = false;
+                        splitContainer5.Panel2.Controls.Add(tempr);//Отображение кнопки
+
+                        continue;//То напечатать размерами 0 на 0 и скрыть под следующей кнопкой
+                    }
+
+                    Button temp = new Button();
+
+                    temp.Text = db.TableNames[i].ToString();//Установка текста кнопки
+                    temp.Location = new Point(ButtonsMin * tempCount, 0);//Установка следующей позиции кнопки
+                    temp.Size = new Size(ButtonsMin, tempHeight);//Установка размера кнопки
+                    temp.Click += ChooseNewTable;//Установка события на смену отображаемой таблицы
+                    temp.KeyDown += DropTable;
+                    temp.MouseEnter += new EventHandler((object sender, EventArgs e) => ((Control)sender).Focus());
+                    splitContainer5.Panel2.Controls.Add(temp);//Отображение кнопки
+                    TableInfoTabControl.TabPages.Add(new TabPage(db.TableNames[i]));//Отображение информации о таблицах
+                    TableInfoTabControl.TabPages[TableInfoTabControl.TabCount - 1].AutoScroll = true;
+                    tempCount++;
+                }
+                SetSelectedtable();//Отобразить первую таблицу
+
+                //Установить цвет выбранных кнопок
+                if (splitContainer5.Panel2.Controls.Count > IndexSelectedTable)
+                    splitContainer5.Panel2.Controls[IndexSelectedTable].BackColor = Color.Transparent;
+                IndexSelectedTable = 0;//Индекс выбранной таблицы
+                splitContainer5.Panel2.Controls[IndexSelectedTable].BackColor = Color.LightGreen;
+
+                PrintShema();//напечатать схему бд
+                             //Инициализация вкладок
+                InitTableForms();
+            }
+            if (db_Connected)//Изменение сообщения о подключении
+            {
+                //Инициализация вкладок
+                InitCreateTableForm();
+                InitTableRelation();
+
+                DisconnectButton.Enabled = true;//Включение кнопки для дисконекта от БД
+                if (db.TableNames.Count != 0)
+                    LittleFormTabControl.Enabled = true;//Включение контроллера таблиц
+                BigFormTabControl.Enabled = true;//Включение контроллера таблиц
+            }
+            else
+            {
+                FromFileButton.Enabled = true;
+                LittleFormTabControl.Enabled = false;//Отключение контроллера таблиц
+                CreateDBName.Visible = false;
+                SelectedTable.DataSource = null;
+                ConnectServer.Enabled = true;
+            }
+            ProgressBarMainQuery.Visible = false;
         }
     }
 }

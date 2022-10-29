@@ -4,6 +4,7 @@ using System.Threading;
 using System.Windows.Forms;
 using System.Collections.Generic;
 using System.Data.SqlClient;
+using Bd_Curs.Plogic;
 
 namespace Bd_Curs
 {
@@ -156,14 +157,14 @@ namespace Bd_Curs
             Query_IsWorking = true;//Запрос выполняется
 
             DeleteQuery = $"DELETE FROM [{SelectedTableName}] ";//Из таблицы
-            SqlCommand command = new SqlCommand(DeleteQuery, db.connection);//SQl параметризированный запрос
+            List<SqlParameterStr> parameters = new List<SqlParameterStr>();
             if (ColumnNamesDel.Count > 0)//Если условий для удаления нет
             {
                 DeleteQuery += "WHERE ";
                 for (int i = 0; i < ColumnNamesDel.Count; i++)//Добавление условий 
                 {
                     DeleteQuery += $"[{ColumnNamesDel[i].Text}] {OperationsDel[i].Text} @{ValuesDel[i].Name}";
-                    command.Parameters.Add(new SqlParameter($"@{ValuesDel[i].Name}", ValuesDel[i].Text));
+                    parameters.Add(new SqlParameterStr($"@{ValuesDel[i].Name}", ValuesDel[i].Text));
                     if (i != ColumnNamesDel.Count - 1)//Если количество не 1 то добавить AND OR
                         DeleteQuery += $" {AndORDel[i].Text} ";
                 }
@@ -173,9 +174,7 @@ namespace Bd_Curs
                 Query_IsWorking = false;//Закрытие запроса
                 return;
             }
-
-            command.CommandText = DeleteQuery;
-            Thread UpdateThread = new Thread(() => db.SetQuery(DeleteQuery, command));//Создание потока с запросом
+            Thread UpdateThread = new Thread(() => db.SetQuery(DeleteQuery, parameters));//Создание потока с запросом
             UpdateThread.Start();//Старт потока
             QueueTimer.Start();//Старт таймера на проверку завершения потока
             RunCounter();//Старт Счётчиков

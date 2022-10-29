@@ -216,6 +216,9 @@
   <data name="DisConnectButtonText" xml:space="preserve">
     <value>Отключиться от базы данных</value>
   </data>
+  <data name="DisconServer" xml:space="preserve">
+    <value>Отключиться от сервера</value>
+  </data>
   <data name="DontConnected" xml:space="preserve">
     <value>Не подключено</value>
   </data>
@@ -227,6 +230,9 @@
   </data>
   <data name="FieldType" xml:space="preserve">
     <value>Тип поля</value>
+  </data>
+  <data name="FileDB" xml:space="preserve">
+    <value>База данных из файла</value>
   </data>
   <data name="Insert" xml:space="preserve">
     <value>Внос данных</value>
@@ -314,6 +320,9 @@
   </data>
   <data name="TooltipDbName" xml:space="preserve">
     <value>Выберите базу данных</value>
+  </data>
+  <data name="TooltipFromFileButton" xml:space="preserve">
+    <value>Выберете файл .mdf (в той же папке должен лежать .Ldf файл, а так же должен быть включен MSSQL)</value>
   </data>
   <data name="TooltipServerName" xml:space="preserve">
     <value>Введите адрес сервера</value>

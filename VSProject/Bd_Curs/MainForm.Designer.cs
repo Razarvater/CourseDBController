@@ -34,20 +34,20 @@
             this.splitContainer4 = new System.Windows.Forms.SplitContainer();
             this.splitContainer5 = new System.Windows.Forms.SplitContainer();
             this.label5 = new System.Windows.Forms.Label();
-            this.tabControl3 = new System.Windows.Forms.TabControl();
+            this.BigFormTabControl = new System.Windows.Forms.TabControl();
             this.tabPage7 = new System.Windows.Forms.TabPage();
-            this.progressBar1 = new System.Windows.Forms.ProgressBar();
+            this.ProgressBarMainQuery = new System.Windows.Forms.ProgressBar();
             this.SelectedTable = new System.Windows.Forms.DataGridView();
             this.tabPage8 = new System.Windows.Forms.TabPage();
-            this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            this.DiagramPictureBox = new System.Windows.Forms.PictureBox();
             this.tabPage9 = new System.Windows.Forms.TabPage();
-            this.tabControl4 = new System.Windows.Forms.TabControl();
+            this.DbConstructorFormTabControl = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
-            this.tabControl5 = new System.Windows.Forms.TabControl();
+            this.TableInfoTabControl = new System.Windows.Forms.TabControl();
             this.tabPage10 = new System.Windows.Forms.TabPage();
             this.tabPage11 = new System.Windows.Forms.TabPage();
             this.checkCascade = new System.Windows.Forms.CheckBox();
-            this.button1 = new System.Windows.Forms.Button();
+            this.CreateRelationButton = new System.Windows.Forms.Button();
             this.label10 = new System.Windows.Forms.Label();
             this.label9 = new System.Windows.Forms.Label();
             this.label8 = new System.Windows.Forms.Label();
@@ -57,10 +57,10 @@
             this.comboColumn1 = new System.Windows.Forms.ComboBox();
             this.comboTable2 = new System.Windows.Forms.ComboBox();
             this.comboTable1 = new System.Windows.Forms.ComboBox();
-            this.tabControl1 = new System.Windows.Forms.TabControl();
+            this.LittleFormTabControl = new System.Windows.Forms.TabControl();
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.tabPage3 = new System.Windows.Forms.TabPage();
-            this.tabControl2 = new System.Windows.Forms.TabControl();
+            this.SelectFormTabControl = new System.Windows.Forms.TabControl();
             this.tabPage4 = new System.Windows.Forms.TabPage();
             this.tabPage5 = new System.Windows.Forms.TabPage();
             this.tabPage6 = new System.Windows.Forms.TabPage();
@@ -68,9 +68,11 @@
             this.SettingButton = new System.Windows.Forms.Button();
             this.ConnectionStatus = new System.Windows.Forms.Label();
             this.splitContainer2 = new System.Windows.Forms.SplitContainer();
+            this.DisconnectServer = new System.Windows.Forms.Button();
+            this.FromFileButton = new System.Windows.Forms.Button();
             this.CreateDBName = new System.Windows.Forms.TextBox();
             this.CreateDBButton = new System.Windows.Forms.Button();
-            this.progressBar2 = new System.Windows.Forms.ProgressBar();
+            this.ProgressBarServerConnection = new System.Windows.Forms.ProgressBar();
             this.DbName = new System.Windows.Forms.ComboBox();
             this.ConnectServer = new System.Windows.Forms.Button();
             this.CounterOfConnection = new System.Windows.Forms.Label();
@@ -88,6 +90,8 @@
             this.UpdateTimeTimer = new System.Windows.Forms.Timer(this.components);
             this.ServerToolTip = new System.Windows.Forms.ToolTip(this.components);
             this.DbNameTooltip = new System.Windows.Forms.ToolTip(this.components);
+            this.OpenDbfile = new System.Windows.Forms.OpenFileDialog();
+            this.FileButtonToolTip = new System.Windows.Forms.ToolTip(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer3)).BeginInit();
             this.splitContainer3.Panel1.SuspendLayout();
             this.splitContainer3.Panel2.SuspendLayout();
@@ -99,18 +103,18 @@
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer5)).BeginInit();
             this.splitContainer5.Panel1.SuspendLayout();
             this.splitContainer5.SuspendLayout();
-            this.tabControl3.SuspendLayout();
+            this.BigFormTabControl.SuspendLayout();
             this.tabPage7.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.SelectedTable)).BeginInit();
             this.tabPage8.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.DiagramPictureBox)).BeginInit();
             this.tabPage9.SuspendLayout();
-            this.tabControl4.SuspendLayout();
+            this.DbConstructorFormTabControl.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.tabPage11.SuspendLayout();
-            this.tabControl1.SuspendLayout();
+            this.LittleFormTabControl.SuspendLayout();
             this.tabPage3.SuspendLayout();
-            this.tabControl2.SuspendLayout();
+            this.SelectFormTabControl.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -135,7 +139,7 @@
             // splitContainer3.Panel2
             // 
             resources.ApplyResources(this.splitContainer3.Panel2, "splitContainer3.Panel2");
-            this.splitContainer3.Panel2.Controls.Add(this.tabControl1);
+            this.splitContainer3.Panel2.Controls.Add(this.LittleFormTabControl);
             this.splitContainer3.TabStop = false;
             // 
             // splitContainer4
@@ -150,7 +154,7 @@
             // 
             // splitContainer4.Panel2
             // 
-            this.splitContainer4.Panel2.Controls.Add(this.tabControl3);
+            this.splitContainer4.Panel2.Controls.Add(this.BigFormTabControl);
             // 
             // splitContainer5
             // 
@@ -173,31 +177,30 @@
             resources.ApplyResources(this.label5, "label5");
             this.label5.Name = "label5";
             // 
-            // tabControl3
+            // BigFormTabControl
             // 
-            this.tabControl3.Controls.Add(this.tabPage7);
-            this.tabControl3.Controls.Add(this.tabPage8);
-            this.tabControl3.Controls.Add(this.tabPage9);
-            resources.ApplyResources(this.tabControl3, "tabControl3");
-            this.tabControl3.Name = "tabControl3";
-            this.tabControl3.SelectedIndex = 0;
-            this.tabControl3.TabStop = false;
-            this.tabControl3.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.MainForm_PreviewKeyDown);
+            this.BigFormTabControl.Controls.Add(this.tabPage7);
+            this.BigFormTabControl.Controls.Add(this.tabPage8);
+            this.BigFormTabControl.Controls.Add(this.tabPage9);
+            resources.ApplyResources(this.BigFormTabControl, "BigFormTabControl");
+            this.BigFormTabControl.Name = "BigFormTabControl";
+            this.BigFormTabControl.SelectedIndex = 0;
+            this.BigFormTabControl.TabStop = false;
             // 
             // tabPage7
             // 
-            this.tabPage7.Controls.Add(this.progressBar1);
+            this.tabPage7.Controls.Add(this.ProgressBarMainQuery);
             this.tabPage7.Controls.Add(this.SelectedTable);
             resources.ApplyResources(this.tabPage7, "tabPage7");
             this.tabPage7.Name = "tabPage7";
             this.tabPage7.UseVisualStyleBackColor = true;
             // 
-            // progressBar1
+            // ProgressBarMainQuery
             // 
-            resources.ApplyResources(this.progressBar1, "progressBar1");
-            this.progressBar1.MarqueeAnimationSpeed = 50;
-            this.progressBar1.Name = "progressBar1";
-            this.progressBar1.Style = System.Windows.Forms.ProgressBarStyle.Marquee;
+            resources.ApplyResources(this.ProgressBarMainQuery, "ProgressBarMainQuery");
+            this.ProgressBarMainQuery.MarqueeAnimationSpeed = 50;
+            this.ProgressBarMainQuery.Name = "ProgressBarMainQuery";
+            this.ProgressBarMainQuery.Style = System.Windows.Forms.ProgressBarStyle.Marquee;
             // 
             // SelectedTable
             // 
@@ -215,47 +218,47 @@
             // 
             // tabPage8
             // 
-            this.tabPage8.Controls.Add(this.pictureBox1);
+            this.tabPage8.Controls.Add(this.DiagramPictureBox);
             resources.ApplyResources(this.tabPage8, "tabPage8");
             this.tabPage8.Name = "tabPage8";
             this.tabPage8.UseVisualStyleBackColor = true;
             // 
-            // pictureBox1
+            // DiagramPictureBox
             // 
-            this.pictureBox1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            resources.ApplyResources(this.pictureBox1, "pictureBox1");
-            this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.TabStop = false;
+            this.DiagramPictureBox.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            resources.ApplyResources(this.DiagramPictureBox, "DiagramPictureBox");
+            this.DiagramPictureBox.Name = "DiagramPictureBox";
+            this.DiagramPictureBox.TabStop = false;
             // 
             // tabPage9
             // 
-            this.tabPage9.Controls.Add(this.tabControl4);
+            this.tabPage9.Controls.Add(this.DbConstructorFormTabControl);
             resources.ApplyResources(this.tabPage9, "tabPage9");
             this.tabPage9.Name = "tabPage9";
             this.tabPage9.UseVisualStyleBackColor = true;
             // 
-            // tabControl4
+            // DbConstructorFormTabControl
             // 
-            this.tabControl4.Controls.Add(this.tabPage1);
-            this.tabControl4.Controls.Add(this.tabPage10);
-            this.tabControl4.Controls.Add(this.tabPage11);
-            resources.ApplyResources(this.tabControl4, "tabControl4");
-            this.tabControl4.Name = "tabControl4";
-            this.tabControl4.SelectedIndex = 0;
+            this.DbConstructorFormTabControl.Controls.Add(this.tabPage1);
+            this.DbConstructorFormTabControl.Controls.Add(this.tabPage10);
+            this.DbConstructorFormTabControl.Controls.Add(this.tabPage11);
+            resources.ApplyResources(this.DbConstructorFormTabControl, "DbConstructorFormTabControl");
+            this.DbConstructorFormTabControl.Name = "DbConstructorFormTabControl";
+            this.DbConstructorFormTabControl.SelectedIndex = 0;
             // 
             // tabPage1
             // 
-            this.tabPage1.Controls.Add(this.tabControl5);
+            this.tabPage1.Controls.Add(this.TableInfoTabControl);
             resources.ApplyResources(this.tabPage1, "tabPage1");
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.UseVisualStyleBackColor = true;
             // 
-            // tabControl5
+            // TableInfoTabControl
             // 
-            resources.ApplyResources(this.tabControl5, "tabControl5");
-            this.tabControl5.Multiline = true;
-            this.tabControl5.Name = "tabControl5";
-            this.tabControl5.SelectedIndex = 0;
+            resources.ApplyResources(this.TableInfoTabControl, "TableInfoTabControl");
+            this.TableInfoTabControl.Multiline = true;
+            this.TableInfoTabControl.Name = "TableInfoTabControl";
+            this.TableInfoTabControl.SelectedIndex = 0;
             // 
             // tabPage10
             // 
@@ -266,7 +269,7 @@
             // tabPage11
             // 
             this.tabPage11.Controls.Add(this.checkCascade);
-            this.tabPage11.Controls.Add(this.button1);
+            this.tabPage11.Controls.Add(this.CreateRelationButton);
             this.tabPage11.Controls.Add(this.label10);
             this.tabPage11.Controls.Add(this.label9);
             this.tabPage11.Controls.Add(this.label8);
@@ -286,12 +289,12 @@
             this.checkCascade.Name = "checkCascade";
             this.checkCascade.UseVisualStyleBackColor = true;
             // 
-            // button1
+            // CreateRelationButton
             // 
-            resources.ApplyResources(this.button1, "button1");
-            this.button1.Name = "button1";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.CreateRelation);
+            resources.ApplyResources(this.CreateRelationButton, "CreateRelationButton");
+            this.CreateRelationButton.Name = "CreateRelationButton";
+            this.CreateRelationButton.UseVisualStyleBackColor = true;
+            this.CreateRelationButton.Click += new System.EventHandler(this.CreateRelation);
             // 
             // label10
             // 
@@ -349,16 +352,16 @@
             this.comboTable1.Name = "comboTable1";
             this.comboTable1.SelectedIndexChanged += new System.EventHandler(this.comboTable1_SelectedIndexChanged);
             // 
-            // tabControl1
+            // LittleFormTabControl
             // 
-            this.tabControl1.Controls.Add(this.tabPage2);
-            this.tabControl1.Controls.Add(this.tabPage3);
-            this.tabControl1.Controls.Add(this.tabPage6);
-            resources.ApplyResources(this.tabControl1, "tabControl1");
-            this.tabControl1.Multiline = true;
-            this.tabControl1.Name = "tabControl1";
-            this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.TabStop = false;
+            this.LittleFormTabControl.Controls.Add(this.tabPage2);
+            this.LittleFormTabControl.Controls.Add(this.tabPage3);
+            this.LittleFormTabControl.Controls.Add(this.tabPage6);
+            resources.ApplyResources(this.LittleFormTabControl, "LittleFormTabControl");
+            this.LittleFormTabControl.Multiline = true;
+            this.LittleFormTabControl.Name = "LittleFormTabControl";
+            this.LittleFormTabControl.SelectedIndex = 0;
+            this.LittleFormTabControl.TabStop = false;
             // 
             // tabPage2
             // 
@@ -368,18 +371,18 @@
             // 
             // tabPage3
             // 
-            this.tabPage3.Controls.Add(this.tabControl2);
+            this.tabPage3.Controls.Add(this.SelectFormTabControl);
             resources.ApplyResources(this.tabPage3, "tabPage3");
             this.tabPage3.Name = "tabPage3";
             this.tabPage3.UseVisualStyleBackColor = true;
             // 
-            // tabControl2
+            // SelectFormTabControl
             // 
-            this.tabControl2.Controls.Add(this.tabPage4);
-            this.tabControl2.Controls.Add(this.tabPage5);
-            resources.ApplyResources(this.tabControl2, "tabControl2");
-            this.tabControl2.Name = "tabControl2";
-            this.tabControl2.SelectedIndex = 0;
+            this.SelectFormTabControl.Controls.Add(this.tabPage4);
+            this.SelectFormTabControl.Controls.Add(this.tabPage5);
+            resources.ApplyResources(this.SelectFormTabControl, "SelectFormTabControl");
+            this.SelectFormTabControl.Name = "SelectFormTabControl";
+            this.SelectFormTabControl.SelectedIndex = 0;
             // 
             // tabPage4
             // 
@@ -441,9 +444,11 @@
             // 
             // splitContainer2.Panel1
             // 
+            this.splitContainer2.Panel1.Controls.Add(this.DisconnectServer);
+            this.splitContainer2.Panel1.Controls.Add(this.FromFileButton);
             this.splitContainer2.Panel1.Controls.Add(this.CreateDBName);
             this.splitContainer2.Panel1.Controls.Add(this.CreateDBButton);
-            this.splitContainer2.Panel1.Controls.Add(this.progressBar2);
+            this.splitContainer2.Panel1.Controls.Add(this.ProgressBarServerConnection);
             this.splitContainer2.Panel1.Controls.Add(this.DbName);
             this.splitContainer2.Panel1.Controls.Add(this.ConnectServer);
             this.splitContainer2.Panel1.Controls.Add(this.CounterOfConnection);
@@ -462,6 +467,21 @@
             this.splitContainer2.Panel2.Controls.Add(this.splitContainer3);
             this.splitContainer2.TabStop = false;
             // 
+            // DisconnectServer
+            // 
+            resources.ApplyResources(this.DisconnectServer, "DisconnectServer");
+            this.DisconnectServer.Name = "DisconnectServer";
+            this.DisconnectServer.TabStop = false;
+            this.DisconnectServer.UseVisualStyleBackColor = true;
+            this.DisconnectServer.Click += new System.EventHandler(this.DisconnectServer_Click);
+            // 
+            // FromFileButton
+            // 
+            resources.ApplyResources(this.FromFileButton, "FromFileButton");
+            this.FromFileButton.Name = "FromFileButton";
+            this.FromFileButton.UseVisualStyleBackColor = true;
+            this.FromFileButton.Click += new System.EventHandler(this.button2_Click);
+            // 
             // CreateDBName
             // 
             resources.ApplyResources(this.CreateDBName, "CreateDBName");
@@ -477,12 +497,12 @@
             this.CreateDBButton.UseVisualStyleBackColor = false;
             this.CreateDBButton.Click += new System.EventHandler(this.CreateDatabase);
             // 
-            // progressBar2
+            // ProgressBarServerConnection
             // 
-            resources.ApplyResources(this.progressBar2, "progressBar2");
-            this.progressBar2.MarqueeAnimationSpeed = 50;
-            this.progressBar2.Name = "progressBar2";
-            this.progressBar2.Style = System.Windows.Forms.ProgressBarStyle.Marquee;
+            resources.ApplyResources(this.ProgressBarServerConnection, "ProgressBarServerConnection");
+            this.ProgressBarServerConnection.MarqueeAnimationSpeed = 50;
+            this.ProgressBarServerConnection.Name = "ProgressBarServerConnection";
+            this.ProgressBarServerConnection.Style = System.Windows.Forms.ProgressBarStyle.Marquee;
             // 
             // DbName
             // 
@@ -509,8 +529,8 @@
             // 
             // DisconnectButton
             // 
-            resources.ApplyResources(this.DisconnectButton, "DisconnectButton");
             this.DisconnectButton.BackColor = System.Drawing.Color.Transparent;
+            resources.ApplyResources(this.DisconnectButton, "DisconnectButton");
             this.DisconnectButton.Name = "DisconnectButton";
             this.DisconnectButton.TabStop = false;
             this.DisconnectButton.UseVisualStyleBackColor = false;
@@ -558,8 +578,8 @@
             // 
             // ConnectButton
             // 
-            resources.ApplyResources(this.ConnectButton, "ConnectButton");
             this.ConnectButton.BackColor = System.Drawing.Color.Transparent;
+            resources.ApplyResources(this.ConnectButton, "ConnectButton");
             this.ConnectButton.Name = "ConnectButton";
             this.ConnectButton.TabStop = false;
             this.ConnectButton.UseVisualStyleBackColor = false;
@@ -592,6 +612,18 @@
             this.DbNameTooltip.InitialDelay = 100;
             this.DbNameTooltip.ReshowDelay = 100;
             // 
+            // OpenDbfile
+            // 
+            this.OpenDbfile.FileName = "database";
+            resources.ApplyResources(this.OpenDbfile, "OpenDbfile");
+            this.OpenDbfile.InitialDirectory = "C:\\\\";
+            // 
+            // FileButtonToolTip
+            // 
+            this.FileButtonToolTip.AutoPopDelay = 5000;
+            this.FileButtonToolTip.InitialDelay = 100;
+            this.FileButtonToolTip.ReshowDelay = 100;
+            // 
             // MainForm
             // 
             resources.ApplyResources(this, "$this");
@@ -614,19 +646,19 @@
             this.splitContainer5.Panel1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer5)).EndInit();
             this.splitContainer5.ResumeLayout(false);
-            this.tabControl3.ResumeLayout(false);
+            this.BigFormTabControl.ResumeLayout(false);
             this.tabPage7.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.SelectedTable)).EndInit();
             this.tabPage8.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.DiagramPictureBox)).EndInit();
             this.tabPage9.ResumeLayout(false);
-            this.tabControl4.ResumeLayout(false);
+            this.DbConstructorFormTabControl.ResumeLayout(false);
             this.tabPage1.ResumeLayout(false);
             this.tabPage11.ResumeLayout(false);
             this.tabPage11.PerformLayout();
-            this.tabControl1.ResumeLayout(false);
+            this.LittleFormTabControl.ResumeLayout(false);
             this.tabPage3.ResumeLayout(false);
-            this.tabControl2.ResumeLayout(false);
+            this.SelectFormTabControl.ResumeLayout(false);
             this.splitContainer1.Panel1.ResumeLayout(false);
             this.splitContainer1.Panel1.PerformLayout();
             this.splitContainer1.Panel2.ResumeLayout(false);
@@ -664,27 +696,27 @@
         private System.Windows.Forms.Timer UpdateTimer;
         private System.Windows.Forms.Label CounterOfConnection;
         private System.Windows.Forms.Timer UpdateTimeTimer;
-        private System.Windows.Forms.ProgressBar progressBar1;
+        private System.Windows.Forms.ProgressBar ProgressBarMainQuery;
         private System.Windows.Forms.Button ConnectServer;
         private System.Windows.Forms.ComboBox DbName;
-        private System.Windows.Forms.ProgressBar progressBar2;
-        private System.Windows.Forms.TabControl tabControl3;
+        private System.Windows.Forms.ProgressBar ProgressBarServerConnection;
+        private System.Windows.Forms.TabControl BigFormTabControl;
         private System.Windows.Forms.TabPage tabPage7;
         private System.Windows.Forms.TabPage tabPage8;
-        private System.Windows.Forms.PictureBox pictureBox1;
+        private System.Windows.Forms.PictureBox DiagramPictureBox;
         private System.Windows.Forms.TabPage tabPage9;
-        private System.Windows.Forms.TabControl tabControl4;
+        private System.Windows.Forms.TabControl DbConstructorFormTabControl;
         private System.Windows.Forms.TabPage tabPage1;
         private System.Windows.Forms.TabPage tabPage10;
         private System.Windows.Forms.TabPage tabPage11;
-        private System.Windows.Forms.TabControl tabControl1;
+        private System.Windows.Forms.TabControl LittleFormTabControl;
         private System.Windows.Forms.TabPage tabPage2;
         private System.Windows.Forms.TabPage tabPage3;
-        private System.Windows.Forms.TabControl tabControl2;
+        private System.Windows.Forms.TabControl SelectFormTabControl;
         private System.Windows.Forms.TabPage tabPage4;
         private System.Windows.Forms.TabPage tabPage5;
         private System.Windows.Forms.TabPage tabPage6;
-        private System.Windows.Forms.TabControl tabControl5;
+        private System.Windows.Forms.TabControl TableInfoTabControl;
         private System.Windows.Forms.Label label9;
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.Label label7;
@@ -694,13 +726,17 @@
         private System.Windows.Forms.ComboBox comboTable2;
         private System.Windows.Forms.ComboBox comboTable1;
         private System.Windows.Forms.Label label10;
-        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button CreateRelationButton;
         private System.Windows.Forms.CheckBox checkCascade;
         private System.Windows.Forms.Button CreateDBButton;
         private System.Windows.Forms.TextBox CreateDBName;
         private System.Windows.Forms.ToolTip ServerToolTip;
         private System.Windows.Forms.ToolTip DbNameTooltip;
         private System.Windows.Forms.Button SettingButton;
+        private System.Windows.Forms.Button FromFileButton;
+        private System.Windows.Forms.OpenFileDialog OpenDbfile;
+        private System.Windows.Forms.ToolTip FileButtonToolTip;
+        private System.Windows.Forms.Button DisconnectServer;
     }
 }
 

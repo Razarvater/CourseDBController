@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Bd_Curs.Plogic;
+using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Drawing;
@@ -202,17 +203,15 @@ namespace Bd_Curs
             if (IsQueryWorked()) return;//Если запрос уже активен и выполняется, ничего не делать
             Query_IsWorking = true;//Запрос выполняется
             SelectQuery = "SELECT ";//Выборка
-
             foreach (var item in CheckBoxes)
             {
                 if (item.Checked)
                     SelectQuery += $"[{item.Name.Remove(item.Name.Length - 6)}], ";
-                
             }
             SelectQuery = SelectQuery.Remove(SelectQuery.Length - 2);
 
             SelectQuery += $" FROM [{SelectedTableName}] ";//Из таблицы
-            SqlCommand command = new SqlCommand(SelectQuery, db.connection);
+            List<SqlParameterStr> parameters = new List<SqlParameterStr>();
             //Создание параметризированного запроса
             if (ColumnNames.Count > 0)//Добавление условий если они есть
             {
@@ -220,14 +219,12 @@ namespace Bd_Curs
                 for (int i = 0; i < ColumnNames.Count; i++)
                 {
                     SelectQuery += $"[{ColumnNames[i].Text}] {Operations[i].Text} @{Values[i].Name}";
-                    command.Parameters.Add(new SqlParameter($"@{Values[i].Name}", Values[i].Text));
+                    parameters.Add(new SqlParameterStr($"@{Values[i].Name}", Values[i].Text));
                     if (i != ColumnNames.Count - 1)//Если условий больше 1
                         SelectQuery += $" {AndOR[i].Text} ";
                 }
             }
-            command.CommandText = SelectQuery;
-
-            Thread UpdateThread = new Thread(() => db.SetQuery(SelectQuery,command));//Создание потока с запросом
+            Thread UpdateThread = new Thread(() => db.SetQuery(SelectQuery,parameters));//Создание потока с запросом
             UpdateThread.Start();//Старт потока
             QueueTimer.Start();//Старт таймера на проверку завершения потока
             RunCounter();//Старт Счётчиков

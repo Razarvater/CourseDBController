@@ -29,18 +29,18 @@ namespace Bd_Curs
         }
         private void TableFormsLocalization()//Локализация
         {
-            for (int i = 0; i < tabControl5.TabPages.Count; i++)
+            for (int i = 0; i < TableInfoTabControl.TabPages.Count; i++)
             {
-                tabControl5.TabPages[i].Controls[0].Text = Localize.GetString("FieldName");
-                tabControl5.TabPages[i].Controls[1].Text = Localize.GetString("TypeOfData");
-                tabControl5.TabPages[i].Controls[2].Text = Localize.GetString("Primary");
-                tabControl5.TabPages[i].Controls[3].Text = Localize.GetString("Nullable");
+                TableInfoTabControl.TabPages[i].Controls[0].Text = Localize.GetString("FieldName");
+                TableInfoTabControl.TabPages[i].Controls[1].Text = Localize.GetString("TypeOfData");
+                TableInfoTabControl.TabPages[i].Controls[2].Text = Localize.GetString("Primary");
+                TableInfoTabControl.TabPages[i].Controls[3].Text = Localize.GetString("Nullable");
             }
         }
         private void InitTableForms()//Форма просмотра характеристик таблиц
         {
             int Y, step = 150;//Координаты
-            int tempBarrier = tabControl5.TabPages.Count;//Барьер для пропуска печати таблицы Users
+            int tempBarrier = TableInfoTabControl.TabPages.Count;//Барьер для пропуска печати таблицы Users
             int IndexTabControl = 0;
             for (int i = 0; i < tempBarrier; i++)//Заполнение всех табличных форм
             {
@@ -57,7 +57,7 @@ namespace Bd_Curs
                 ColumnNameZ.Width = step;
                 ColumnNameZ.TextAlign = ContentAlignment.MiddleCenter;
                 ColumnNameZ.Font = new Font(ColumnNameZ.Font.FontFamily, 8.5F, FontStyle.Bold);
-                tabControl5.TabPages[IndexTabControl].Controls.Add(ColumnNameZ);
+                TableInfoTabControl.TabPages[IndexTabControl].Controls.Add(ColumnNameZ);
 
                 Label ColumnTypeZ = new Label();
                 ColumnTypeZ.Text = Localize.GetString("TypeOfData");
@@ -65,7 +65,7 @@ namespace Bd_Curs
                 ColumnTypeZ.Width = step;
                 ColumnTypeZ.TextAlign = ContentAlignment.MiddleCenter;
                 ColumnTypeZ.Font = new Font(ColumnTypeZ.Font.FontFamily, 8.5F, FontStyle.Bold);
-                tabControl5.TabPages[IndexTabControl].Controls.Add(ColumnTypeZ);
+                TableInfoTabControl.TabPages[IndexTabControl].Controls.Add(ColumnTypeZ);
 
                 Label ColumnPKZ = new Label();
                 ColumnPKZ.Text = Localize.GetString("Primary");
@@ -73,7 +73,7 @@ namespace Bd_Curs
                 ColumnPKZ.Width = step;
                 ColumnPKZ.TextAlign = ContentAlignment.MiddleCenter;
                 ColumnPKZ.Font = new Font(ColumnPKZ.Font.FontFamily, 8.5F, FontStyle.Bold);
-                tabControl5.TabPages[IndexTabControl].Controls.Add(ColumnPKZ);
+                TableInfoTabControl.TabPages[IndexTabControl].Controls.Add(ColumnPKZ);
 
                 Label ColumnNullZ = new Label();
                 ColumnNullZ.Text = Localize.GetString("Nullable");
@@ -81,7 +81,7 @@ namespace Bd_Curs
                 ColumnNullZ.Width = step;
                 ColumnNullZ.TextAlign = ContentAlignment.MiddleCenter;
                 ColumnNullZ.Font = new Font(ColumnNullZ.Font.FontFamily, 8.5F, FontStyle.Bold);
-                tabControl5.TabPages[IndexTabControl].Controls.Add(ColumnNullZ);
+                TableInfoTabControl.TabPages[IndexTabControl].Controls.Add(ColumnNullZ);
                 Y += 25;
                 //Заполнение колонок содержимым
                 for (int j = 0; j < db.Tables[i].Columns.Count; j++)
@@ -91,28 +91,28 @@ namespace Bd_Curs
                     ColumnName.Location = new Point(0, Y);
                     ColumnName.Width = step;
                     ColumnName.TextAlign = ContentAlignment.MiddleCenter;
-                    tabControl5.TabPages[IndexTabControl].Controls.Add(ColumnName);
+                    TableInfoTabControl.TabPages[IndexTabControl].Controls.Add(ColumnName);
 
                     Label ColumnType = new Label();
                     ColumnType.Text = db.Tables[i].Columns[j].type.ToString();
                     ColumnType.Location = new Point(step, Y);
                     ColumnType.Width = step;
                     ColumnType.TextAlign = ContentAlignment.MiddleCenter;
-                    tabControl5.TabPages[IndexTabControl].Controls.Add(ColumnType);
+                    TableInfoTabControl.TabPages[IndexTabControl].Controls.Add(ColumnType);
 
                     Label ColumnPK = new Label();
                     ColumnPK.Text = db.Tables[i].Columns[j].IsPrimaryKey.ToString();
                     ColumnPK.Location = new Point(step * 2, Y);
                     ColumnPK.Width = step;
                     ColumnPK.TextAlign = ContentAlignment.MiddleCenter;
-                    tabControl5.TabPages[IndexTabControl].Controls.Add(ColumnPK);
+                    TableInfoTabControl.TabPages[IndexTabControl].Controls.Add(ColumnPK);
 
                     Label ColumnNull = new Label();
                     ColumnNull.Text = db.Tables[i].Columns[j].IsNullable.ToString();
                     ColumnNull.Location = new Point(step * 3, Y);
                     ColumnNull.Width = step;
                     ColumnNull.TextAlign = ContentAlignment.MiddleCenter;
-                    tabControl5.TabPages[IndexTabControl].Controls.Add(ColumnNull);
+                    TableInfoTabControl.TabPages[IndexTabControl].Controls.Add(ColumnNull);
                     Y += 25;
                 }
                 IndexTabControl++;//Смещение на следующую таблицу

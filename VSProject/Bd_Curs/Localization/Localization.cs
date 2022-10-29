@@ -23,6 +23,8 @@ namespace Bd_Curs
 
             CreateDBName.Text = Localize.GetString("CreateDBNameText");
 
+            DisconnectServer.Text = Localize.GetString("DisconServer");
+            FromFileButton.Text = Localize.GetString("FileDB");
             ConnectServer.Text = Localize.GetString("ConnectServerButton");
             CreateDBButton.Text = Localize.GetString("CreateDBButton");
             ConnectButton.Text = Localize.GetString("ConnectButtonText");
@@ -47,38 +49,39 @@ namespace Bd_Curs
             //----------TableLabel----------//
 
             //----------LittleForms----------//
-            tabControl1.TabPages[0].Text = Localize.GetString("InsertFormName");
+            LittleFormTabControl.TabPages[0].Text = Localize.GetString("InsertFormName");
                 InsertLocalize();
-            tabControl1.TabPages[1].Text = Localize.GetString("SelectFormName");
-                tabControl2.TabPages[0].Text = Localize.GetString("Select");
-                tabControl2.TabPages[1].Text = Localize.GetString("Condition");
+            LittleFormTabControl.TabPages[1].Text = Localize.GetString("SelectFormName");
+                SelectFormTabControl.TabPages[0].Text = Localize.GetString("Select");
+                SelectFormTabControl.TabPages[1].Text = Localize.GetString("Condition");
                 SelectLocalize();
 
-            tabControl1.TabPages[2].Text = Localize.GetString("DeleteFormName");
+            LittleFormTabControl.TabPages[2].Text = Localize.GetString("DeleteFormName");
                 DeleteLocalize();
             //----------LittleForms----------//
 
             //----------BigForms----------//
-            tabControl3.TabPages[0].Text = Localize.GetString("Selectedtable");
-            tabControl3.TabPages[1].Text = Localize.GetString("DbDiagram");
-            tabControl3.TabPages[2].Text = Localize.GetString("DbConstructor");
-                tabControl4.TabPages[0].Text = Localize.GetString("TableInfo");
+            BigFormTabControl.TabPages[0].Text = Localize.GetString("Selectedtable");
+            BigFormTabControl.TabPages[1].Text = Localize.GetString("DbDiagram");
+            BigFormTabControl.TabPages[2].Text = Localize.GetString("DbConstructor");
+                DbConstructorFormTabControl.TabPages[0].Text = Localize.GetString("TableInfo");
                     TableFormsLocalization();
-                tabControl4.TabPages[1].Text = Localize.GetString("CreateTable");
+                DbConstructorFormTabControl.TabPages[1].Text = Localize.GetString("CreateTable");
                     CreateTableFormLocalize();
-                tabControl4.TabPages[2].Text = Localize.GetString("CreateConstraint");
+                DbConstructorFormTabControl.TabPages[2].Text = Localize.GetString("CreateConstraint");
                     label6.Text = Localize.GetString("TableLabel");
                     label8.Text = label6.Text;
                     label7.Text = Localize.GetString("ColumnLabel");
                     label9.Text = label7.Text;
                     label10.Text = Localize.GetString("RelationLabel");
                     checkCascade.Text = Localize.GetString("CascadeCheckBox");
-                    button1.Text = Localize.GetString("CreateRelationButton");
+                    CreateRelationButton.Text = Localize.GetString("CreateRelationButton");
             //----------BigForms----------//
 
             //----------ToolTips----------//
             ServerToolTip.SetToolTip(ServerName, Localize.GetString("TooltipServerName"));
             DbNameTooltip.SetToolTip(DbName, Localize.GetString("TooltipDbName"));
+            FileButtonToolTip.SetToolTip(FromFileButton, Localize.GetString("TooltipFromFileButton"));
             //----------ToolTips----------//
         }
     }

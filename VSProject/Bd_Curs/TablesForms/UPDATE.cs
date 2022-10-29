@@ -1,3 +1,5 @@
+using Bd_Curs.Plogic;
+using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Threading;
 using System.Windows.Forms;
@@ -32,8 +34,8 @@ namespace Bd_Curs
             string Query = $"UPDATE [{SelectedTableName}] SET";//Строка запроса
             float temp;
 
+            List<SqlParameterStr> parameters = new List<SqlParameterStr>();
             //Создание параметризированного запроса
-            SqlCommand sqlCommand = new SqlCommand(Query,db.connection);
             string Parameter = SelectedTable.Columns[SelectedColumnIndex].HeaderText;
             if (Parameter.IndexOf("🔑") != -1 || Parameter.IndexOf("🔗") != -1)
                 Parameter = Parameter.Remove(Parameter.Length - 2);
@@ -41,12 +43,12 @@ namespace Bd_Curs
             if (float.TryParse(SelectedParSecond.Cells[SelectedColumnIndex].Value.ToString(), out temp))
             {
                 Query += $" {Parameter} = @{Parameter}1 WHERE ";//Создание условий для изменения записи 
-                sqlCommand.Parameters.Add(new SqlParameter($"@{Parameter}1", SelectedParSecond.Cells[SelectedColumnIndex].Value.ToString().Replace(',', '.')));
+                parameters.Add(new SqlParameterStr($"@{Parameter}1", SelectedParSecond.Cells[SelectedColumnIndex].Value.ToString().Replace(',', '.')));
             }
             else
             {
                 Query += $" {Parameter} = @{Parameter}1 WHERE ";//Создание условий для изменения записи
-                sqlCommand.Parameters.Add(new SqlParameter($"@{Parameter}1", SelectedParSecond.Cells[SelectedColumnIndex].Value));
+                parameters.Add(new SqlParameterStr($"@{Parameter}1", SelectedParSecond.Cells[SelectedColumnIndex].Value));
             }
             
             //Вставка в запрос всех уникальных полей параметризированно
@@ -63,21 +65,20 @@ namespace Bd_Curs
                         if (float.TryParse(SelectedParSecond.Cells[SelectedColumnIndex].Value.ToString(), out temp))
                         {
                             Query += $"@{Parameter}2";
-                            sqlCommand.Parameters.Add(new SqlParameter($"@{Parameter}2", SelectedParLast.Cells[i].Value.ToString().Replace(',', '.')));
+                            parameters.Add(new SqlParameterStr($"@{Parameter}2", SelectedParLast.Cells[i].Value.ToString().Replace(',', '.')));
                         }
                         else
                         {
                             Query += $"@{Parameter}2";
-                            sqlCommand.Parameters.Add(new SqlParameter($"@{Parameter}2", SelectedParLast.Cells[i].Value));
+                            parameters.Add(new SqlParameterStr($"@{Parameter}2", SelectedParLast.Cells[i].Value));
                         }
                         break;
                     }
                 }
             }
-            sqlCommand.CommandText = Query;
             IsUpdate = true;
 
-            Thread UpdateThread = new Thread(() => db.SetQuery(Query,sqlCommand));//Создание потока с запросом
+            Thread UpdateThread = new Thread(() => db.SetQuery(Query,parameters));//Создание потока с запросом
             UpdateThread.Start();//Старт потока
             QueueTimer.Start();//Старт таймера на проверку завершения потока
             RunCounter();//Старт Счётчиков

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using System.Windows.Forms;
+using Bd_Curs.Plogic;
 
 namespace Bd_Curs
 {
@@ -144,8 +145,6 @@ namespace Bd_Curs
                     }
                 }
             }
-
-            SqlCommand command = new SqlCommand("", db.connection);//Создание новой SQl команды
             
             string Query = $"CREATE TABLE {tabPage10.Controls[1].Text} (";
             string After = string.Empty;
@@ -171,8 +170,7 @@ namespace Bd_Curs
             }
             After += ")";
             Query += After + " )";
-            command.CommandText = Query;
-            db.SetQuery(Query, command);//Выполнение запроса
+            db.SetQuery(Query, new List<SqlParameterStr>());//Выполнение запроса
             ConnectButton_Click(new object(), EventArgs.Empty);//Переподключение к БД
         }
         public void DropTable(object sender, KeyEventArgs e)//Удаление таблицы

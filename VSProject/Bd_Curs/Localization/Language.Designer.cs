@@ -358,6 +358,15 @@ namespace Bd_Curs.Localization {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Disconnect from server.
+        /// </summary>
+        public static string DisconServer {
+            get {
+                return ResourceManager.GetString("DisconServer", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Don&apos;t connected.
         /// </summary>
         public static string DontConnected {
@@ -390,6 +399,15 @@ namespace Bd_Curs.Localization {
         public static string FieldType {
             get {
                 return ResourceManager.GetString("FieldType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Database from file.
+        /// </summary>
+        public static string FileDB {
+            get {
+                return ResourceManager.GetString("FileDB", resourceCulture);
             }
         }
         
@@ -651,6 +669,15 @@ namespace Bd_Curs.Localization {
         public static string TooltipDbName {
             get {
                 return ResourceManager.GetString("TooltipDbName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Select the .mdf file (the .Ldf file must be in the same folder, and MSSQL must also be enabled).
+        /// </summary>
+        public static string TooltipFromFileButton {
+            get {
+                return ResourceManager.GetString("TooltipFromFileButton", resourceCulture);
             }
         }
         

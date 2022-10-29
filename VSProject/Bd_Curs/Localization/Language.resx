@@ -216,6 +216,9 @@
   <data name="DisConnectButtonText" xml:space="preserve">
     <value>Disconnect from database</value>
   </data>
+  <data name="DisconServer" xml:space="preserve">
+    <value>Disconnect from server</value>
+  </data>
   <data name="DontConnected" xml:space="preserve">
     <value>Don't connected</value>
   </data>
@@ -227,6 +230,9 @@
   </data>
   <data name="FieldType" xml:space="preserve">
     <value>Field type</value>
+  </data>
+  <data name="FileDB" xml:space="preserve">
+    <value>Database from file</value>
   </data>
   <data name="Insert" xml:space="preserve">
     <value>Insert</value>
@@ -314,6 +320,9 @@
   </data>
   <data name="TooltipDbName" xml:space="preserve">
     <value>Choose a database</value>
+  </data>
+  <data name="TooltipFromFileButton" xml:space="preserve">
+    <value>Select the .mdf file (the .Ldf file must be in the same folder, and MSSQL must also be enabled)</value>
   </data>
   <data name="TooltipServerName" xml:space="preserve">
     <value>Enter your server adress</value>

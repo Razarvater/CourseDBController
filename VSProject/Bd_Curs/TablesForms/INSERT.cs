@@ -5,6 +5,7 @@ using System.Data.SqlClient;
 using System;
 using System.Drawing;
 using System.Collections.Generic;
+using Bd_Curs.Plogic;
 
 namespace Bd_Curs
 {
@@ -120,22 +121,21 @@ namespace Bd_Curs
             }
             Query = Query.Remove(Query.Length - 2);
             Query += ") VALUES (";
-            SqlCommand sqlCommand = new SqlCommand(Query, db.connection);//Создание параметризированного запроса
+            List<SqlParameterStr> parameters = new List<SqlParameterStr>();
             for (int i = 0; i < InsertBoxes.Count; i++)
             {
                 if (InsertBoxes[i].Text != string.Empty)
                 {
                     Query += $"@{InsertBoxes[i].Name}, ";
-                    sqlCommand.Parameters.Add(new SqlParameter($"@{InsertBoxes[i].Name}",InsertBoxes[i].Text));
+                    parameters.Add(new SqlParameterStr($"@{InsertBoxes[i].Name}",InsertBoxes[i].Text));
                 }
             }
             Query = Query.Remove(Query.Length - 2);
             Query += ")";
-            sqlCommand.CommandText = Query;
 
             IsUpdate = true;
             IsInsert = true;
-            Thread UpdateThread = new Thread(() => db.SetQuery(Query, sqlCommand));//Создание потока с запросом
+            Thread UpdateThread = new Thread(() => db.SetQuery(Query, parameters));//Создание потока с запросом
             UpdateThread.Start();//Старт потока
             QueueTimer.Start();//Старт таймера на проверку завершения потока
             RunCounter();//Старт Счётчиков

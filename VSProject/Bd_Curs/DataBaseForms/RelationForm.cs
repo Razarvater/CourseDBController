@@ -1,5 +1,6 @@
-﻿using System;
-using System.Data.SqlClient;
+﻿using Bd_Curs.Plogic;
+using System;
+using System.Collections.Generic;
 using System.Windows.Forms;
 
 namespace Bd_Curs
@@ -76,7 +77,7 @@ namespace Bd_Curs
             if (checkCascade.Checked)
                 Query += " ON DELETE CASCADE ON UPDATE CASCADE";
 
-            db.SetQuery(Query, new SqlCommand(Query, db.connection));//Выполнить запрос
+            db.SetQuery(Query, new List<SqlParameterStr>());//Выполнить запрос
             ConnectButton_Click(new object(), EventArgs.Empty);//Переподключиться к БД
         }
     }
